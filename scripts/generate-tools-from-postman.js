@@ -456,6 +456,76 @@ function updateChangelog(newTools, updatedTools) {
 }
 
 /**
+ * Update README.md with latest tool count and sync timestamp
+ */
+function updateReadme(newTools, updatedTools) {
+  const readmePath = path.join(__dirname, '../README.md');
+
+  if (!fs.existsSync(readmePath)) {
+    console.log('⚠️  README.md not found, skipping update');
+    return;
+  }
+
+  const allToolsCount = fs.readdirSync(path.join(__dirname, '../tools/supercommerce-api')).filter(f => f.endsWith('.js')).length;
+  const currentTimestamp = new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+
+  let readmeContent = fs.readFileSync(readmePath, 'utf8');
+
+  // Update tool count in title
+  readmeContent = readmeContent.replace(
+    /providing \*\*\d+\+ tools\*\*/,
+    `providing **${allToolsCount}+ tools**`
+  );
+
+  // Update tool count in badge
+  readmeContent = readmeContent.replace(
+    /Tools-\d+\+-green/,
+    `Tools-${allToolsCount}+-green`
+  );
+
+  // Update tool count in features
+  readmeContent = readmeContent.replace(
+    /- \*\*\d+\+ MCP Tools\*\*/,
+    `- **${allToolsCount}+ MCP Tools**`
+  );
+
+  // Update changelog section if there are changes
+  if (newTools.length > 0 || updatedTools.length > 0) {
+    const currentDate = new Date().toISOString().split('T')[0];
+    let changelogSection = `### [${currentDate}] Latest Update\n`;
+
+    if (newTools.length > 0) {
+      changelogSection += `- ✨ Added ${newTools.length} new tools\n`;
+    }
+
+    if (updatedTools.length > 0) {
+      changelogSection += `- 🔄 Updated ${updatedTools.length} existing tools\n`;
+    }
+
+    if (updatedTools.some(t => t.fileName === 'reset-password.js')) {
+      changelogSection += `- 🔧 Fixed reset password URL generation bug\n`;
+    }
+
+    changelogSection += `- 🛠️ Tools auto-synced from Postman collection\n\n`;
+
+    // Replace the changelog section
+    readmeContent = readmeContent.replace(
+      /### \[\d{4}-\d{2}-\d{2}\] v\d+\.\d+\.\d+[\s\S]*?(?=\[View full changelog|$)/,
+      changelogSection
+    );
+  }
+
+  // Update the timestamp at the bottom
+  readmeContent = readmeContent.replace(
+    /Last sync: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} UTC/,
+    `Last sync: ${currentTimestamp}`
+  );
+
+  fs.writeFileSync(readmePath, readmeContent);
+  console.log(`📄 README.md updated with ${allToolsCount} tools and latest changes`);
+}
+
+/**
  * Update paths.js file
  */
 function updatePathsFile(newTools) {
@@ -595,6 +665,9 @@ async function main() {
     generateDocumentation(newTools, updatedTools);
     updateChangelog(newTools, updatedTools);
   }
+
+  // Always update README with current timestamp and tool count
+  updateReadme(newTools, updatedTools);
 
   // Return summary for CI/CD
   return {
