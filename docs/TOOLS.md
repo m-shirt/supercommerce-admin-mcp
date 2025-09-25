@@ -2,9 +2,9 @@
 
 ## Overview
 
-This document provides comprehensive documentation for all 192 MCP tools available in the SuperCommerce Admin API integration.
+This document provides comprehensive documentation for all 193 MCP tools available in the SuperCommerce Admin API integration.
 
-Last Updated: 2025-09-25T16:08:00.081Z
+Last Updated: 2025-09-25T21:09:25.152Z
 
 ## Business Model Categories
 
@@ -47,12 +47,13 @@ Last Updated: 2025-09-25T16:08:00.081Z
 - `get_all_options_list_dropdown` - Get All Options List Dropdown
 - `get_options_list_paginated` - Get Options List Paginated
 
-### Orders (8 tools)
+### Orders (9 tools)
 
 - `create_order` - Create Order
 - `edit_order` - Edit Order
 - `edit_order_status` - Edit Order Status
 - `list_cancelled_orders` - List Cancelled Orders
+- `list_delivered_orders` - List Delivered Orders
 - `list_order_status` - List Order Status
 - `list_orders` - List Orders
 - `list_placed_orders` - List Placed Orders
@@ -277,5 +278,5 @@ Last Updated: 2025-09-25T16:08:00.081Z
 
 ## 🆕 Recently Added Tools
 
-- `listPlacedOrders` - List Placed Orders
+- `listDeliveredOrders` - List delivered Orders
 
