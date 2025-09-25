@@ -5855,7 +5855,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"password\": \"!p@$$w0rd123\",\n    \"password_confirm\": \"!p@$$w0rd123\",\n    \"token\": \"cg1qjXIAsSxD60keUfTOwDDsaaaddBOlsN5CvyksXkwvZAARyuDWhbpQuW\"\n}",
+							"raw": "{\n    \"password\": \"!p@$$w0rd12346qghjgj\",\n    \"password_confirm\": \"!p@$$w0rd123\",\n    \"token\": \"cg1qjXIAsSxD60keUfTOwDDsaaaddBOlsN5CvyksXkwvZAARyuDWhbpQuW\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5863,7 +5863,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/auth/reset_password_admin",
+							"raw": "{{baseURL}}/api/admin/auth/reset_password",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -5871,7 +5871,7 @@
 								"api",
 								"admin",
 								"auth",
-								"reset_password_admin"
+								"reset_password"
 							]
 						}
 					},
