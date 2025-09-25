@@ -242,9 +242,38 @@ function processCollection(collection) {
         newTools.push(tool);
         console.log(`✅ New tool to generate: ${tool.fileName}`);
       } else {
-        // Always add to updated tools list (auto-update by default)
-        updatedTools.push(tool);
-        console.log(`🔄 Tool will be updated (with backup): ${tool.fileName}`);
+        // Check if the content actually changed (normalize for comparison)
+        const existingToolPath = path.join(TOOLS_DIR, tool.fileName);
+        let contentChanged = false;
+
+        if (fs.existsSync(existingToolPath)) {
+          const existingContent = fs.readFileSync(existingToolPath, 'utf8');
+
+          // Normalize both contents for comparison (remove timestamps, normalize whitespace)
+          const normalizeContent = (content) => {
+            return content
+              .replace(/\/\*\*[\s\S]*?\*\//g, '') // Remove comments
+              .replace(/\s+/g, ' ') // Normalize whitespace
+              .replace(/\n/g, '') // Remove newlines
+              .trim();
+          };
+
+          const normalizedExisting = normalizeContent(existingContent);
+          const normalizedNew = normalizeContent(tool.content);
+
+          if (normalizedExisting !== normalizedNew) {
+            contentChanged = true;
+          }
+        } else {
+          contentChanged = true; // File doesn't exist, so it's a change
+        }
+
+        if (contentChanged) {
+          updatedTools.push(tool);
+          console.log(`🔄 Tool content changed, will be updated: ${tool.fileName}`);
+        } else {
+          console.log(`⚪ Tool unchanged, skipping: ${tool.fileName}`);
+        }
       }
     }
   }
