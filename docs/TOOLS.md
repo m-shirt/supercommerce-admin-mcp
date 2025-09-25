@@ -4,7 +4,7 @@
 
 This document provides comprehensive documentation for all 190 MCP tools available in the SuperCommerce Admin API integration.
 
-Last Updated: 2025-09-25T11:52:07.515Z
+Last Updated: 2025-09-25T12:04:01.324Z
 
 ## Business Model Categories
 
@@ -272,10 +272,6 @@ Last Updated: 2025-09-25T11:52:07.515Z
 - `new_request` - New Request
 - `reset_password` - Reset Password
 - `show_edit` - Show Edit
-
-## 🆕 Recently Added Tools
-
-- `resetPassword` - Reset Password
 
 ## 🔄 Recently Updated Tools
 
