@@ -5840,7 +5840,7 @@
 					"response": []
 				},
 				{
-					"name": "Forget Password Copy",
+					"name": "Reset Password",
 					"event": [
 						{
 							"listen": "test",
