@@ -164,4 +164,9 @@ export const toolPaths = [
   'supercommerce-api/send-notification.js',
   'supercommerce-api/delete-notification.js',
 
+  // Phase 17: Final Low Priority APIs (100% Coverage)
+  'supercommerce-api/delete-option.js',
+  'supercommerce-api/delete-brand.js',
+  'supercommerce-api/update-cookies-page.js',
+
 ];
