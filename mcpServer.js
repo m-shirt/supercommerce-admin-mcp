@@ -201,8 +201,9 @@ export async function run() {
   const prompts = await discoverPrompts();
 
   if (args.includes("--streamable-http")) {
-    const expressApp = require("express")();
-    expressApp.use(require("express").json());
+    const { default: express } = await import("express");
+    const expressApp = express();
+    expressApp.use(express.json());
     expressApp.post("/mcp", async (req, res) => {
       const server = new Server(
         { name: SERVER_NAME, version: "0.1.0" },
