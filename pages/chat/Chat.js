@@ -198,7 +198,7 @@ export default function Chat() {
 
     setError('');
     setSending(true);
-    setStreamingMessage('');
+    setStreamingMessage(''); // Clear previous streaming message
 
     try {
       validateSettings();
@@ -248,7 +248,8 @@ export default function Chat() {
         throw new Error(errorData.error || 'Chat request failed');
       }
 
-      const result = await response.json();
+      const data = await response.json();
+      const result = data.result || data; // Handle wrapped response
       assistantContent = result.content || '';
       toolCalls = result.tool_calls || [];
 
@@ -300,7 +301,8 @@ export default function Chat() {
           });
 
           if (followUpResponse.ok) {
-            const followUpResult = await followUpResponse.json();
+            const followUpData = await followUpResponse.json();
+            const followUpResult = followUpData.result || followUpData;
             const followUpContent = followUpResult.content || '';
 
             setStreamingMessage(followUpContent);
@@ -318,6 +320,9 @@ export default function Chat() {
 
         setCurrentChat(finalChat);
         setChatHistory(prev => prev.map(c => c.id === currentChat.id ? finalChat : c));
+
+        // Clear streaming message after finalizing
+        setStreamingMessage('');
       }
 
     } catch (error) {
@@ -325,7 +330,7 @@ export default function Chat() {
       setError(error.message);
     } finally {
       setSending(false);
-      setStreamingMessage('');
+      // Don't clear streamingMessage here as it makes responses disappear
       abortControllerRef.current = null;
     }
   };
