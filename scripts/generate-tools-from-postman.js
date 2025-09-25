@@ -13,8 +13,14 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Configuration
-const POSTMAN_COLLECTION_PATH = path.join(__dirname, '../postman/collections/Backend APIs.postman_collection.json');
+// Configuration - Use the first JSON file in collections directory
+const collectionsDir = path.join(__dirname, '../postman/collections');
+const collectionFiles = fs.existsSync(collectionsDir)
+  ? fs.readdirSync(collectionsDir).filter(f => f.endsWith('.json'))
+  : [];
+const POSTMAN_COLLECTION_PATH = collectionFiles.length > 0
+  ? path.join(collectionsDir, collectionFiles[0])
+  : path.join(__dirname, '../postman/collections/Backend APIs.postman_collection.json');
 const TOOLS_DIR = path.join(__dirname, '../tools/supercommerce-api');
 const PATHS_FILE = path.join(__dirname, '../tools/paths.js');
 
@@ -54,7 +60,7 @@ function generateToolFromRequest(request, parentPath = '') {
   let urlPath = '';
   let pathParams = [];
 
-  if (url.raw) {
+  if (url && url.raw) {
     urlPath = url.raw.replace('{{baseURL}}', '${baseURL}');
     // Extract path parameters
     const matches = urlPath.match(/\{\{([^}]+)\}\}/g);
@@ -67,10 +73,16 @@ function generateToolFromRequest(request, parentPath = '') {
         }
       });
     }
+  } else if (url && url.host && url.path) {
+    // Fallback for older Postman format
+    urlPath = '${baseURL}' + (url.path ? '/' + url.path.join('/') : '');
+  } else {
+    console.warn(`Warning: Request "${request.name}" has no valid URL format, skipping...`);
+    return null;
   }
 
   // Parse query parameters
-  const queryParams = url.query || [];
+  const queryParams = (url && url.query) || [];
 
   // Parse body parameters
   let bodyParams = [];
@@ -213,6 +225,11 @@ function processCollection(collection) {
     } else if (item.request) {
       // It's a request
       const tool = generateToolFromRequest(item, parentPath);
+
+      // Skip if tool generation failed
+      if (!tool) {
+        return;
+      }
 
       // Check if tool already exists
       if (!existingTools.has(tool.fileName)) {
