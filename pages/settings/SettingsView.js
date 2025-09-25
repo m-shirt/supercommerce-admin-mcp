@@ -5,23 +5,28 @@ import { AnthropicProvider } from '../../lib/llm/anthropic';
 import styles from './Settings.module.css';
 
 export default function SettingsView({
-  settings,
-  onSettingChange,
-  onSave,
-  onTestConnection,
-  saving,
-  testingConnection,
-  connectionStatus,
-  newServerUrl,
-  setNewServerUrl,
-  newServerName,
-  setNewServerName,
-  onAddServer,
-  onRemoveServer,
-  onLoadServerTools,
-  onToolToggle,
-  loadingTools
+  settings = { provider: 'openai', mcpServers: [] },
+  onSettingChange = () => {},
+  onSave = () => {},
+  onTestConnection = () => {},
+  saving = false,
+  testingConnection = false,
+  connectionStatus = null,
+  newServerUrl = '',
+  setNewServerUrl = () => {},
+  newServerName = '',
+  setNewServerName = () => {},
+  onAddServer = () => {},
+  onRemoveServer = () => {},
+  onLoadServerTools = () => {},
+  onToolToggle = () => {},
+  loadingTools = false
 }) {
+  // If being rendered as standalone page, redirect to main settings
+  if (typeof window !== 'undefined' && !settings.apiKey) {
+    window.location.href = '/settings';
+    return null;
+  }
   const getDefaultModels = () => {
     if (settings.provider === PROVIDER_TYPES.OPENAI) {
       return OpenAIProvider.getDefaultModels();

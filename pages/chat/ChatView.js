@@ -6,19 +6,24 @@ import styles from './Chat.module.css';
 
 export default function ChatView({
   currentChat,
-  chatHistory,
-  sending,
-  streamingMessage,
-  error,
-  sidebarOpen,
-  settings,
-  onSendMessage,
-  onStopGeneration,
-  onStartNewChat,
-  onSelectChat,
-  onDeleteChat,
-  onToggleSidebar
+  chatHistory = [],
+  sending = false,
+  streamingMessage = '',
+  error = '',
+  sidebarOpen = false,
+  settings = null,
+  onSendMessage = () => {},
+  onStopGeneration = () => {},
+  onStartNewChat = () => {},
+  onSelectChat = () => {},
+  onDeleteChat = () => {},
+  onToggleSidebar = () => {}
 }) {
+  // If being rendered as standalone page, redirect to main chat
+  if (typeof window !== 'undefined' && !currentChat && chatHistory.length === 0) {
+    window.location.href = '/';
+    return null;
+  }
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
