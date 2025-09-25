@@ -4,7 +4,7 @@
 
 This document provides comprehensive documentation for all 189 MCP tools available in the SuperCommerce Admin API integration.
 
-Last Updated: 2025-09-25T11:05:28.156Z
+Last Updated: 2025-09-25T11:44:04.887Z
 
 ## Business Model Categories
 
