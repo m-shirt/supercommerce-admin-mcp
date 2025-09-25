@@ -11,7 +11,10 @@
     "list-tools": "node cli.js tools",
     "start:http": "node mcpServer.js --streamable-http",
     "start:sse": "node mcpServer.js --sse",
-    "start:stdio": "node mcpServer.js"
+    "start:stdio": "node mcpServer.js",
+    "generate-tools": "node scripts/generate-tools-from-postman.js",
+    "webhook-test": "node scripts/postman-webhook-handler.js",
+    "validate": "node validateTools.js"
   },
   "dependencies": {
     "@modelcontextprotocol/inspector": "^0.16.5",

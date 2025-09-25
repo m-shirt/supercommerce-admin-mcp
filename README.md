@@ -1,11 +1,25 @@
-# Postman MCP Generator
+# SuperCommerce MCP Server
 
-Welcome to your generated MCP server! 🚀 This project was created with the [Postman MCP Generator](https://postman.com/explore/mcp-generator), configured to [Model Context Provider (MCP)](https://modelcontextprotocol.io/introduction) Server output mode. It provides you with:
+Welcome to the SuperCommerce MCP server! 🚀 This project provides complete administrative control over the SuperCommerce e-commerce platform through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction).
 
-- ✅ An MCP-compatible server (`mcpServer.js`)
-- ✅ Automatically generated JavaScript tools for each selected Postman API request
+## 🎉 Features
 
-Let's set things up!
+- ✅ **130 API tools** with 100% platform coverage
+- ✅ An MCP-compatible server with multiple transport modes (STDIO, HTTP, SSE)
+- ✅ **Automated tool generation** from Postman collections
+- ✅ Real-time synchronization with Postman updates
+- ✅ GitHub Actions CI/CD pipeline
+- ✅ Interactive web UI for testing
+
+## 🤖 Automation
+
+This project includes **automatic synchronization** with Postman collections:
+
+- **GitHub Actions**: Automatically generates new tools when collection changes
+- **Postman Webhooks**: Real-time updates from Postman workspace
+- **Manual Generation**: `npm run generate-tools` command
+
+📚 See [docs/AUTOMATION.md](docs/AUTOMATION.md) for complete automation setup.
 
 ## 🚦 Getting Started
 
