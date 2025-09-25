@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Model Context Protocol (MCP) server** for the Supercommerce e-commerce platform, originally generated using the Postman MCP Generator. It provides 48+ API tools for managing products, orders, customers, inventory, and other e-commerce operations through various transport modes (STDIO, HTTP, SSE).
+This is a **Model Context Protocol (MCP) server** for the Supercommerce e-commerce platform, originally generated using the Postman MCP Generator. It provides **130 API tools (100% coverage)** for comprehensive management of products, orders, customers, inventory, geographic data, prescriptions, marketing, notifications, and all e-commerce operations through various transport modes (STDIO, HTTP, SSE).
 
 ## Development Commands
 
@@ -21,7 +21,8 @@ This is a **Model Context Protocol (MCP) server** for the Supercommerce e-commer
 ### Tool Management
 - `npm run list-tools` - List all available tools and their parameters
 - `node validateTools.js` - Validate all tool JSON schemas
-- `npx @modelcontextprotocol/inspector node mcpServer.js` - Run official MCP inspector
+- `npx @modelcontextprotocol/inspector node mcpServer.js` - Run official MCP inspector (STDIO mode)
+- `npx @modelcontextprotocol/inspector http://localhost:3001/api/mcp` - Run official MCP inspector (HTTP mode)
 
 ## Architecture
 
@@ -106,13 +107,35 @@ To connect with Claude Desktop:
 }
 ```
 
-## Key API Tool Categories
+## 🎉 Complete API Coverage (130/130 Tools)
 
-- **Product Management**: create-main-product, create-variant-product, update-product
-- **Order Management**: create-order, edit-order, list-orders
-- **Customer Management**: create-customer, list-customers, view-customer
-- **Inventory**: list-inventories (required for product creation)
-- **Utility**: upload-image, list-cities, list-payment-methods
+**Historic Achievement: 100% API coverage completed across 17 phases**
+
+### Core Business Operations
+- **Product Management**: create-main-product, create-variant-product, update-product, delete-option, delete-brand
+- **Order Management**: create-order, edit-order, list-orders, view-order, list-order-status
+- **Customer Management**: create-customer, list-customers, view-customer, activate/deactivate-customer
+- **Inventory**: list-inventories, get-product-details, list-products-for-create-order
+
+### Advanced Business Features
+- **Geographic Management**: get-governorates, create-governorate, get-areas, create-area (11 APIs)
+- **Medical Prescriptions**: get-prescription-reasons, change-prescription-status, export-prescriptions (3 APIs)
+- **Marketing & Promotions**: get-promotions, create-promo-code, activate/deactivate-promo-code (7 APIs)
+- **Push Notifications**: get-notifications, send-notification, delete-notification (3 APIs)
+- **Content Management**: get-pages, create-page, update-terms/privacy/about/cookies-page (8 APIs)
+- **Financial Operations**: get-transactions, export-transactions (2 APIs)
+- **Delivery Management**: get-delivery-managers, create-delivery-manager, get-pickups (9 APIs)
+
+### Administrative & Support
+- **Groups Management**: get-groups-list, create-group, activate/deactivate-group (7 APIs)
+- **Custom Lists**: get-custom-lists, create-custom-list, edit-custom-list (7 APIs)
+- **Store Front**: get-sections, create-section, get-custom-ads, manage-ads (12 APIs)
+- **Branch Management**: get-branches, create-branch, activate/deactivate-branch (7 APIs)
+- **Campaign Management**: get-campaigns, create-campaign, update-campaign (5 APIs)
+- **Contact & Support**: get-contact-us, export-contact-us (2 APIs)
+- **Menu System**: get-menu, update-menu, generate-menu (3 APIs)
+- **Authentication**: admin-login (1 API)
+- **Utility**: upload-image, list-cities, list-payment-methods, list-cancellation-reasons
 
 ## Product Creation Workflow
 
