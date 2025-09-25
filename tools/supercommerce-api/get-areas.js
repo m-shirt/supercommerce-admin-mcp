@@ -1,0 +1,98 @@
+/**
+ * Function to retrieve areas within a specific governorate.
+ *
+ * @param {Object} params - The parameters for retrieving areas.
+ * @param {string} params.city_id - The ID of the governorate to get areas for.
+ * @param {number} [params.page] - Page number for pagination (default: 1).
+ * @param {number} [params.per_page] - Number of items per page (default: 15).
+ * @param {string} [params.q] - Search query to filter areas.
+ * @param {string} [params.status] - Filter areas by status (active/inactive).
+ * @returns {Promise<Object>} - The list of areas.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      city_id,
+      page = 1,
+      per_page = 15,
+      q,
+      status
+    } = params;
+
+    let url = `${baseURL}/api/admin/cities/${city_id}/areas?page=${page}&per_page=${per_page}`;
+
+    if (q) {
+      url += `&q=${encodeURIComponent(q)}`;
+    }
+
+    if (status) {
+      url += `&status=${status}`;
+    }
+
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    };
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || JSON.stringify(errorData));
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error retrieving areas:', error);
+    return { error: error.message || 'An error occurred while retrieving areas.' };
+  }
+};
+
+/**
+ * Tool configuration for retrieving areas.
+ * @type {Object}
+ */
+const apiTool = {
+  function: executeFunction,
+  definition: {
+    type: 'function',
+    function: {
+      name: 'get_areas',
+      description: 'Retrieve areas within a specific governorate with filtering and pagination.',
+      parameters: {
+        type: 'object',
+        properties: {
+          city_id: {
+            type: 'string',
+            description: 'The ID of the governorate to get areas for.'
+          },
+          page: {
+            type: 'number',
+            description: 'Page number for pagination (default: 1).'
+          },
+          per_page: {
+            type: 'number',
+            description: 'Number of items per page (default: 15).'
+          },
+          q: {
+            type: 'string',
+            description: 'Search query to filter areas by name.'
+          },
+          status: {
+            type: 'string',
+            description: 'Filter areas by status (e.g., "active", "inactive").'
+          }
+        },
+        required: ['city_id']
+      }
+    }
+  }
+};
+
+export { apiTool };

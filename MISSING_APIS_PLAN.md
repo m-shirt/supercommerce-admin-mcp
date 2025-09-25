@@ -3,8 +3,8 @@
 
 ## Current Status Summary
 - **Total APIs in Collection**: ~130 endpoints
-- **Currently Implemented**: 107 tools (82% coverage)
-- **Remaining to Implement**: 23 endpoints
+- **Currently Implemented**: 124 tools (95% coverage)
+- **Remaining to Implement**: 6 endpoints
 
 ---
 
@@ -92,6 +92,31 @@
 - [x] `activate-delivery-manager` - POST /api/admin/deliverers/{id}/activate
 - [x] `deactivate-delivery-manager` - POST /api/admin/deliverers/{id}/deactivate
 - [x] `export-delivery-managers` - POST /api/admin/v2/files/exports/export
+
+### Phase 12: Governorates & Areas Management (11 APIs) - MEDIUM PRIORITY ✅
+- [x] `get-governorates` - GET /api/admin/cities
+- [x] `create-governorate` - POST /api/admin/cities
+- [x] `activate-governorate` - POST /api/admin/cities/{id}/activate
+- [x] `deactivate-governorate` - POST /api/admin/cities/{id}/deactivate
+- [x] `delete-governorate` - DELETE /api/admin/cities/{id}
+- [x] `get-areas` - GET /api/admin/cities/{id}/areas
+- [x] `create-area` - POST /api/admin/cities/{id}/areas
+- [x] `activate-area` - POST /api/admin/cities/{id}/areas/{area_id}/activate
+- [x] `deactivate-area` - POST /api/admin/cities/{id}/areas/{area_id}/deactivate
+- [x] `export-cities` - POST /api/admin/v2/files/exports/export
+- [x] `import-cities` - POST /api/admin/v2/files/imports/import
+
+### Phase 13: Contact Us Management (2 APIs) - MEDIUM PRIORITY ✅
+- [x] `get-contact-us` - GET /api/admin/contact_us
+- [x] `export-contact-us` - POST /api/admin/v2/files/exports/export
+
+### Phase 14: Prescription Management (3 APIs) - MEDIUM PRIORITY ✅
+- [x] `get-prescription-reasons` - GET /api/admin/prescription_cancellation_reasons
+- [x] `export-prescriptions` - POST /api/admin/v2/files/exports/export
+- [x] `change-prescription-status` - PUT /api/admin/prescriptions/{id}/change_status
+
+### Phase 15: Marketing Promotions (1 API) - MEDIUM PRIORITY ✅
+- [x] `get-promotions` - GET /api/admin/promotions
 
 ---
 

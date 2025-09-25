@@ -134,4 +134,29 @@ export const toolPaths = [
   'supercommerce-api/deactivate-delivery-manager.js',
   'supercommerce-api/export-delivery-managers.js',
 
+  // Phase 12: Governorates & Areas Management APIs
+  'supercommerce-api/get-governorates.js',
+  'supercommerce-api/create-governorate.js',
+  'supercommerce-api/activate-governorate.js',
+  'supercommerce-api/deactivate-governorate.js',
+  'supercommerce-api/delete-governorate.js',
+  'supercommerce-api/get-areas.js',
+  'supercommerce-api/create-area.js',
+  'supercommerce-api/activate-area.js',
+  'supercommerce-api/deactivate-area.js',
+  'supercommerce-api/export-cities.js',
+  'supercommerce-api/import-cities.js',
+
+  // Phase 13: Contact Us Management APIs
+  'supercommerce-api/get-contact-us.js',
+  'supercommerce-api/export-contact-us.js',
+
+  // Phase 14: Prescription Management APIs
+  'supercommerce-api/get-prescription-reasons.js',
+  'supercommerce-api/export-prescriptions.js',
+  'supercommerce-api/change-prescription-status.js',
+
+  // Phase 15: Marketing Promotions APIs
+  'supercommerce-api/get-promotions.js',
+
 ];
