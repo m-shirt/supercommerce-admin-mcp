@@ -259,7 +259,7 @@ function processCollection(collection) {
           };
 
           const normalizedExisting = normalizeContent(existingContent);
-          const normalizedNew = normalizeContent(tool.content);
+          const normalizedNew = normalizeContent(tool.code);
 
           if (normalizedExisting !== normalizedNew) {
             contentChanged = true;

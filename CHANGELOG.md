@@ -18,6 +18,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Automated Update] - 2025-09-25
 
 ### 🔄 Updated
+- `resetPassword` - Updated from Postman collection
+
+### 📊 Summary
+- Total new tools: 0
+- Total updated tools: 1
+- Timestamp: 2025-09-25T14:05:49.669Z
+
+---
+
+## [Automated Update] - 2025-09-25
+
+### 🔄 Updated
 - `createOption` - Updated from Postman collection
 - `editOption` - Updated from Postman collection
 - `getOptionsListPaginated` - Updated from Postman collection
