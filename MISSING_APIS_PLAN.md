@@ -1,33 +1,34 @@
-# Missing APIs Implementation Plan
+# SuperCommerce MCP Server API Implementation Plan
+*Updated from: `postman/collections/48096048-702f6202-ffc4-404e-9e71-5c5458b5cdc7.json`*
 
-## Analysis Summary
-After analyzing the **Backend APIs.postman_collection.json** file and comparing it with existing tools in `tools/supercommerce-api/`, I've identified **60+ missing APIs** across multiple categories that need to be implemented.
+## Current Status Summary
+- **Total APIs in Collection**: ~130 endpoints
+- **Currently Implemented**: 95 tools (73% coverage)
+- **Remaining to Implement**: 35 endpoints
 
-## Current Tool Coverage
-**Existing (42 tools):** Products, Orders, Customers, Basic CRUD operations
-**Missing:** Advanced management features, store configuration, analytics, file operations
+---
 
-## Missing API Categories & Tools to Implement
+## ✅ COMPLETED PHASES
 
-### 1. **Groups Management (7 APIs)** - ✅ **COMPLETED**
-- [x] `get-groups-list` - GET /api/admin/v2/groups
-- [x] `activate-group` - POST /api/admin/groups/{id}/activate
+### Phase 1: Groups Management (7 APIs) - HIGH PRIORITY ✅
+- [x] `get-groups-list` - GET /api/admin/groups
 - [x] `create-group` - POST /api/admin/groups
-- [x] `import-groups` - POST /api/admin/v2/files/imports/import
-- [x] `export-groups` - POST /api/admin/v2/files/exports/export
-- [x] `update-group` - POST /api/admin/groups/{id}
+- [x] `update-group` - PUT /api/admin/groups/{id}
+- [x] `activate-group` - POST /api/admin/groups/{id}/activate
 - [x] `deactivate-group` - POST /api/admin/groups/{id}/deactivate
+- [x] `export-groups` - POST /api/admin/v2/files/exports/export
+- [x] `import-groups` - POST /api/admin/v2/files/imports/import
 
-### 2. **Custom Lists Management (7 APIs)** - ✅ **COMPLETED**
-- [x] `get-custom-lists` - GET /api/admin/lists
-- [x] `create-custom-list` - POST /api/admin/lists
-- [x] `delete-custom-list` - DELETE /api/admin/lists/{id}
-- [x] `edit-custom-list` - PUT /api/admin/lists/{id}
-- [x] `save-custom-list` - POST /api/admin/lists/{id}
-- [x] `export-custom-lists` - POST /api/admin/v2/files/exports/export
-- [x] `import-custom-lists` - POST /api/admin/v2/files/imports/import
+### Phase 2: Custom Lists Management (7 APIs) - HIGH PRIORITY ✅
+- [x] `get-custom-list` - GET /api/admin/custom-list
+- [x] `create-custom-list` - POST /api/admin/custom-list
+- [x] `delete-custom-list` - DELETE /api/admin/custom-list/{id}
+- [x] `edit-custom-list` - PUT /api/admin/custom-list/{id}
+- [x] `save-custom-list` - POST /api/admin/custom-list/save
+- [x] `export-custom-list` - POST /api/admin/v2/files/exports/export
+- [x] `import-custom-list` - POST /api/admin/v2/files/imports/import
 
-### 3. **Store Front Management (12 APIs)** - ✅ **COMPLETED**
+### Phase 3: Store Front Management (12 APIs) - HIGH PRIORITY ✅
 - [x] `get-sections` - GET /api/admin/sections
 - [x] `create-section` - POST /api/admin/sections
 - [x] `get-section-details` - GET /api/admin/sections/{id}
@@ -41,156 +42,156 @@ After analyzing the **Backend APIs.postman_collection.json** file and comparing 
 - [x] `get-landing-pages` - GET /api/admin/pages/all
 - [x] `manage-ads` - GET/POST/PUT /api/admin/ads
 
-### 4. **Branch Management (7 APIs)** - MEDIUM PRIORITY
-- [ ] `get-branches` - GET /api/admin/branches
-- [ ] `create-branch` - POST /api/admin/branches
-- [ ] `delete-branch` - DELETE /api/admin/branches/{id}/delete
-- [ ] `deactivate-branch` - POST /api/admin/branches/{id}/deactivate
-- [ ] `activate-branch` - POST /api/admin/branches/{id}/activate
-- [ ] `export-branches` - POST /api/admin/v2/files/exports/export
-- [ ] `import-branches` - POST /api/admin/v2/files/imports/import
+### Phase 4: Branch Management (7 APIs) - MEDIUM PRIORITY ✅
+- [x] `get-branches` - GET /api/admin/branches
+- [x] `create-branch` - POST /api/admin/branches
+- [x] `delete-branch` - DELETE /api/admin/branches/{id}/delete
+- [x] `deactivate-branch` - POST /api/admin/branches/{id}/deactivate
+- [x] `activate-branch` - POST /api/admin/branches/{id}/activate
+- [x] `export-branches` - POST /api/admin/v2/files/exports/export
+- [x] `import-branches` - POST /api/admin/v2/files/imports/import
 
-### 5. **Static Pages Management (8 APIs)** - MEDIUM PRIORITY
-- [ ] `get-pages` - GET /api/admin/pages
-- [ ] `get-page-details` - GET /api/admin/pages/{id}/show
-- [ ] `update-terms-page` - POST /api/admin/pages/1/update
-- [ ] `update-privacy-page` - POST /api/admin/pages/2/update
-- [ ] `update-about-page` - POST /api/admin/pages/3/update
-- [ ] `get-general-pages` - GET /api/admin/pages?flag=general
-- [ ] `create-page` - POST /api/admin/pages/store
-- [ ] `delete-page` - DELETE /api/admin/pages/{id}/delete
+### Phase 5: Static Pages Management (8 APIs) - MEDIUM PRIORITY ✅
+- [x] `get-pages` - GET /api/admin/pages
+- [x] `get-page-details` - GET /api/admin/pages/{id}/show
+- [x] `update-terms-page` - POST /api/admin/pages/1/update
+- [x] `update-privacy-page` - POST /api/admin/pages/2/update
+- [x] `update-about-page` - POST /api/admin/pages/3/update
+- [x] `get-general-pages` - GET /api/admin/pages?flag=general
+- [x] `create-page` - POST /api/admin/pages/store
+- [x] `delete-page` - DELETE /api/admin/pages/{id}/delete
 
-### 6. **Campaign Management (5 APIs)** - MEDIUM PRIORITY
-- [ ] `get-campaigns` - GET /api/admin/campaigns
-- [ ] `create-campaign` - POST /api/admin/campaigns
-- [ ] `delete-campaign` - DELETE /api/admin/campaigns/{id}/delete
-- [ ] `get-campaign-details` - GET /api/admin/campaigns/{id}
-- [ ] `update-campaign` - PUT /api/admin/campaigns/{id}/update
+### Phase 6: Campaign Management (5 APIs) - MEDIUM PRIORITY ✅
+- [x] `get-campaigns` - GET /api/admin/campaigns
+- [x] `create-campaign` - POST /api/admin/campaigns
+- [x] `delete-campaign` - DELETE /api/admin/campaigns/{id}/delete
+- [x] `get-campaign-details` - GET /api/admin/campaigns/{id}
+- [x] `update-campaign` - PUT /api/admin/campaigns/{id}/update
 
-### 7. **Transaction Management (2 APIs)** - LOW PRIORITY
+### Phase 7: Menu Management (3 APIs) - MEDIUM PRIORITY ✅
+- [x] `get-menu` - GET /api/admin/menu
+- [x] `update-menu` - POST /api/admin/menu
+- [x] `generate-menu` - POST /api/admin/menu/generate
+
+---
+
+## 🚀 PENDING IMPLEMENTATION
+
+### **HIGH PRIORITY** (Business Critical - 12 APIs)
+
+#### **Phase 8: Authentication (1 API)**
+- [ ] `admin-login` - POST /api/admin/auth
+
+#### **Phase 9: Transactions Management (2 APIs)**
 - [ ] `get-transactions` - GET /api/admin/transactions
 - [ ] `export-transactions` - POST /api/admin/v2/files/exports/export
 
-### 8. **Contact & Support (2 APIs)** - LOW PRIORITY
-- [ ] `get-contact-messages` - GET /api/admin/contact_us
-- [ ] `export-contact-messages` - POST /api/admin/v2/files/exports/export
-
-### 9. **Pickup Management (2 APIs)** - LOW PRIORITY
+#### **Phase 10: Order Delivery Management (2 APIs)**
 - [ ] `get-pickups` - GET /api/admin/pickups
 - [ ] `get-pickup-details` - GET /api/admin/pickups/{id}
 
-### 10. **Customer Advanced Features (2 APIs)** - LOW PRIORITY
-- [ ] `search-customers-advanced` - GET /api/admin/v2/customers/search
-- [ ] `export-customers` - POST /api/admin/v2/files/exports/export
+#### **Phase 11: Delivery Management (7 APIs)**
+**Delivery Managers:**
+- [ ] `get-delivery-managers` - GET /api/admin/v2/deliverers
+- [ ] `create-delivery-manager` - POST /api/admin/deliverers
+- [ ] `get-delivery-manager-details` - GET /api/admin/v2/deliverers/{id}
+- [ ] `update-delivery-manager` - PUT /api/admin/deliverers/{id}
+- [ ] `activate-delivery-manager` - POST /api/admin/deliverers/{id}/activate
+- [ ] `deactivate-delivery-manager` - POST /api/admin/deliverers/{id}/deactivate
+- [ ] `export-delivery-managers` - POST /api/admin/v2/files/exports/export
 
-### 11. **Prescription Management (2 APIs)** - LOW PRIORITY
-- [ ] `get-prescription-cancellation-reasons` - GET /api/admin/prescription_cancellation_reasons
-- [ ] `change-prescription-status` - POST /api/admin/prescriptions/{id}/change_status
+---
 
-### 12. **Menu Management (3 APIs)** - MEDIUM PRIORITY
-- [ ] `get-menu` - GET /api/admin/menu
-- [ ] `update-menu` - POST /api/admin/menu
-- [ ] `generate-menu` - POST /api/admin/menu/generate
+### **MEDIUM PRIORITY** (Operational Enhancement - 17 APIs)
 
-### 13. **Deliverer Management (6 APIs)** - LOW PRIORITY
-- [ ] `get-deliverers` - GET /api/admin/v2/deliverers
-- [ ] `create-deliverer` - POST /api/admin/deliverers
-- [ ] `get-deliverer-details` - GET /api/admin/v2/deliverers/{id}
-- [ ] `update-deliverer` - PUT /api/admin/deliverers/{id}
-- [ ] `export-deliverers` - POST /api/admin/v2/files/exports/export
-- [ ] `import-deliverers` - POST /api/admin/v2/files/imports/import
+#### **Phase 12: Governorates & Areas Management (11 APIs)**
+- [ ] `get-governorates` - GET /api/admin/cities
+- [ ] `create-governorate` - POST /api/admin/cities
+- [ ] `activate-governorate` - POST /api/admin/cities/{id}/activate
+- [ ] `deactivate-governorate` - POST /api/admin/cities/{id}/deactivate
+- [ ] `delete-governorate` - DELETE /api/admin/cities/{id}
+- [ ] `get-areas` - GET /api/admin/cities/{id}/areas
+- [ ] `create-area` - POST /api/admin/cities/{id}/areas
+- [ ] `activate-area` - POST /api/admin/cities/{id}/areas/{area_id}/activate
+- [ ] `deactivate-area` - POST /api/admin/cities/{id}/areas/{area_id}/deactivate
+- [ ] `export-cities` - POST /api/admin/v2/files/exports/export
+- [ ] `import-cities` - POST /api/admin/v2/files/imports/import
 
-## Implementation Strategy
+#### **Phase 13: Contact Us Management (2 APIs)**
+- [ ] `get-contact-us` - GET /api/admin/contact_us
+- [ ] `export-contact-us` - POST /api/admin/v2/files/exports/export
 
-1. **Create tool files** following existing patterns in `tools/supercommerce-api/`
-2. **Update tool registry** in `tools/paths.js`
-3. **Validate schemas** using `validateTools.js`
-4. **Test functionality** via web interface at http://localhost:3000
+#### **Phase 14: Prescription Management (3 APIs)**
+- [ ] `get-prescription-reasons` - GET /api/admin/prescription_cancellation_reasons
+- [ ] `export-prescriptions` - POST /api/admin/v2/files/exports/export
+- [ ] `change-prescription-status` - PUT /api/admin/prescriptions/{id}/change_status
 
-## Priority Implementation Order
-1. **HIGH PRIORITY:** Groups (7), Custom Lists (7), Store Front (12) - **26 tools**
-2. **MEDIUM PRIORITY:** Branches (7), Pages (8), Campaigns (5), Menu (3) - **23 tools**
-3. **LOW PRIORITY:** Analytics, Advanced reporting, Support (13 tools) - **13 tools**
+#### **Phase 15: Marketing - Promotions (5 APIs)**
+- [ ] `get-promotions` - GET /api/admin/promotions
+- [ ] `create-promotion` - POST /api/admin/promotions
+- [ ] `delete-promotion` - DELETE /api/admin/promotions/{id}
+- [ ] `update-promotion` - PUT /api/admin/promotions/{id}
+- [ ] `activate-promotion` - POST /api/admin/promotions/{id}/activate
+- [ ] `deactivate-promotion` - POST /api/admin/promotions/{id}/deactivate
 
-## Tool Structure Pattern
-Each tool follows this consistent structure:
-```javascript
-const executeFunction = async (params) => {
-  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+#### **Phase 16: Marketing - Notifications (3 APIs)**
+- [ ] `get-notifications` - GET /api/admin/push_messages
+- [ ] `send-notification` - POST /api/admin/push_messages
+- [ ] `delete-notification` - DELETE /api/admin/push_messages/{id}
 
-  try {
-    const url = `${baseURL}/api/admin/endpoint`;
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    };
+---
 
-    const response = await fetch(url, {
-      method: 'GET/POST/PUT/DELETE',
-      headers,
-      body: method !== 'GET' ? JSON.stringify(params) : undefined
-    });
+### **LOW PRIORITY** (Optional Features - 6 APIs)
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || JSON.stringify(errorData));
-    }
+#### **Phase 17: Inventory Cleanup (2 APIs)**
+- [ ] `delete-option` - DELETE /api/admin/options/{id}
+- [ ] `delete-brand` - DELETE /api/admin/brands/{id}
 
-    return await response.json();
-  } catch (error) {
-    console.error('Error:', error);
-    return { error: error.message || 'An error occurred' };
-  }
-};
+#### **Phase 18: Rewards System (2 APIs)**
+- [ ] `get-rewards` - GET /api/admin/rewards
+- [ ] `create-reward` - POST /api/admin/rewards
+- [ ] `activate-reward` - POST /api/admin/rewards/{id}/activate
+- [ ] `deactivate-reward` - POST /api/admin/rewards/{id}/deactivate
 
-const apiTool = {
-  function: executeFunction,
-  definition: {
-    type: 'function',
-    function: {
-      name: 'tool_name',
-      description: 'Tool description',
-      parameters: {
-        type: 'object',
-        properties: { /* JSON Schema */ },
-        required: ['param1', 'param2']
-      }
-    }
-  }
-};
+#### **Phase 19: Gift Management (1 API)**
+- [ ] `get-gift-requests` - GET /api/admin/gift_requests
 
-export { apiTool };
-```
+#### **Phase 20: Store Front Enhancement (1 API)**
+- [ ] `create-ad` - POST /api/admin/ads
 
-## Progress Tracking
-- **Total APIs to Implement:** 62
-- **✅ HIGH PRIORITY COMPLETED:** 26 tools ✅
-  - ✅ Groups Management: 7 tools
-  - ✅ Custom Lists Management: 7 tools
-  - ✅ Store Front Management: 12 tools
-- **Medium Priority (Next Phase):** 23 tools
-- **Low Priority (Future Phase):** 13 tools
+#### **Phase 21: Helper APIs (2 APIs)**
+- [ ] `get-branches-type` - GET /api/admin/branches-type
+- [ ] `update-cookies-page` - PUT /api/admin/pages/4/update
 
-## ✅ **CURRENT STATUS: PHASE 1 & 2 COMPLETED**
-- **Original Tools:** 42 tools
-- **Phase 1 Added:** +14 tools (Groups & Custom Lists)
-- **Phase 2 Added:** +12 tools (Store Front Management)
-- **Current Total:** **68 tools** 🎉
+---
 
-This implementation has expanded the MCP server from 42 tools to **68 tools** (+26 high-priority APIs), providing comprehensive e-commerce management capabilities for groups, custom lists, and store front components.
+## Implementation Statistics
 
-## Testing Strategy
-1. **Schema Validation:** Run `node validateTools.js` after each batch
-2. **Functional Testing:** Use web interface at http://localhost:3000
-3. **MCP Inspector:** Use `npx @modelcontextprotocol/inspector node mcpServer.js`
-4. **Integration Testing:** Test with Claude Desktop after implementation
+### Completion Status by Category:
+- **Inventory Management**: 90% (18/20) ✅
+- **Store Front Management**: 95% (19/20) ✅
+- **Branch Management**: 100% (7/7) ✅
+- **Static Pages Management**: 95% (10/11) ✅
+- **Campaign Management**: 100% (5/5) ✅
+- **Order Management**: 100% (5/5) ✅
+- **Customer Management**: 100% (6/6) ✅
+- **Menu Management**: 100% (3/3) ✅
+- **Marketing - Promo Codes**: 100% (6/6) ✅
+- **Helper APIs**: 95% (8/9) ✅
 
-## Completion Checklist
-- [ ] All tool files created in `tools/supercommerce-api/`
-- [ ] Tool paths added to `tools/paths.js`
-- [ ] Schema validation passes
-- [ ] Web interface testing completed
-- [ ] Documentation updated in CLAUDE.md
-- [ ] Changes committed and pushed to repository
+### Overall Progress:
+- **✅ Completed**: 95 APIs (73%)
+- **🚀 High Priority Remaining**: 12 APIs
+- **📋 Medium Priority Remaining**: 17 APIs
+- **📝 Low Priority Remaining**: 6 APIs
+
+---
+
+## Next Steps Recommendation
+
+1. **Phase 8: Authentication** - Enable admin login functionality
+2. **Phase 9: Transactions Management** - Financial reporting and transaction tracking
+3. **Phase 10: Order Delivery Management** - Logistics and pickup management
+4. **Phase 11: Delivery Management** - Complete delivery operations
+
+The MCP server has excellent coverage of core e-commerce functionality. The remaining APIs focus on advanced operational features, delivery management, and specialized workflows that can be prioritized based on business requirements.

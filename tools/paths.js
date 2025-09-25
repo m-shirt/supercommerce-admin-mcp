@@ -83,4 +83,35 @@ export const toolPaths = [
   'supercommerce-api/get-landing-pages.js',
   'supercommerce-api/manage-ads.js',
 
+  // Branch Management APIs
+  'supercommerce-api/get-branches.js',
+  'supercommerce-api/create-branch.js',
+  'supercommerce-api/delete-branch.js',
+  'supercommerce-api/deactivate-branch.js',
+  'supercommerce-api/activate-branch.js',
+  'supercommerce-api/export-branches.js',
+  'supercommerce-api/import-branches.js',
+
+  // Static Pages Management APIs
+  'supercommerce-api/get-pages.js',
+  'supercommerce-api/get-page-details.js',
+  'supercommerce-api/update-terms-page.js',
+  'supercommerce-api/update-privacy-page.js',
+  'supercommerce-api/update-about-page.js',
+  'supercommerce-api/get-general-pages.js',
+  'supercommerce-api/create-page.js',
+  'supercommerce-api/delete-page.js',
+
+  // Campaign Management APIs
+  'supercommerce-api/get-campaigns.js',
+  'supercommerce-api/create-campaign.js',
+  'supercommerce-api/delete-campaign.js',
+  'supercommerce-api/get-campaign-details.js',
+  'supercommerce-api/update-campaign.js',
+
+  // Menu Management APIs
+  'supercommerce-api/get-menu.js',
+  'supercommerce-api/update-menu.js',
+  'supercommerce-api/generate-menu.js',
+
 ];
