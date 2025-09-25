@@ -98,6 +98,9 @@ function generateToolFromRequest(request, parentPath = '') {
   const fileName = convertToFileName(request.name);
   const functionName = convertToFunctionName(request.name);
 
+  // Combine all parameters and remove duplicates
+  const allParams = [...new Set([...pathParams, ...queryParams.map(q => q.key), ...bodyParams])];
+
   // Generate the tool code
   const toolCode = `/**
  * Function to ${request.name.toLowerCase()}.
@@ -114,7 +117,7 @@ const executeFunction = async (params) => {
 
   try {
     const {
-${[...pathParams, ...queryParams.map(q => q.key), ...bodyParams].map(p => `      ${p},`).join('\n')}
+${allParams.map(p => `      ${p},`).join('\n')}
     } = params;
 
     ${pathParams.length > 0 ? `let url = \`${urlPath}\`;` : `const url = \`${urlPath}\`;`}
@@ -170,11 +173,11 @@ ${[...pathParams.map(p => `          ${p}: {
             type: 'string',
             description: 'The ${p.replace(/_/g, ' ')}'
           }`),
-   ...queryParams.map(q => `          ${q.key}: {
+   ...queryParams.filter(q => !pathParams.includes(q.key) && !bodyParams.includes(q.key)).map(q => `          ${q.key}: {
             type: '${q.value ? 'string' : 'string'}',
             description: '${q.description || q.key.replace(/_/g, ' ')}'
           }`),
-   ...bodyParams.map(b => `          ${b}: {
+   ...bodyParams.filter(b => !pathParams.includes(b)).map(b => `          ${b}: {
             type: 'string',
             description: 'The ${b.replace(/_/g, ' ')}'
           }`)].join(',\n')}
