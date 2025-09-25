@@ -5792,17 +5792,18 @@
 							"script": {
 								"id": "ea075e54-e3ec-46af-9022-a89b8b1e7941",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"var jsonData = JSON.parse(responseBody);\r",
-									"if( jsonData.code == 200) {\r",
-									"pm.environment.set(\"token\", jsonData.data.token);\r",
-									"}else{\r",
-									"    pm.environment.set(\"token\", \"\");\r",
-									"}\r",
-									"});"
+									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -5815,7 +5816,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"user@exapmle.com\",\n    \"password\": \"password@A123\"\n}",
+							"raw": "{\n    \"email\": \"user@exapmle.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5823,14 +5824,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/auth",
+							"raw": "{{baseURL}}/api/admin//auth/forget_password",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"api",
 								"admin",
-								"auth"
+								"",
+								"auth",
+								"forget_password"
 							]
 						}
 					},
