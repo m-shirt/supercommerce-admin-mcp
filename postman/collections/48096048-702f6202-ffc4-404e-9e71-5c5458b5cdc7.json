@@ -5838,45 +5838,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Reset Password",
-					"id": "48096048-6dc4bcf8-c291-4991-8328-8149ead98c7d",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"password\": \"!p@$$w0rd123\",\n    \"password_confirm\": \"!p@$$w0rd123\",\n    \"token\": \"cg1qjXIAsSxD60keUfTOwDDsaaaddBOlsN5CvyksXkwvZAARyuDWhbpQuW\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/api/admin//auth/reset_password",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"api",
-								"admin",
-								"",
-								"auth",
-								"reset_password"
-							]
-						}
-					},
-					"response": []
 				}
 			],
 			"id": "48096048-4240ec31-65c7-4ce9-9331-4c470ef4bdad"
