@@ -18,6 +18,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Automated Update] - 2025-09-25
 
 ### ✨ Added
+- `listPlacedOrders` - List Placed Orders
+
+### 📊 Summary
+- Total new tools: 1
+- Total updated tools: 0
+- Timestamp: 2025-09-25T16:08:00.083Z
+
+---
+
+## [Automated Update] - 2025-09-25
+
+### ✨ Added
 - `listCancelledOrders` - List Cancelled Orders
 
 ### 📊 Summary

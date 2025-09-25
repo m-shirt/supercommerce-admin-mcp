@@ -236,5 +236,9 @@ export const toolPaths = [
 
   // Auto-generated tools - 2025-09-25T15:30:51.214Z
   'supercommerce-api/list-cancelled-orders.js'
+,
+
+  // Auto-generated tools - 2025-09-25T16:08:00.080Z
+  'supercommerce-api/list-placed-orders.js',
 
 ];
