@@ -5863,14 +5863,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin//auth/reset_password",
+							"raw": "{{baseURL}}/api/admin/auth/reset_password",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"api",
 								"admin",
-								"",
 								"auth",
 								"reset_password"
 							]
