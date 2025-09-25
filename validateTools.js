@@ -46,6 +46,11 @@ const tools = await discoverTools();
 let hasError = false;
 
 for (const tool of tools) {
+  if (!tool || !tool.definition || !tool.definition.function) {
+    console.log('❌ Tool has invalid structure:', tool);
+    hasError = true;
+    continue;
+  }
   const { name, parameters } = tool.definition.function;
 
   // 0. Check arrays have 'items'
