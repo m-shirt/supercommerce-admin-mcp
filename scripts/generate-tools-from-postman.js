@@ -269,34 +269,80 @@ This document provides comprehensive documentation for all ${fs.readdirSync(tool
 
 Last Updated: ${new Date().toISOString()}
 
-## Tool Categories
+## Business Model Categories
 
 `;
 
-  // Group tools by category (based on prefix)
+  // Define business domain categories
+  const domainCategories = {
+    'Authentication': ['login', 'forget-password'],
+    'Products': ['product', 'variant', 'main-product', 'details-product'],
+    'Categories': ['category', 'subcategor'],
+    'Brands': ['brand'],
+    'Options': ['option'],
+    'Orders': ['order', 'list-orders', 'view-order', 'create-order', 'edit-order'],
+    'Customers': ['customer', 'address'],
+    'Groups': ['group'],
+    'Custom Lists': ['custom-list', 'cutom-list'],
+    'Inventory': ['inventories'],
+    'Promotions': ['promo', 'promotion', 'reward'],
+    'Campaigns': ['campaign'],
+    'Notifications': ['notification'],
+    'Delivery': ['delivery', 'pickup', 'manager'],
+    'Branches': ['branch'],
+    'Areas & Locations': ['governorate', 'area', 'cities'],
+    'Sections': ['section'],
+    'Ads & Sliders': ['ads', 'slider', 'custom-ad'],
+    'Pages & Content': ['page', 'static', 'website', 'terms', 'privacy', 'cookies'],
+    'Menu': ['menu'],
+    'Transactions': ['transaction'],
+    'Contact & Support': ['contact'],
+    'Prescriptions': ['prescription'],
+    'Utilities': ['payment-method', 'cancellation-reason', 'order-status', 'image', 'type']
+  };
+
+  // Group tools by business domain
   const categories = {};
   const allTools = fs.readdirSync(toolsDir).filter(f => f.endsWith('.js'));
 
+  // Initialize categories
+  Object.keys(domainCategories).forEach(domain => {
+    categories[domain] = [];
+  });
+
   allTools.forEach(file => {
     const toolName = file.replace('.js', '');
-    const parts = toolName.split('-');
-    const category = parts[0] || 'general';
+    let assigned = false;
 
-    if (!categories[category]) {
-      categories[category] = [];
+    // Check which domain this tool belongs to
+    for (const [domain, keywords] of Object.entries(domainCategories)) {
+      if (keywords.some(keyword => toolName.includes(keyword))) {
+        categories[domain].push(toolName);
+        assigned = true;
+        break;
+      }
     }
-    categories[category].push(toolName);
+
+    // If not assigned to any domain, put in Other
+    if (!assigned) {
+      if (!categories['Other']) {
+        categories['Other'] = [];
+      }
+      categories['Other'].push(toolName);
+    }
   });
 
   // Write category sections
-  Object.keys(categories).sort().forEach(category => {
-    documentation += `### ${category.charAt(0).toUpperCase() + category.slice(1)} Operations (${categories[category].length} tools)\n\n`;
+  Object.keys(categories).forEach(domain => {
+    if (categories[domain].length > 0) {
+      documentation += `### ${domain} (${categories[domain].length} tools)\n\n`;
 
-    categories[category].forEach(tool => {
-      documentation += `- \`${tool.replace(/-/g, '_')}\` - ${tool.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}\n`;
-    });
+      categories[domain].sort().forEach(tool => {
+        documentation += `- \`${tool.replace(/-/g, '_')}\` - ${tool.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}\n`;
+      });
 
-    documentation += '\n';
+      documentation += '\n';
+    }
   });
 
   // Add new tools section if any
