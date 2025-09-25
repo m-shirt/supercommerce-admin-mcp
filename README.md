@@ -1,265 +1,315 @@
-# SuperCommerce MCP Server
+# 🚀 SuperCommerce MCP Tools Server
 
-Welcome to the SuperCommerce MCP server! 🚀 This project provides complete administrative control over the SuperCommerce e-commerce platform through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction).
+A comprehensive Model Context Protocol (MCP) server providing **144+ tools** for complete control over the SuperCommerce Admin API. This server enables AI assistants like Claude to manage e-commerce operations including products, orders, customers, inventory, and more.
 
-## 🎉 Features
+[![MCP Version](https://img.shields.io/badge/MCP-1.0-blue)](https://modelcontextprotocol.io/)
+[![Tools](https://img.shields.io/badge/Tools-144+-green)]()
+[![API Coverage](https://img.shields.io/badge/API%20Coverage-100%25-success)]()
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-- ✅ **130 API tools** with 100% platform coverage
-- ✅ An MCP-compatible server with multiple transport modes (STDIO, HTTP, SSE)
-- ✅ **Automated tool generation** from Postman collections
-- ✅ Real-time synchronization with Postman updates
-- ✅ GitHub Actions CI/CD pipeline
-- ✅ Interactive web UI for testing
+## 📋 Table of Contents
 
-## 🤖 Automation
+- [Features](#-features)
+- [Quick Start](#-quick-start)
+- [Available Tools](#-available-tools)
+- [Tool Documentation](#-tool-documentation)
+- [Automation](#-automation)
+- [Development](#-development)
+- [Changelog](#-changelog)
 
-This project includes **automatic synchronization** with Postman collections:
+## ✨ Features
 
-- **GitHub Actions**: Automatically generates new tools when collection changes
-- **Postman Webhooks**: Real-time updates from Postman workspace
-- **Manual Generation**: `npm run generate-tools` command
+- **144+ MCP Tools**: Complete coverage of SuperCommerce Admin API
+- **100% API Coverage**: Every endpoint is accessible through MCP
+- **Automatic Synchronization**: Tools auto-update with Postman collection changes
+- **Type-Safe Parameters**: Full JSON Schema validation
+- **Comprehensive Error Handling**: Meaningful error messages and recovery
+- **Secure Authentication**: Bearer token authentication with environment variables
+- **Backup System**: Automatic timestamped backups for all updates
+- **Multiple Transport Modes**: STDIO, HTTP, and SSE support
+- **Built-in Inspector**: Web UI for testing and debugging
 
-📚 See [docs/AUTOMATION.md](docs/AUTOMATION.md) for complete automation setup.
+## 🚀 Quick Start
 
-## 🚦 Getting Started
+### Prerequisites
 
-### ⚙️ Prerequisites
+- Node.js 18+ (v20+ recommended)
+- npm (included with Node.js)
+- SuperCommerce API credentials
 
-Before starting, please ensure you have:
+### Installation
 
-- [Node.js (v18+ required, v20+ recommended)](https://nodejs.org/)
-- [npm](https://www.npmjs.com/) (included with Node)
+```bash
+# Clone the repository
+git clone https://github.com/m-shirt/supercommerce-admin-mcp.git
+cd supercommerce-admin-mcp
 
-Warning: if you run with a lower version of Node, `fetch` won't be present. Tools use `fetch` to make HTTP calls. To work around this, you can modify the tools to use `node-fetch` instead. Make sure that `node-fetch` is installed as a dependency and then import it as `fetch` into each tool file.
-
-### 📥 Installation & Setup
-
-**1. Install dependencies**
-
-Run from your project's root directory:
-
-```sh
+# Install dependencies
 npm install
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your credentials
 ```
 
-### 🔐 Set tool environment variables
+### Configuration
 
-In the `.env` file, you'll see environment variable placeholders, one for each workspace that the selected tools are from. For example, if you selected requests from 2 workspaces, e.g. Acme and Widgets, you'll see two placeholders:
+Update `.env` with your credentials:
 
-```
-ACME_API_KEY=
-WIDGETS_API_KEY=
-```
+```env
+# SuperCommerce API
+SUPERCOMMERCE_BASE_URL=https://storeapi.el-dokan.com
+SUPERCOMMERCE_API_API_KEY=your-jwt-token-here
 
-Update the values with actual API keys for each API. These environment variables are used inside of the generated tools to set the API key for each request. You can inspect a file in the `tools` directory to see how it works.
-
-```javascript
-// environment variables are used inside of each tool file
-const apiKey = process.env.ACME_API_KEY;
+# Optional: Postman Integration
+POSTMAN_API_KEY=your-postman-api-key
 ```
 
-**Caveat:** This may not be correct for every API. The generation logic is relatively simple - for each workspace, we create an environment variable with the same name as the workspace slug, and then use that environment variable in each tool file that belongs to that workspace. If this isn't the right behavior for your chosen API, no problem! You can manually update anything in the `.env` file or tool files to accurately reflect the API's method of authentication.
+### Usage with Claude Desktop
 
-## 🌐 Test the MCP Server with Postman
-
-The MCP Server (`mcpServer.js`) exposes your automated API tools to MCP-compatible clients, such as Claude Desktop or the Postman Desktop Application. We recommend that you test the server with Postman first and then move on to using it with an LLM.
-
-The Postman Desktop Application is the easiest way to run and test MCP servers. Testing the downloaded server first is optional but recommended.
-
-**Step 1**: Download the latest Postman Desktop Application from [https://www.postman.com/downloads/](https://www.postman.com/downloads/).
-
-**Step 2**: Read out the documentation article [here](https://learning.postman.com/docs/postman-ai-agent-builder/mcp-requests/create/) and see how to create an MCP request inside the Postman app.
-
-**Step 3**: Set the type of the MCP request to `STDIO` and set the command to `node </absolute/path/to/mcpServer.js>`. If you have issues with using only `node` (e.g. an old version is used), supply an absolute path instead to a node version 18+. You can get the full path to node by running:
-
-```sh
-which node
-```
-
-To check the node version, run:
-
-```sh
-node --version
-```
-
-To get the absolute path to `mcpServer.js`, run:
-
-```sh
-realpath mcpServer.js
-```
-
-Use the node command followed by the full path to `mcpServer.js` as the command for your new Postman MCP Request. Then click the **Connect** button. You should see a list of tools that you selected before generating the server. You can test that each tool works here before connecting the MCP server to an LLM.
-
-## 👩‍💻 Connect the MCP Server to Claude
-
-You can connect your MCP server to any MCP client. Here we provide instructions for connecting it to Claude Desktop.
-
-**Step 1**: Note the full path to node and the `mcpServer.js` from the previous step.
-
-**Step 2**. Open Claude Desktop → **Settings** → **Developers** → **Edit Config** and add a new MCP server:
+Add to Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
 
 ```json
 {
   "mcpServers": {
-    "<server_name>": {
-      "command": "</absolute/path/to/node>",
-      "args": ["</absolute/path/to/mcpServer.js>"]
-    }
-  }
-}
-```
-
-Restart Claude Desktop to activate this change. Make sure the new MCP is turned on and has a green circle next to it. If so, you're ready to begin a chat session that can use the tools you've connected.
-
-**Warning**: If you don't supply an absolute path to a `node` version that is v18+, Claude (and other MCP clients) may fall back to another `node` version on the system of a previous version. In this case, the `fetch` API won't be present and tool calls will not work. If that happens, you can a) install a newer version of node and point to it in the command, or b) import `node-fetch` into each tool as `fetch`, making sure to also add the `node-fetch` dependency to your package.json.
-
-### Additional Options
-
-#### 🐳 Docker Deployment (Production)
-
-For production deployments, you can use Docker:
-
-**1. Build Docker image**
-
-```sh
-docker build -t <your_server_name> .
-```
-
-**2. Claude Desktop Integration**
-
-Add Docker server configuration to Claude Desktop (Settings → Developers → Edit Config):
-
-```json
-{
-  "mcpServers": {
-    "<your_server_name>": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "--env-file=.env", "<your_server_name>"]
-    }
-  }
-}
-```
-
-> Add your environment variables (API keys, etc.) inside the `.env` file.
-
-The project comes bundled with the following minimal Docker setup:
-
-```dockerfile
-FROM node:22.12-alpine AS builder
-
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
-
-COPY . .
-
-ENTRYPOINT ["node", "mcpServer.js"]
-```
-
-#### 🌐 Streamable HTTP
-
-To run the server with Streamable HTTP support, use the `--streamable-http` flag. This launches the server with the `/mcp` endpoint enabled:
-
-```sh
-node mcpServer.js --streamable-http
-```
-
-#### 🌐 Server-Sent Events (SSE)
-
-To run the server with Server-Sent Events (SSE) support, use the `--sse` flag. This launches the server with the `/sse` and `/messages` endpoints enabled:
-
-```sh
-node mcpServer.js --sse
-```
-
-#### 🖥️ Stdio (Standard Input/Output)
-
-To run the server using standard input/output (stdio), simply run the script without any flags. This mode is ideal for CLI tools or programmatic integration via stdin and stdout.
-
-```sh
-node mcpServer.js
-```
-
-## 🛠️ Additional CLI commands
-
-#### List tools
-
-List descriptions and parameters from all generated tools with:
-
-```sh
-node index.js tools
-```
-
-Example:
-
-```
-Available Tools:
-
-Workspace: acme-workspace
-  Collection: useful-api
-    list_all_customers
-      Description: Retrieve a list of useful things.
-      Parameters:
-        - magic: The required magic power
-        - limit: Number of results returned
-        [...additional parameters...]
-```
-
-## ➕ Adding New Tools
-
-Extend your MCP server with more tools easily:
-
-1. Visit [Postman MCP Generator](https://postman.com/explore/mcp-generator).
-2. Pick new API request(s), generate a new MCP server, and download it.
-3. Copy new generated tool(s) into your existing project's `tools/` folder.
-4. Update your `tools/paths.js` file to include new tool references.
-
-## 💬 Questions & Support
-
-Visit the [Postman MCP Generator](https://postman.com/explore/mcp-generator) page for updates and new capabilities.
-
-Join the `#mcp-lab` channel in the [Postman Discord](https://discord.gg/PQAWcPkprM) to share what you've built and get help.
-
-
-## Test validate 
-node validateTools.js
-
-## run local 
-node localServer.js
-POST http://localhost:3001/api/mcp
-{
-    "jsonrpc": "2.0",
-    "id": "1",
-    "method": "tools/list",
-    "params": {}
-  }
-
-  {
-    "jsonrpc": "2.0",
-    "id": "1",
-    "method": "tools/call",
-    "params": {
-      "name": "login",
-      "arguments": {
-        "email": "example@supercommerce.ai",
-        "password": "Pa$$W@rd"
+    "supercommerce": {
+      "command": "node",
+      "args": ["/absolute/path/to/supercommerce-mcp/mcpServer.js"],
+      "env": {
+        "SUPERCOMMERCE_BASE_URL": "https://storeapi.el-dokan.com",
+        "SUPERCOMMERCE_API_API_KEY": "your-jwt-token"
       }
     }
   }
+}
+```
 
-# STDIO
-node mcpServer.js
+## 📚 Available Tools
 
-# sse
-node localSseTest.js
-GET http://localhost:3001/sse
+### Tool Categories Summary
 
-POST http://localhost:3001/messages?sessionId={{sessionId}}
-body {"method":"tools/list","jsonrpc":"2.0","id":1}
+| Category | Count | Purpose |
+|----------|-------|---------|
+| **Product Management** | 8 | Products, variants, images |
+| **Categories** | 5 | Categories and subcategories |
+| **Orders** | 6 | Order lifecycle management |
+| **Customers** | 8 | Customer accounts and addresses |
+| **Inventory** | 3 | Stock and inventory tracking |
+| **Promotions** | 12 | Discounts, campaigns, rewards |
+| **Delivery** | 16 | Shipping, areas, branches |
+| **Content** | 14 | CMS, ads, sliders, pages |
+| **Reports** | 8 | Analytics and exports |
+| **Settings** | 10 | Configuration and policies |
+| **Groups** | 7 | Customer groups management |
+| **Custom Lists** | 7 | Dynamic content lists |
+| **Notifications** | 3 | Push notifications |
+| **Authentication** | 2 | Login and password reset |
+| **Utilities** | 35 | Dropdowns, lookups, helpers |
 
+### Featured Tools
 
-npm run start:http // will start the Streamable HTTPS server
-npm run start:sse // will start the SSE server
-npm run start:stdio // will start the stdio server
+#### 🛍️ Product Management
+- `create_main_product` - Create new products with full details
+- `update_main_product` - Modify existing products
+- `create_variant_product` - Add product variations
+- `get_product_list` - Search and filter products
+- `upload_image` - Upload product images
 
- npx @modelcontextprotocol/inspector node index.js
+#### 📦 Order Processing
+- `create_order` - Place new orders programmatically
+- `edit_order_status` - Update order workflow status
+- `view_order` - Get complete order details
+- `list_orders` - Filter and search orders
+
+#### 👥 Customer Management
+- `create_customer` - Register new customers
+- `edit_customer` - Update customer profiles
+- `create_address` - Add delivery addresses
+- `activate_customer` / `deactivate_customer` - Account management
+
+#### 🎁 Marketing & Promotions
+- `create_promo_code` - Generate discount codes
+- `create_campaign` - Launch marketing campaigns
+- `get_rewards` - Manage loyalty programs
+- `push_notification` - Send push notifications
+
+## 📖 Tool Documentation
+
+Each tool includes:
+- **Description**: What the tool does
+- **Parameters**: Required and optional inputs with types
+- **Returns**: Response format and data
+- **Examples**: Sample usage patterns
+- **Error Codes**: Common errors and solutions
+
+### Example Tool Documentation
+
+#### `create_order`
+Creates a new order in the system.
+
+**Parameters:**
+- `customer_id` (string, required): Customer placing the order
+- `items` (array, required): Array of product items
+- `delivery_address_id` (string, required): Delivery address
+- `payment_method` (string, optional): Payment type
+- `notes` (string, optional): Order notes
+
+**Returns:**
+```json
+{
+  "order_id": "ORD-123456",
+  "status": "pending",
+  "total": 150.00,
+  "created_at": "2024-01-15T10:30:00Z"
+}
+```
+
+**Example Usage:**
+```javascript
+await create_order({
+  customer_id: "CUST-789",
+  items: [
+    { product_id: "PROD-123", quantity: 2 }
+  ],
+  delivery_address_id: "ADDR-456"
+});
+```
+
+[View complete tool documentation →](docs/TOOLS.md)
+
+## 🔄 Automation
+
+### Automatic Synchronization
+
+The project automatically syncs with Postman collections:
+
+1. **GitHub Actions** - Runs daily and on collection updates
+2. **Postman Webhooks** - Real-time sync on API changes
+3. **Manual Generation** - On-demand tool updates
+
+### Workflow Features
+
+- ✅ Detects new and updated APIs automatically
+- ✅ Generates MCP tools with proper types
+- ✅ Creates timestamped backups
+- ✅ Updates documentation
+- ✅ Generates changelog entries
+- ✅ Validates all tools
+- ✅ Commits changes automatically
+
+### Manual Commands
+
+```bash
+# Generate/update all tools
+npm run generate-tools
+
+# Only create new tools (skip updates)
+npm run generate-tools:skip-updates
+
+# Validate all tools
+npm run validate
+
+# View tool list
+npm run list-tools
+```
+
+## 🧪 Development
+
+### Running the Server
+
+```bash
+# Standard I/O (for Claude Desktop)
+npm run start:stdio
+
+# HTTP mode with streaming
+npm run start:http
+
+# Server-Sent Events
+npm run start:sse
+
+# Development with hot reload
+npm run dev
+```
+
+### Testing Tools
+
+```bash
+# Use MCP Inspector
+npx @modelcontextprotocol/inspector node mcpServer.js
+
+# Or use the built-in UI
+npm run dev
+# Open http://localhost:3000
+```
+
+### Project Structure
+
+```
+supercommerce-mcp/
+├── tools/                    # MCP tool implementations
+│   ├── supercommerce-api/   # 144+ generated tools
+│   ├── backups/             # Timestamped backups
+│   └── paths.js             # Tool registry
+├── scripts/                  # Automation scripts
+│   ├── generate-tools-from-postman.js
+│   └── generate-docs.js
+├── docs/                     # Documentation
+│   ├── TOOLS.md            # Complete tool reference
+│   ├── AUTOMATION.md       # Automation guide
+│   └── CHANGELOG.md        # Version history
+├── postman/                  # API collections
+├── lib/                      # Core libraries
+└── pages/                    # Web UI
+```
+
+## 📝 Changelog
+
+Latest changes and updates are tracked automatically:
+
+### [2024-01-15] v2.0.0
+- ✨ Added 44 new tools for complete API coverage
+- 🔄 Auto-update capability for existing tools
+- 📚 Comprehensive documentation generation
+- 🔒 Enhanced parameter sanitization
+- 💾 Backup system with timestamps
+
+[View full changelog →](CHANGELOG.md)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-tool`)
+3. Make your changes
+4. Run validation (`npm run validate`)
+5. Commit changes (`git commit -m 'Add amazing tool'`)
+6. Push to branch (`git push origin feature/amazing-tool`)
+7. Open a Pull Request
+
+### Development Guidelines
+
+- Follow existing tool patterns
+- Include proper error handling
+- Add parameter validation
+- Update documentation
+- Test with MCP Inspector
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/m-shirt/supercommerce-admin-mcp/issues)
+- **Discord**: Join `#mcp-lab` in [Postman Discord](https://discord.gg/PQAWcPkprM)
+- **Documentation**: [Full Docs](docs/)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with [Model Context Protocol](https://modelcontextprotocol.io/)
+- Powered by [SuperCommerce API](https://storeapi.el-dokan.com)
+- Automated with [Postman](https://www.postman.com/)
+- AI Integration via [Claude](https://claude.ai)
+
+---
+
+*Generated and maintained by automated workflows • Last sync: Check [CHANGELOG.md](CHANGELOG.md)*

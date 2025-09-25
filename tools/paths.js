@@ -168,7 +168,6 @@ export const toolPaths = [
   'supercommerce-api/delete-option.js',
   'supercommerce-api/delete-brand.js',
   'supercommerce-api/update-cookies-page.js',
-,
 
   // Auto-generated tools - 2025-09-25T10:28:49.260Z
   'supercommerce-api/group-list.js',
@@ -198,7 +197,6 @@ export const toolPaths = [
   'supercommerce-api/update-privacy-policy.js',
   'supercommerce-api/update-cookies-policy.js',
   'supercommerce-api/get-your-pages.js',
-  'supercommerce-api/show-edit.js',
   'supercommerce-api/create-new-static-page.js',
   'supercommerce-api/delete-static-page.js',
   'supercommerce-api/view-campaign.js',
@@ -231,6 +229,6 @@ export const toolPaths = [
   'supercommerce-api/new-rewards.js',
   'supercommerce-api/get-gift-requests.js',
   'supercommerce-api/forget-password.js',
-  'supercommerce-api/branches-type.js',
+  'supercommerce-api/branches-type.js'
 
 ];

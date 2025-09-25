@@ -255,6 +255,132 @@ function processCollection(collection) {
 }
 
 /**
+ * Generate documentation for tools
+ */
+function generateDocumentation(newTools, updatedTools) {
+  const docsPath = path.join(__dirname, '../docs/TOOLS.md');
+  const toolsDir = path.join(__dirname, '../tools/supercommerce-api');
+
+  let documentation = `# SuperCommerce MCP Tools Documentation
+
+## Overview
+
+This document provides comprehensive documentation for all ${fs.readdirSync(toolsDir).filter(f => f.endsWith('.js')).length} MCP tools available in the SuperCommerce Admin API integration.
+
+Last Updated: ${new Date().toISOString()}
+
+## Tool Categories
+
+`;
+
+  // Group tools by category (based on prefix)
+  const categories = {};
+  const allTools = fs.readdirSync(toolsDir).filter(f => f.endsWith('.js'));
+
+  allTools.forEach(file => {
+    const toolName = file.replace('.js', '');
+    const parts = toolName.split('-');
+    const category = parts[0] || 'general';
+
+    if (!categories[category]) {
+      categories[category] = [];
+    }
+    categories[category].push(toolName);
+  });
+
+  // Write category sections
+  Object.keys(categories).sort().forEach(category => {
+    documentation += `### ${category.charAt(0).toUpperCase() + category.slice(1)} Operations (${categories[category].length} tools)\n\n`;
+
+    categories[category].forEach(tool => {
+      documentation += `- \`${tool.replace(/-/g, '_')}\` - ${tool.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}\n`;
+    });
+
+    documentation += '\n';
+  });
+
+  // Add new tools section if any
+  if (newTools.length > 0) {
+    documentation += `## 🆕 Recently Added Tools\n\n`;
+    newTools.forEach(tool => {
+      documentation += `- \`${tool.functionName}\` - ${tool.request.name}\n`;
+    });
+    documentation += '\n';
+  }
+
+  // Add updated tools section if any
+  if (updatedTools.length > 0) {
+    documentation += `## 🔄 Recently Updated Tools\n\n`;
+    updatedTools.forEach(tool => {
+      documentation += `- \`${tool.functionName}\` - ${tool.request.name}\n`;
+    });
+    documentation += '\n';
+  }
+
+  // Create docs directory if it doesn't exist
+  const docsDir = path.dirname(docsPath);
+  if (!fs.existsSync(docsDir)) {
+    fs.mkdirSync(docsDir, { recursive: true });
+  }
+
+  fs.writeFileSync(docsPath, documentation);
+  console.log(`📚 Documentation updated: docs/TOOLS.md`);
+}
+
+/**
+ * Update changelog with new and updated tools
+ */
+function updateChangelog(newTools, updatedTools) {
+  const changelogPath = path.join(__dirname, '../CHANGELOG.md');
+  const date = new Date().toISOString().split('T')[0];
+
+  let changelogEntry = '';
+
+  if (newTools.length > 0 || updatedTools.length > 0) {
+    changelogEntry = `\n## [Automated Update] - ${date}\n\n`;
+
+    if (newTools.length > 0) {
+      changelogEntry += `### ✨ Added\n`;
+      newTools.forEach(tool => {
+        changelogEntry += `- \`${tool.functionName}\` - ${tool.request.name}\n`;
+      });
+      changelogEntry += '\n';
+    }
+
+    if (updatedTools.length > 0) {
+      changelogEntry += `### 🔄 Updated\n`;
+      updatedTools.forEach(tool => {
+        changelogEntry += `- \`${tool.functionName}\` - Updated from Postman collection\n`;
+      });
+      changelogEntry += '\n';
+    }
+
+    changelogEntry += `### 📊 Summary\n`;
+    changelogEntry += `- Total new tools: ${newTools.length}\n`;
+    changelogEntry += `- Total updated tools: ${updatedTools.length}\n`;
+    changelogEntry += `- Timestamp: ${new Date().toISOString()}\n\n---\n`;
+  }
+
+  // Read existing changelog or create new one
+  let existingChangelog = '';
+  if (fs.existsSync(changelogPath)) {
+    existingChangelog = fs.readFileSync(changelogPath, 'utf8');
+  } else {
+    existingChangelog = `# Changelog\n\nAll notable changes to the SuperCommerce MCP Tools are documented here.\n\n---\n`;
+  }
+
+  // Insert new entry after header
+  const headerEnd = existingChangelog.indexOf('---\n') + 4;
+  const updatedChangelog =
+    existingChangelog.slice(0, headerEnd) +
+    changelogEntry +
+    existingChangelog.slice(headerEnd);
+
+  fs.writeFileSync(changelogPath, updatedChangelog);
+  console.log(`📝 Changelog updated: CHANGELOG.md`);
+}
+
+/**
  * Update paths.js file
  */
 function updatePathsFile(newTools) {
@@ -387,6 +513,12 @@ async function main() {
   if (updatedCount > 0) {
     console.log(`\n💡 Tip: All backups are stored in tools/backups/ with timestamps`);
     console.log(`   To restore: cp tools/backups/[backup-file] tools/supercommerce-api/[original-name]`);
+  }
+
+  // Generate documentation and changelog
+  if (generatedCount > 0 || updatedCount > 0) {
+    generateDocumentation(newTools, updatedTools);
+    updateChangelog(newTools, updatedTools);
   }
 
   // Return summary for CI/CD
