@@ -49,12 +49,20 @@ POSTMAN_WEBHOOK_SECRET=optional-webhook-secret
 
 ### 3. Manual Generation
 
-**Command**: `npm run generate-tools`
+**Commands**:
+- `npm run generate-tools` - Generate only NEW tools
+- `npm run generate-tools:update` - Generate new AND update existing tools
 
 **Usage**:
 ```bash
-# Generate new tools from current collection
+# Generate ONLY new tools (preserves existing tools)
 npm run generate-tools
+
+# Generate new tools AND update existing ones
+npm run generate-tools:update
+
+# Or use environment variable
+UPDATE_EXISTING_TOOLS=true npm run generate-tools
 
 # Validate all tools
 npm run validate
@@ -62,6 +70,11 @@ npm run validate
 # Test webhook handler locally
 npm run webhook-test <collection-id>
 ```
+
+**Update Behavior**:
+- **Default**: Only creates new tools, skips existing ones
+- **With --update flag**: Updates ALL tools from Postman
+- **Backups**: Creates `.backup.js` files when updating
 
 ## 📁 Project Structure
 

@@ -200,6 +200,9 @@ function processCollection(collection) {
     });
   }
 
+  // Track updated tools separately
+  const updatedTools = [];
+
   // Process collection items recursively
   function processItem(item, parentPath = '') {
     if (item.item) {
@@ -216,14 +219,20 @@ function processCollection(collection) {
         newTools.push(tool);
         console.log(`✅ New tool to generate: ${tool.fileName}`);
       } else {
-        console.log(`⏭️  Tool already exists: ${tool.fileName}`);
+        // Check if update mode is enabled
+        if (process.env.UPDATE_EXISTING_TOOLS === 'true' || process.argv.includes('--update')) {
+          updatedTools.push(tool);
+          console.log(`🔄 Tool will be updated: ${tool.fileName}`);
+        } else {
+          console.log(`⏭️  Tool already exists: ${tool.fileName} (use --update flag to update)`);
+        }
       }
     }
   }
 
   collection.item.forEach(item => processItem(item));
 
-  return newTools;
+  return { newTools, updatedTools };
 }
 
 /**
@@ -273,38 +282,73 @@ async function main() {
   console.log(`📚 Analyzing collection: ${collection.info.name}\n`);
 
   // Process collection
-  const newTools = processCollection(collection);
+  const { newTools, updatedTools } = processCollection(collection);
 
-  if (newTools.length === 0) {
-    console.log('\n✅ All tools are up to date! No new tools to generate.');
+  const updateMode = process.env.UPDATE_EXISTING_TOOLS === 'true' || process.argv.includes('--update');
+
+  if (newTools.length === 0 && updatedTools.length === 0) {
+    console.log('\n✅ All tools are up to date! No changes needed.');
     return;
   }
-
-  console.log(`\n🛠️  Generating ${newTools.length} new tools...\n`);
 
   // Create tools directory if it doesn't exist
   if (!fs.existsSync(TOOLS_DIR)) {
     fs.mkdirSync(TOOLS_DIR, { recursive: true });
   }
 
-  // Generate tool files
-  newTools.forEach(tool => {
-    const filePath = path.join(TOOLS_DIR, tool.fileName);
-    fs.writeFileSync(filePath, tool.code);
-    console.log(`📝 Generated: ${tool.fileName}`);
-  });
+  let generatedCount = 0;
+  let updatedCount = 0;
 
-  // Update paths.js
-  updatePathsFile(newTools);
+  // Generate new tool files
+  if (newTools.length > 0) {
+    console.log(`\n🛠️  Generating ${newTools.length} new tools...\n`);
+    newTools.forEach(tool => {
+      const filePath = path.join(TOOLS_DIR, tool.fileName);
+      fs.writeFileSync(filePath, tool.code);
+      console.log(`📝 Generated: ${tool.fileName}`);
+      generatedCount++;
+    });
+  }
 
-  console.log('\n🎉 Tool generation complete!');
-  console.log(`Generated ${newTools.length} new MCP tools from Postman collection.`);
+  // Update existing tool files if update mode is enabled
+  if (updateMode && updatedTools.length > 0) {
+    console.log(`\n🔄 Updating ${updatedTools.length} existing tools...\n`);
+    updatedTools.forEach(tool => {
+      const filePath = path.join(TOOLS_DIR, tool.fileName);
+      // Create backup of existing tool
+      const backupPath = filePath.replace('.js', '.backup.js');
+      if (fs.existsSync(filePath)) {
+        fs.copyFileSync(filePath, backupPath);
+      }
+      fs.writeFileSync(filePath, tool.code);
+      console.log(`🔄 Updated: ${tool.fileName} (backup saved)`);
+      updatedCount++;
+    });
+  }
+
+  // Update paths.js only for new tools
+  if (newTools.length > 0) {
+    updatePathsFile(newTools);
+  }
+
+  console.log('\n🎉 Tool processing complete!');
+  if (generatedCount > 0) {
+    console.log(`✅ Generated ${generatedCount} new MCP tools`);
+  }
+  if (updatedCount > 0) {
+    console.log(`🔄 Updated ${updatedCount} existing MCP tools`);
+  }
+  if (!updateMode && updatedTools.length > 0) {
+    console.log(`ℹ️  ${updatedTools.length} tools could be updated (use --update flag)`);
+  }
 
   // Return summary for CI/CD
   return {
     success: true,
-    newToolsCount: newTools.length,
-    newTools: newTools.map(t => t.fileName)
+    newToolsCount: generatedCount,
+    updatedToolsCount: updatedCount,
+    newTools: newTools.map(t => t.fileName),
+    updatedTools: updatedTools.map(t => t.fileName)
   };
 }
 
