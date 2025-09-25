@@ -1,0 +1,110 @@
+name: Process Staging and Promote to Master
+
+on:
+  pull_request:
+    branches: ['staging']
+    types: [closed]
+  workflow_dispatch:
+
+jobs:
+  process-and-promote:
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: staging
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Generate tools from Postman collection
+      run: npm run generate-tools
+      env:
+        POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+        SUPERCOMMERCE_BASE_URL: ${{ secrets.SUPERCOMMERCE_BASE_URL }}
+        SUPERCOMMERCE_API_API_KEY: ${{ secrets.SUPERCOMMERCE_API_API_KEY }}
+
+    - name: Check for tool changes
+      id: check-changes
+      run: |
+        git add -A
+        if git diff --cached --quiet; then
+          echo "changes=false" >> $GITHUB_OUTPUT
+          echo "No tool changes detected"
+        else
+          echo "changes=true" >> $GITHUB_OUTPUT
+          echo "Tool changes detected"
+        fi
+
+    - name: Commit tool updates
+      if: steps.check-changes.outputs.changes == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+
+        git commit -m "chore: sync MCP tools from Postman collection
+
+        🤖 Generated with [Claude Code](https://claude.ai/code)
+
+        Co-Authored-By: Claude <noreply@anthropic.com>"
+
+        git push origin staging
+
+    - name: Create PR to master
+      run: |
+        # Check if PR already exists
+        PR_EXISTS=$(gh pr list --head staging --base master --json number --jq length)
+
+        if [ "$PR_EXISTS" -eq 0 ]; then
+          gh pr create \
+            --title "🚀 Deploy: Staging to Master" \
+            --body "$(cat <<'EOF'
+        ## 🚀 Ready for Production Deploy
+
+        This PR contains processed Postman collection updates with generated MCP tools.
+
+        ### ✅ What's included:
+        - Updated MCP tools from Postman collection
+        - All changes have been processed and validated
+        - Ready for Vercel deployment
+
+        ### 🔄 Auto-merge eligible
+        This PR can be safely auto-merged as it contains only chore commits.
+
+        ---
+        *Auto-generated from staging branch after tool processing.*
+        EOF
+        )" \
+            --head staging \
+            --base master
+        else
+          echo "PR already exists, updating..."
+          PR_NUMBER=$(gh pr list --head staging --base master --json number --jq '.[0].number')
+          gh pr comment $PR_NUMBER --body "🔄 **Updated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC") - New tool changes processed"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Auto-merge PR to master
+      run: |
+        PR_NUMBER=$(gh pr list --head staging --base master --json number --jq '.[0].number')
+        if [ "$PR_NUMBER" != "null" ] && [ "$PR_NUMBER" != "" ]; then
+          echo "Enabling auto-merge for PR #$PR_NUMBER"
+          gh pr merge $PR_NUMBER --auto --squash
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
