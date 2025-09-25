@@ -13,7 +13,7 @@
     "start:sse": "node mcpServer.js --sse",
     "start:stdio": "node mcpServer.js",
     "generate-tools": "node scripts/generate-tools-from-postman.js",
-    "generate-tools:update": "node scripts/generate-tools-from-postman.js --update",
+    "generate-tools:skip-updates": "node scripts/generate-tools-from-postman.js --skip-updates",
     "webhook-test": "node scripts/postman-webhook-handler.js",
     "validate": "node validateTools.js"
   },

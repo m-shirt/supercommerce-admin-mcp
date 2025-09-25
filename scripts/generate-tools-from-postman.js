@@ -219,13 +219,9 @@ function processCollection(collection) {
         newTools.push(tool);
         console.log(`✅ New tool to generate: ${tool.fileName}`);
       } else {
-        // Check if update mode is enabled
-        if (process.env.UPDATE_EXISTING_TOOLS === 'true' || process.argv.includes('--update')) {
-          updatedTools.push(tool);
-          console.log(`🔄 Tool will be updated: ${tool.fileName}`);
-        } else {
-          console.log(`⏭️  Tool already exists: ${tool.fileName} (use --update flag to update)`);
-        }
+        // Always add to updated tools list (auto-update by default)
+        updatedTools.push(tool);
+        console.log(`🔄 Tool will be updated (with backup): ${tool.fileName}`);
       }
     }
   }
@@ -284,7 +280,8 @@ async function main() {
   // Process collection
   const { newTools, updatedTools } = processCollection(collection);
 
-  const updateMode = process.env.UPDATE_EXISTING_TOOLS === 'true' || process.argv.includes('--update');
+  // Check if skip-update flag is set (default is to update)
+  const skipUpdates = process.env.SKIP_TOOL_UPDATES === 'true' || process.argv.includes('--skip-updates');
 
   if (newTools.length === 0 && updatedTools.length === 0) {
     console.log('\n✅ All tools are up to date! No changes needed.');
@@ -296,8 +293,15 @@ async function main() {
     fs.mkdirSync(TOOLS_DIR, { recursive: true });
   }
 
+  // Create backups directory
+  const backupsDir = path.join(__dirname, '../tools/backups');
+  if (!fs.existsSync(backupsDir)) {
+    fs.mkdirSync(backupsDir, { recursive: true });
+  }
+
   let generatedCount = 0;
   let updatedCount = 0;
+  let skippedCount = 0;
 
   // Generate new tool files
   if (newTools.length > 0) {
@@ -310,20 +314,35 @@ async function main() {
     });
   }
 
-  // Update existing tool files if update mode is enabled
-  if (updateMode && updatedTools.length > 0) {
-    console.log(`\n🔄 Updating ${updatedTools.length} existing tools...\n`);
-    updatedTools.forEach(tool => {
-      const filePath = path.join(TOOLS_DIR, tool.fileName);
-      // Create backup of existing tool
-      const backupPath = filePath.replace('.js', '.backup.js');
-      if (fs.existsSync(filePath)) {
-        fs.copyFileSync(filePath, backupPath);
-      }
-      fs.writeFileSync(filePath, tool.code);
-      console.log(`🔄 Updated: ${tool.fileName} (backup saved)`);
-      updatedCount++;
-    });
+  // Update existing tool files (default behavior, unless skipped)
+  if (updatedTools.length > 0) {
+    if (skipUpdates) {
+      console.log(`\n⏭️  Skipping ${updatedTools.length} tool updates (--skip-updates flag set)\n`);
+      updatedTools.forEach(tool => {
+        console.log(`⏭️  Skipped update: ${tool.fileName}`);
+        skippedCount++;
+      });
+    } else {
+      console.log(`\n🔄 Auto-updating ${updatedTools.length} existing tools with backups...\n`);
+      updatedTools.forEach(tool => {
+        const filePath = path.join(TOOLS_DIR, tool.fileName);
+
+        // Create timestamped backup of existing tool
+        if (fs.existsSync(filePath)) {
+          const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+          const backupFileName = tool.fileName.replace('.js', `_${timestamp}.backup.js`);
+          const backupPath = path.join(backupsDir, backupFileName);
+
+          fs.copyFileSync(filePath, backupPath);
+          console.log(`💾 Backup saved: backups/${backupFileName}`);
+        }
+
+        // Update the tool
+        fs.writeFileSync(filePath, tool.code);
+        console.log(`🔄 Updated: ${tool.fileName}`);
+        updatedCount++;
+      });
+    }
   }
 
   // Update paths.js only for new tools
@@ -336,10 +355,15 @@ async function main() {
     console.log(`✅ Generated ${generatedCount} new MCP tools`);
   }
   if (updatedCount > 0) {
-    console.log(`🔄 Updated ${updatedCount} existing MCP tools`);
+    console.log(`🔄 Auto-updated ${updatedCount} existing MCP tools (backups in tools/backups/)`);
   }
-  if (!updateMode && updatedTools.length > 0) {
-    console.log(`ℹ️  ${updatedTools.length} tools could be updated (use --update flag)`);
+  if (skippedCount > 0) {
+    console.log(`⏭️  Skipped ${skippedCount} tool updates (--skip-updates flag was set)`);
+  }
+
+  if (updatedCount > 0) {
+    console.log(`\n💡 Tip: All backups are stored in tools/backups/ with timestamps`);
+    console.log(`   To restore: cp tools/backups/[backup-file] tools/supercommerce-api/[original-name]`);
   }
 
   // Return summary for CI/CD

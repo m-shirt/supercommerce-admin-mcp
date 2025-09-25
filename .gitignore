@@ -5,3 +5,7 @@ node_modules/
 .env*
 .next/
 .DS_Store
+
+# Tool backups
+tools/backups/
+*.backup.js
