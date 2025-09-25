@@ -5838,6 +5838,61 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Forget Password Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ea075e54-e3ec-46af-9022-a89b8b1e7941",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "48096048-f0eacc7f-e2c9-42cd-a7b4-4d40303ed621",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@exapmle.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/admin//auth/forget_password",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"",
+								"auth",
+								"forget_password"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "48096048-4240ec31-65c7-4ce9-9331-4c470ef4bdad"
