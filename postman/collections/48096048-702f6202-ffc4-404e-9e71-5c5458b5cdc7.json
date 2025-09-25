@@ -5840,7 +5840,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Reset Password",
 					"id": "48096048-d0732c6f-33b7-4934-bae1-c6984f6da821",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
