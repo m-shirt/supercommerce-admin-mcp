@@ -234,5 +234,9 @@ export const toolPaths = [
 
   // Auto-generated tools - 2025-09-25T11:52:07.514Z
   'supercommerce-api/reset-password.js',
+,
+
+  // Auto-generated tools - 2025-09-25T15:30:51.214Z
+  'supercommerce-api/list-cancelled-orders.js',
 
 ];

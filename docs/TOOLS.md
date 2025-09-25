@@ -2,9 +2,9 @@
 
 ## Overview
 
-This document provides comprehensive documentation for all 190 MCP tools available in the SuperCommerce Admin API integration.
+This document provides comprehensive documentation for all 191 MCP tools available in the SuperCommerce Admin API integration.
 
-Last Updated: 2025-09-25T15:19:05.735Z
+Last Updated: 2025-09-25T15:30:51.214Z
 
 ## Business Model Categories
 
@@ -47,11 +47,12 @@ Last Updated: 2025-09-25T15:19:05.735Z
 - `get_all_options_list_dropdown` - Get All Options List Dropdown
 - `get_options_list_paginated` - Get Options List Paginated
 
-### Orders (6 tools)
+### Orders (7 tools)
 
 - `create_order` - Create Order
 - `edit_order` - Edit Order
 - `edit_order_status` - Edit Order Status
+- `list_cancelled_orders` - List Cancelled Orders
 - `list_order_status` - List Order Status
 - `list_orders` - List Orders
 - `view_order` - View Order
@@ -273,7 +274,7 @@ Last Updated: 2025-09-25T15:19:05.735Z
 - `reset_password` - Reset Password
 - `show_edit` - Show Edit
 
-## 🔄 Recently Updated Tools
+## 🆕 Recently Added Tools
 
-- `resetPassword` - Reset Password
+- `listCancelledOrders` - List Cancelled Orders
 
