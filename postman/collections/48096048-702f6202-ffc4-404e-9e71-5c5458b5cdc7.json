@@ -5863,7 +5863,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/auth/reset_password",
+							"raw": "{{baseURL}}/api/admin/auth/reset_password_admin",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -5871,7 +5871,7 @@
 								"api",
 								"admin",
 								"auth",
-								"reset_password"
+								"reset_password_admin"
 							]
 						}
 					},
