@@ -5855,7 +5855,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"password\": \"!p@$$w0rd12346\",\n    \"password_confirm\": \"!p@$$w0rd123\",\n    \"token\": \"cg1qjXIAsSxD60keUfTOwDDsaaaddBOlsN5CvyksXkwvZAARyuDWhbpQuW\"\n}",
+							"raw": "{\n    \"password\": \"!p@$$w0rd12346q\",\n    \"password_confirm\": \"!p@$$w0rd123\",\n    \"token\": \"cg1qjXIAsSxD60keUfTOwDDsaaaddBOlsN5CvyksXkwvZAARyuDWhbpQuW\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
