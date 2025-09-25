@@ -1,0 +1,389 @@
+🔄 Starting Postman to MCP Tool Generation...
+
+📚 Analyzing collection: Backend APIs
+
+🔄 Tool will be updated (with backup): create-option.js
+🔄 Tool will be updated (with backup): edit-option.js
+🔄 Tool will be updated (with backup): get-options-list-paginated.js
+🔄 Tool will be updated (with backup): get-all-options-list-dropdown.js
+🔄 Tool will be updated (with backup): get-category-list-paginated.js
+🔄 Tool will be updated (with backup): get-all-category-dropdown.js
+🔄 Tool will be updated (with backup): get-all-sub-categories-by-category-id-dropdown.js
+🔄 Tool will be updated (with backup): create-category.js
+🔄 Tool will be updated (with backup): edit-category-add-subcategory.js
+✅ New tool to generate: group-list.js
+✅ New tool to generate: active-group.js
+✅ New tool to generate: creat-new-group.js
+✅ New tool to generate: import-group.js
+✅ New tool to generate: export-groups-csv.js
+🔄 Tool will be updated (with backup): update-group.js
+✅ New tool to generate: deactive-group.js
+🔄 Tool will be updated (with backup): get-product-list.js
+🔄 Tool will be updated (with backup): create-main-product.js
+🔄 Tool will be updated (with backup): get-details-product-by-id.js
+🔄 Tool will be updated (with backup): update-main-product.js
+🔄 Tool will be updated (with backup): create-variant-product.js
+🔄 Tool will be updated (with backup): update-variant-product.js
+🔄 Tool will be updated (with backup): get-brands-list-paginated.js
+🔄 Tool will be updated (with backup): get-all-brands-list-dropdown.js
+🔄 Tool will be updated (with backup): create-brand.js
+🔄 Tool will be updated (with backup): edit-brand.js
+🔄 Tool will be updated (with backup): get-custom-lists.js
+🔄 Tool will be updated (with backup): create-custom-list.js
+🔄 Tool will be updated (with backup): delete-custom-list.js
+🔄 Tool will be updated (with backup): edit-custom-list.js
+🔄 Tool will be updated (with backup): save-custom-list.js
+✅ New tool to generate: export-custom-list.js
+✅ New tool to generate: import-cutom-list.js
+🔄 Tool will be updated (with backup): get-sections.js
+✅ New tool to generate: create-new-section.js
+✅ New tool to generate: new-request.js
+🔄 Tool will be updated (with backup): deactivate-section.js
+🔄 Tool will be updated (with backup): activate-section.js
+🔄 Tool will be updated (with backup): edit-section.js
+🔄 Tool will be updated (with backup): get-custom-ads.js
+✅ New tool to generate: deactivate-ads.js
+✅ New tool to generate: activate-ads.js
+✅ New tool to generate: update-custom-ads.js
+✅ New tool to generate: get-sliders.js
+✅ New tool to generate: create-new-ad-slider.js
+✅ New tool to generate: delete-slider.js
+✅ New tool to generate: update-slider.js
+✅ New tool to generate: activate-slider.js
+✅ New tool to generate: deactivate-slider.js
+🔄 Tool will be updated (with backup): get-branches.js
+✅ New tool to generate: create-new-branches.js
+✅ New tool to generate: delete-branches.js
+🔄 Tool will be updated (with backup): deactivate-branch.js
+🔄 Tool will be updated (with backup): activate-branch.js
+🔄 Tool will be updated (with backup): export-branches.js
+🔄 Tool will be updated (with backup): import-branches.js
+✅ New tool to generate: get-website-policy.js
+✅ New tool to generate: show-edit.js
+✅ New tool to generate: update-terms-and-conditions.js
+✅ New tool to generate: update-privacy-policy.js
+✅ New tool to generate: update-cookies-policy.js
+✅ New tool to generate: get-your-pages.js
+✅ New tool to generate: show-edit.js
+✅ New tool to generate: create-new-static-page.js
+✅ New tool to generate: delete-static-page.js
+🔄 Tool will be updated (with backup): get-campaigns.js
+🔄 Tool will be updated (with backup): create-campaign.js
+🔄 Tool will be updated (with backup): delete-campaign.js
+✅ New tool to generate: view-campaign.js
+🔄 Tool will be updated (with backup): update-campaign.js
+🔄 Tool will be updated (with backup): list-orders.js
+🔄 Tool will be updated (with backup): view-order.js
+🔄 Tool will be updated (with backup): create-order.js
+🔄 Tool will be updated (with backup): edit-order.js
+🔄 Tool will be updated (with backup): edit-order-status.js
+✅ New tool to generate: get-online-transactions.js
+🔄 Tool will be updated (with backup): export-transactions.js
+🔄 Tool will be updated (with backup): get-contact-us.js
+🔄 Tool will be updated (with backup): export-contact-us.js
+✅ New tool to generate: pickups.js
+✅ New tool to generate: view-delivery-details.js
+🔄 Tool will be updated (with backup): list-customers.js
+🔄 Tool will be updated (with backup): view-customer.js
+🔄 Tool will be updated (with backup): create-customer.js
+🔄 Tool will be updated (with backup): edit-customer.js
+🔄 Tool will be updated (with backup): deactivate-customer.js
+🔄 Tool will be updated (with backup): activate-customer.js
+🔄 Tool will be updated (with backup): create-address.js
+✅ New tool to generate: get-prescription.js
+✅ New tool to generate: export-prescription.js
+✅ New tool to generate: change-status.js
+✅ New tool to generate: get-menu-creator.js
+✅ New tool to generate: apply-changes.js
+✅ New tool to generate: generate-from-categories.js
+🔄 Tool will be updated (with backup): get-delivery-managers.js
+✅ New tool to generate: create-new-delivery-manager.js
+✅ New tool to generate: get-edit-delivery-manager.js
+✅ New tool to generate: save-edit-update-delivery-manager.js
+🔄 Tool will be updated (with backup): export-delivery-managers.js
+✅ New tool to generate: import-delivery-manager.js
+✅ New tool to generate: active-delivery-manager.js
+🔄 Tool will be updated (with backup): deactivate-delivery-manager.js
+🔄 Tool will be updated (with backup): get-governorates.js
+✅ New tool to generate: new-governorate.js
+🔄 Tool will be updated (with backup): export-cities.js
+🔄 Tool will be updated (with backup): import-cities.js
+🔄 Tool will be updated (with backup): deactivate-governorate.js
+🔄 Tool will be updated (with backup): activate-governorate.js
+🔄 Tool will be updated (with backup): delete-governorate.js
+🔄 Tool will be updated (with backup): get-areas.js
+✅ New tool to generate: new-area.js
+🔄 Tool will be updated (with backup): deactivate-area.js
+✅ New tool to generate: activate-areas.js
+🔄 Tool will be updated (with backup): get-promotions.js
+✅ New tool to generate: new-promotion.js
+✅ New tool to generate: delete-promotion.js
+✅ New tool to generate: edite-promotion.js
+✅ New tool to generate: activate-promotion.js
+✅ New tool to generate: deactivate-promotion.js
+🔄 Tool will be updated (with backup): get-promo-code-list.js
+🔄 Tool will be updated (with backup): view-promo-code.js
+🔄 Tool will be updated (with backup): create-promo-code.js
+🔄 Tool will be updated (with backup): edit-promo-code.js
+🔄 Tool will be updated (with backup): deactivate-promo-code.js
+🔄 Tool will be updated (with backup): activate-promo-code.js
+🔄 Tool will be updated (with backup): get-notifications.js
+✅ New tool to generate: push-notification.js
+🔄 Tool will be updated (with backup): delete-notification.js
+✅ New tool to generate: activate-reward.js
+✅ New tool to generate: deactivate-rewards.js
+✅ New tool to generate: get-rewards.js
+✅ New tool to generate: new-rewards.js
+✅ New tool to generate: get-gift-requests.js
+🔄 Tool will be updated (with backup): login.js
+✅ New tool to generate: forget-password.js
+🔄 Tool will be updated (with backup): list-cancellation-reasons.js
+🔄 Tool will be updated (with backup): list-products-for-create-order.js
+🔄 Tool will be updated (with backup): list-cities.js
+🔄 Tool will be updated (with backup): list-order-status.js
+🔄 Tool will be updated (with backup): list-inventories.js
+🔄 Tool will be updated (with backup): list-customer-groups.js
+🔄 Tool will be updated (with backup): list-payment-methods.js
+✅ New tool to generate: branches-type.js
+🔄 Tool will be updated (with backup): upload-image.js
+
+🛠️  Generating 61 new tools...
+
+📝 Generated: group-list.js
+📝 Generated: active-group.js
+📝 Generated: creat-new-group.js
+📝 Generated: import-group.js
+📝 Generated: export-groups-csv.js
+📝 Generated: deactive-group.js
+📝 Generated: export-custom-list.js
+📝 Generated: import-cutom-list.js
+📝 Generated: create-new-section.js
+📝 Generated: new-request.js
+📝 Generated: deactivate-ads.js
+📝 Generated: activate-ads.js
+📝 Generated: update-custom-ads.js
+📝 Generated: get-sliders.js
+📝 Generated: create-new-ad-slider.js
+📝 Generated: delete-slider.js
+📝 Generated: update-slider.js
+📝 Generated: activate-slider.js
+📝 Generated: deactivate-slider.js
+📝 Generated: create-new-branches.js
+📝 Generated: delete-branches.js
+📝 Generated: get-website-policy.js
+📝 Generated: show-edit.js
+📝 Generated: update-terms-and-conditions.js
+📝 Generated: update-privacy-policy.js
+📝 Generated: update-cookies-policy.js
+📝 Generated: get-your-pages.js
+📝 Generated: show-edit.js
+📝 Generated: create-new-static-page.js
+📝 Generated: delete-static-page.js
+📝 Generated: view-campaign.js
+📝 Generated: get-online-transactions.js
+📝 Generated: pickups.js
+📝 Generated: view-delivery-details.js
+📝 Generated: get-prescription.js
+📝 Generated: export-prescription.js
+📝 Generated: change-status.js
+📝 Generated: get-menu-creator.js
+📝 Generated: apply-changes.js
+📝 Generated: generate-from-categories.js
+📝 Generated: create-new-delivery-manager.js
+📝 Generated: get-edit-delivery-manager.js
+📝 Generated: save-edit-update-delivery-manager.js
+📝 Generated: import-delivery-manager.js
+📝 Generated: active-delivery-manager.js
+📝 Generated: new-governorate.js
+📝 Generated: new-area.js
+📝 Generated: activate-areas.js
+📝 Generated: new-promotion.js
+📝 Generated: delete-promotion.js
+📝 Generated: edite-promotion.js
+📝 Generated: activate-promotion.js
+📝 Generated: deactivate-promotion.js
+📝 Generated: push-notification.js
+📝 Generated: activate-reward.js
+📝 Generated: deactivate-rewards.js
+📝 Generated: get-rewards.js
+📝 Generated: new-rewards.js
+📝 Generated: get-gift-requests.js
+📝 Generated: forget-password.js
+📝 Generated: branches-type.js
+
+🔄 Auto-updating 83 existing tools with backups...
+
+💾 Backup saved: backups/create-option_2025-09-25T10-28-49-237Z.backup.js
+🔄 Updated: create-option.js
+💾 Backup saved: backups/edit-option_2025-09-25T10-28-49-238Z.backup.js
+🔄 Updated: edit-option.js
+💾 Backup saved: backups/get-options-list-paginated_2025-09-25T10-28-49-238Z.backup.js
+🔄 Updated: get-options-list-paginated.js
+💾 Backup saved: backups/get-all-options-list-dropdown_2025-09-25T10-28-49-238Z.backup.js
+🔄 Updated: get-all-options-list-dropdown.js
+💾 Backup saved: backups/get-category-list-paginated_2025-09-25T10-28-49-239Z.backup.js
+🔄 Updated: get-category-list-paginated.js
+💾 Backup saved: backups/get-all-category-dropdown_2025-09-25T10-28-49-239Z.backup.js
+🔄 Updated: get-all-category-dropdown.js
+💾 Backup saved: backups/get-all-sub-categories-by-category-id-dropdown_2025-09-25T10-28-49-239Z.backup.js
+🔄 Updated: get-all-sub-categories-by-category-id-dropdown.js
+💾 Backup saved: backups/create-category_2025-09-25T10-28-49-239Z.backup.js
+🔄 Updated: create-category.js
+💾 Backup saved: backups/edit-category-add-subcategory_2025-09-25T10-28-49-240Z.backup.js
+🔄 Updated: edit-category-add-subcategory.js
+💾 Backup saved: backups/update-group_2025-09-25T10-28-49-240Z.backup.js
+🔄 Updated: update-group.js
+💾 Backup saved: backups/get-product-list_2025-09-25T10-28-49-240Z.backup.js
+🔄 Updated: get-product-list.js
+💾 Backup saved: backups/create-main-product_2025-09-25T10-28-49-241Z.backup.js
+🔄 Updated: create-main-product.js
+💾 Backup saved: backups/get-details-product-by-id_2025-09-25T10-28-49-241Z.backup.js
+🔄 Updated: get-details-product-by-id.js
+💾 Backup saved: backups/update-main-product_2025-09-25T10-28-49-241Z.backup.js
+🔄 Updated: update-main-product.js
+💾 Backup saved: backups/create-variant-product_2025-09-25T10-28-49-241Z.backup.js
+🔄 Updated: create-variant-product.js
+💾 Backup saved: backups/update-variant-product_2025-09-25T10-28-49-242Z.backup.js
+🔄 Updated: update-variant-product.js
+💾 Backup saved: backups/get-brands-list-paginated_2025-09-25T10-28-49-242Z.backup.js
+🔄 Updated: get-brands-list-paginated.js
+💾 Backup saved: backups/get-all-brands-list-dropdown_2025-09-25T10-28-49-242Z.backup.js
+🔄 Updated: get-all-brands-list-dropdown.js
+💾 Backup saved: backups/create-brand_2025-09-25T10-28-49-242Z.backup.js
+🔄 Updated: create-brand.js
+💾 Backup saved: backups/edit-brand_2025-09-25T10-28-49-243Z.backup.js
+🔄 Updated: edit-brand.js
+💾 Backup saved: backups/get-custom-lists_2025-09-25T10-28-49-243Z.backup.js
+🔄 Updated: get-custom-lists.js
+💾 Backup saved: backups/create-custom-list_2025-09-25T10-28-49-243Z.backup.js
+🔄 Updated: create-custom-list.js
+💾 Backup saved: backups/delete-custom-list_2025-09-25T10-28-49-243Z.backup.js
+🔄 Updated: delete-custom-list.js
+💾 Backup saved: backups/edit-custom-list_2025-09-25T10-28-49-244Z.backup.js
+🔄 Updated: edit-custom-list.js
+💾 Backup saved: backups/save-custom-list_2025-09-25T10-28-49-244Z.backup.js
+🔄 Updated: save-custom-list.js
+💾 Backup saved: backups/get-sections_2025-09-25T10-28-49-244Z.backup.js
+🔄 Updated: get-sections.js
+💾 Backup saved: backups/deactivate-section_2025-09-25T10-28-49-244Z.backup.js
+🔄 Updated: deactivate-section.js
+💾 Backup saved: backups/activate-section_2025-09-25T10-28-49-245Z.backup.js
+🔄 Updated: activate-section.js
+💾 Backup saved: backups/edit-section_2025-09-25T10-28-49-245Z.backup.js
+🔄 Updated: edit-section.js
+💾 Backup saved: backups/get-custom-ads_2025-09-25T10-28-49-245Z.backup.js
+🔄 Updated: get-custom-ads.js
+💾 Backup saved: backups/get-branches_2025-09-25T10-28-49-245Z.backup.js
+🔄 Updated: get-branches.js
+💾 Backup saved: backups/deactivate-branch_2025-09-25T10-28-49-246Z.backup.js
+🔄 Updated: deactivate-branch.js
+💾 Backup saved: backups/activate-branch_2025-09-25T10-28-49-246Z.backup.js
+🔄 Updated: activate-branch.js
+💾 Backup saved: backups/export-branches_2025-09-25T10-28-49-246Z.backup.js
+🔄 Updated: export-branches.js
+💾 Backup saved: backups/import-branches_2025-09-25T10-28-49-246Z.backup.js
+🔄 Updated: import-branches.js
+💾 Backup saved: backups/get-campaigns_2025-09-25T10-28-49-247Z.backup.js
+🔄 Updated: get-campaigns.js
+💾 Backup saved: backups/create-campaign_2025-09-25T10-28-49-247Z.backup.js
+🔄 Updated: create-campaign.js
+💾 Backup saved: backups/delete-campaign_2025-09-25T10-28-49-247Z.backup.js
+🔄 Updated: delete-campaign.js
+💾 Backup saved: backups/update-campaign_2025-09-25T10-28-49-247Z.backup.js
+🔄 Updated: update-campaign.js
+💾 Backup saved: backups/list-orders_2025-09-25T10-28-49-248Z.backup.js
+🔄 Updated: list-orders.js
+💾 Backup saved: backups/view-order_2025-09-25T10-28-49-248Z.backup.js
+🔄 Updated: view-order.js
+💾 Backup saved: backups/create-order_2025-09-25T10-28-49-248Z.backup.js
+🔄 Updated: create-order.js
+💾 Backup saved: backups/edit-order_2025-09-25T10-28-49-248Z.backup.js
+🔄 Updated: edit-order.js
+💾 Backup saved: backups/edit-order-status_2025-09-25T10-28-49-249Z.backup.js
+🔄 Updated: edit-order-status.js
+💾 Backup saved: backups/export-transactions_2025-09-25T10-28-49-249Z.backup.js
+🔄 Updated: export-transactions.js
+💾 Backup saved: backups/get-contact-us_2025-09-25T10-28-49-249Z.backup.js
+🔄 Updated: get-contact-us.js
+💾 Backup saved: backups/export-contact-us_2025-09-25T10-28-49-249Z.backup.js
+🔄 Updated: export-contact-us.js
+💾 Backup saved: backups/list-customers_2025-09-25T10-28-49-250Z.backup.js
+🔄 Updated: list-customers.js
+💾 Backup saved: backups/view-customer_2025-09-25T10-28-49-250Z.backup.js
+🔄 Updated: view-customer.js
+💾 Backup saved: backups/create-customer_2025-09-25T10-28-49-250Z.backup.js
+🔄 Updated: create-customer.js
+💾 Backup saved: backups/edit-customer_2025-09-25T10-28-49-250Z.backup.js
+🔄 Updated: edit-customer.js
+💾 Backup saved: backups/deactivate-customer_2025-09-25T10-28-49-251Z.backup.js
+🔄 Updated: deactivate-customer.js
+💾 Backup saved: backups/activate-customer_2025-09-25T10-28-49-251Z.backup.js
+🔄 Updated: activate-customer.js
+💾 Backup saved: backups/create-address_2025-09-25T10-28-49-251Z.backup.js
+🔄 Updated: create-address.js
+💾 Backup saved: backups/get-delivery-managers_2025-09-25T10-28-49-252Z.backup.js
+🔄 Updated: get-delivery-managers.js
+💾 Backup saved: backups/export-delivery-managers_2025-09-25T10-28-49-252Z.backup.js
+🔄 Updated: export-delivery-managers.js
+💾 Backup saved: backups/deactivate-delivery-manager_2025-09-25T10-28-49-252Z.backup.js
+🔄 Updated: deactivate-delivery-manager.js
+💾 Backup saved: backups/get-governorates_2025-09-25T10-28-49-252Z.backup.js
+🔄 Updated: get-governorates.js
+💾 Backup saved: backups/export-cities_2025-09-25T10-28-49-253Z.backup.js
+🔄 Updated: export-cities.js
+💾 Backup saved: backups/import-cities_2025-09-25T10-28-49-253Z.backup.js
+🔄 Updated: import-cities.js
+💾 Backup saved: backups/deactivate-governorate_2025-09-25T10-28-49-253Z.backup.js
+🔄 Updated: deactivate-governorate.js
+💾 Backup saved: backups/activate-governorate_2025-09-25T10-28-49-253Z.backup.js
+🔄 Updated: activate-governorate.js
+💾 Backup saved: backups/delete-governorate_2025-09-25T10-28-49-254Z.backup.js
+🔄 Updated: delete-governorate.js
+💾 Backup saved: backups/get-areas_2025-09-25T10-28-49-254Z.backup.js
+🔄 Updated: get-areas.js
+💾 Backup saved: backups/deactivate-area_2025-09-25T10-28-49-254Z.backup.js
+🔄 Updated: deactivate-area.js
+💾 Backup saved: backups/get-promotions_2025-09-25T10-28-49-255Z.backup.js
+🔄 Updated: get-promotions.js
+💾 Backup saved: backups/get-promo-code-list_2025-09-25T10-28-49-255Z.backup.js
+🔄 Updated: get-promo-code-list.js
+💾 Backup saved: backups/view-promo-code_2025-09-25T10-28-49-255Z.backup.js
+🔄 Updated: view-promo-code.js
+💾 Backup saved: backups/create-promo-code_2025-09-25T10-28-49-255Z.backup.js
+🔄 Updated: create-promo-code.js
+💾 Backup saved: backups/edit-promo-code_2025-09-25T10-28-49-256Z.backup.js
+🔄 Updated: edit-promo-code.js
+💾 Backup saved: backups/deactivate-promo-code_2025-09-25T10-28-49-256Z.backup.js
+🔄 Updated: deactivate-promo-code.js
+💾 Backup saved: backups/activate-promo-code_2025-09-25T10-28-49-256Z.backup.js
+🔄 Updated: activate-promo-code.js
+💾 Backup saved: backups/get-notifications_2025-09-25T10-28-49-257Z.backup.js
+🔄 Updated: get-notifications.js
+💾 Backup saved: backups/delete-notification_2025-09-25T10-28-49-257Z.backup.js
+🔄 Updated: delete-notification.js
+💾 Backup saved: backups/login_2025-09-25T10-28-49-257Z.backup.js
+🔄 Updated: login.js
+💾 Backup saved: backups/list-cancellation-reasons_2025-09-25T10-28-49-257Z.backup.js
+🔄 Updated: list-cancellation-reasons.js
+💾 Backup saved: backups/list-products-for-create-order_2025-09-25T10-28-49-258Z.backup.js
+🔄 Updated: list-products-for-create-order.js
+💾 Backup saved: backups/list-cities_2025-09-25T10-28-49-258Z.backup.js
+🔄 Updated: list-cities.js
+💾 Backup saved: backups/list-order-status_2025-09-25T10-28-49-258Z.backup.js
+🔄 Updated: list-order-status.js
+💾 Backup saved: backups/list-inventories_2025-09-25T10-28-49-258Z.backup.js
+🔄 Updated: list-inventories.js
+💾 Backup saved: backups/list-customer-groups_2025-09-25T10-28-49-259Z.backup.js
+🔄 Updated: list-customer-groups.js
+💾 Backup saved: backups/list-payment-methods_2025-09-25T10-28-49-259Z.backup.js
+🔄 Updated: list-payment-methods.js
+💾 Backup saved: backups/upload-image_2025-09-25T10-28-49-260Z.backup.js
+🔄 Updated: upload-image.js
+✅ Updated paths.js with 61 new tools
+
+🎉 Tool processing complete!
+✅ Generated 61 new MCP tools
+🔄 Auto-updated 83 existing MCP tools (backups in tools/backups/)
+
+💡 Tip: All backups are stored in tools/backups/ with timestamps
+   To restore: cp tools/backups/[backup-file] tools/supercommerce-api/[original-name]

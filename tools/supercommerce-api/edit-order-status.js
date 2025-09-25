@@ -1,57 +1,69 @@
 /**
- * Function to edit the status of an order.
+ * Function to edit order status.
  *
- * @param {Object} args - Arguments for editing the order status.
- * @param {string} args.status_notes - Notes regarding the status.
- * @param {string} args.cancellation_text - Text for cancellation.
- * @param {string} args.cancellation_id - ID for cancellation.
- * @param {Array<number>} args.order_ids - List of order IDs to update.
- * @param {number} args.state_id - The new state ID for the orders.
- * @param {boolean} args.notify_customer - Whether to notify the customer.
- * @returns {Promise<Object>} - The result of the order status edit.
+ * @param {Object} params - The parameters for edit order status.
+
+
+ * @param {string} [params.status_notes] - The status notes.
+ * @param {string} [params.cancellation_text] - The cancellation text.
+ * @param {string} [params.cancellation_id] - The cancellation id.
+ * @param {string} [params.order_ids] - The order ids.
+ * @param {string} [params.state_id] - The state id.
+ * @param {string} [params.notify_customer] - The notify customer.
+ * @returns {Promise<Object>} - The result of the operation.
  */
-const executeFunction = async ({ status_notes, cancellation_text, cancellation_id, order_ids, state_id, notify_customer }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
   try {
+    const {
+      status_notes,
+      cancellation_text,
+      cancellation_id,
+      order_ids,
+      state_id,
+      notify_customer,
+    } = params;
+
     const url = `${baseURL}/api/admin/orders/bulk_change_state`;
     
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
 
-    const body = JSON.stringify({
-      status_notes,
-      cancellation_text,
-      cancellation_id,
-      order_ids,
-      state_id,
-      notify_customer
-    });
+    const requestData = {
+      'status_notes': status_notes,
+      'cancellation_text': cancellation_text,
+      'cancellation_id': cancellation_id,
+      'order_ids': order_ids,
+      'state_id': state_id,
+      'notify_customer': notify_customer,
+    };
 
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error editing order status:', error);
-    return { error: 'An error occurred while editing the order status.' };
+    console.error('Error in editOrderStatus:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for editing order status.
+ * Tool configuration for edit order status.
  * @type {Object}
  */
 const apiTool = {
@@ -60,39 +72,36 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'edit_order_status',
-      description: 'Edit the status of an order.',
+      description: 'Edit Order Status',
       parameters: {
         type: 'object',
         properties: {
           status_notes: {
             type: 'string',
-            description: 'Notes regarding the status.'
+            description: 'The status notes'
           },
           cancellation_text: {
             type: 'string',
-            description: 'Text for cancellation.'
+            description: 'The cancellation text'
           },
           cancellation_id: {
             type: 'string',
-            description: 'ID for cancellation.'
+            description: 'The cancellation id'
           },
           order_ids: {
-            type: 'array',
-            items: {
-              type: 'integer'
-            },
-            description: 'List of order IDs to update.'
+            type: 'string',
+            description: 'The order ids'
           },
           state_id: {
-            type: 'integer',
-            description: 'The new state ID for the orders.'
+            type: 'string',
+            description: 'The state id'
           },
           notify_customer: {
-            type: 'boolean',
-            description: 'Whether to notify the customer.'
+            type: 'string',
+            description: 'The notify customer'
           }
         },
-        required: ['order_ids', 'state_id']
+        required: []
       }
     }
   }

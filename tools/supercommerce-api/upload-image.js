@@ -1,50 +1,51 @@
 /**
- * Function to upload an image to the server.
+ * Function to upload image.
  *
- * @param {Object} args - Arguments for the image upload.
- * @param {string} args.file - The file path of the image to upload.
- * @param {number} args.dimensions - The dimensions for the image.
- * @returns {Promise<Object>} - The result of the image upload.
- */
-const executeFunction = async ({ file, dimensions }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Set up the form data for the file upload
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('dimensions', dimensions);
+ * @param {Object} params - The parameters for upload image.
 
-    // Set up headers for the request
+
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+
+    } = params;
+
+    const url = `${baseURL}/api/admin/upload`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     };
 
-    // Perform the fetch request
-    const response = await fetch(`${baseURL}/api/admin/upload`, {
+    
+
+    const response = await fetch(url, {
       method: 'POST',
-      headers,
-      body: formData
+      headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error uploading image:', error);
-    return { error: 'An error occurred while uploading the image.' };
+    console.error('Error in uploadImage:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for uploading images to the server.
+ * Tool configuration for upload image.
  * @type {Object}
  */
 const apiTool = {
@@ -53,20 +54,13 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'upload_image',
-      description: 'Upload an image to the server.',
+      description: 'Upload Image',
       parameters: {
         type: 'object',
         properties: {
-          file: {
-            type: 'string',
-            description: 'The file path of the image to upload.'
-          },
-          dimensions: {
-            type: 'integer',
-            description: 'The dimensions for the image.'
-          }
+
         },
-        required: ['file', 'dimensions']
+        required: []
       }
     }
   }

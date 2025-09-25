@@ -1,46 +1,50 @@
 /**
- * Function to view an order from the backend API.
+ * Function to view order.
  *
- * @param {Object} args - Arguments for the view order request.
- * @param {string} args.id - The ID of the order to view.
- * @returns {Promise<Object>} - The result of the order view request.
- */
-const executeFunction = async ({ id }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the order
-    const url = `${baseURL}/api/admin/orders/${id}`;
+ * @param {Object} params - The parameters for view order.
+ * @param {string} params.id - The id.
 
-    // Set up headers for the request
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      id,
+    } = params;
+
+    let url = `${baseURL}/api/admin/orders/${id}`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error viewing order:', error);
-    return { error: 'An error occurred while viewing the order.' };
+    console.error('Error in viewOrder:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for viewing an order from the backend API.
+ * Tool configuration for view order.
  * @type {Object}
  */
 const apiTool = {
@@ -49,13 +53,13 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'view_order',
-      description: 'View an order from the backend API.',
+      description: 'View Order',
       parameters: {
         type: 'object',
         properties: {
           id: {
             type: 'string',
-            description: 'The ID of the order to view.'
+            description: 'The id'
           }
         },
         required: ['id']

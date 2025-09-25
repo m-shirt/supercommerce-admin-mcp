@@ -1,57 +1,81 @@
 /**
- * Function to create a main product in the backend API.
+ * Function to create main product.
  *
- * @param {Object} productData - The data for the product to be created.
- * @param {number} productData.brand_id - The ID of the brand.
- * @param {string} productData.category_id - The ID of the category.
- * @param {string} productData.name - The name of the product.
- * @param {string} productData.name_ar - The Arabic name of the product.
- * @param {number} productData.preorder - Indicates if the product is a preorder.
- * @param {boolean} productData.available_soon - Indicates if the product will be available soon.
- * @param {boolean} productData.bundle_checkout - Indicates if the product is a bundle.
- * @param {Array<number>} productData.product_variant_options - An array of variant option IDs.
- * @param {string} productData.sku - The SKU of the product.
- * @param {string} productData.type - The type of the product.
- * @returns {Promise<Object>} - The result of the product creation.
- */
-const executeFunction = async (productData) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the API endpoint
-    const url = `${baseURL}/api/admin/products`;
+ * @param {Object} params - The parameters for create main product.
 
-    // Set up headers for the request
+
+ * @param {string} [params.brand_id] - The brand id.
+ * @param {string} [params.category_id] - The category id.
+ * @param {string} [params.name] - The name.
+ * @param {string} [params.name_ar] - The name ar.
+ * @param {string} [params.preorder] - The preorder.
+ * @param {string} [params.available_soon] - The available soon.
+ * @param {string} [params.bundle_checkout] - The bundle checkout.
+ * @param {string} [params.product_variant_options] - The product variant options.
+ * @param {string} [params.sku] - The sku.
+ * @param {string} [params.type] - The type.
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      brand_id,
+      category_id,
+      name,
+      name_ar,
+      preorder,
+      available_soon,
+      bundle_checkout,
+      product_variant_options,
+      sku,
+      type,
+    } = params;
+
+    const url = `${baseURL}/api/admin/products`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
 
-    // Perform the fetch request
+    const requestData = {
+      'brand_id': brand_id,
+      'category_id': category_id,
+      'name': name,
+      'name_ar': name_ar,
+      'preorder': preorder,
+      'available_soon': available_soon,
+      'bundle_checkout': bundle_checkout,
+      'product_variant_options': product_variant_options,
+      'sku': sku,
+      'type': type,
+    };
+
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify(productData)
+      body: JSON.stringify(requestData)
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error creating product:', error);
-    return { error: 'An error occurred while creating the product.' };
+    console.error('Error in createMainProduct:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for creating a main product in the backend API.
+ * Tool configuration for create main product.
  * @type {Object}
  */
 const apiTool = {
@@ -60,56 +84,52 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'create_main_product',
-      description: `1- When create a product must create main product first then create a variant (the sku for the main product is main_{{sku}}
-2- if the product has multible variants (ex differant colors) must add product_variant_options in the main like color and select color ex red to when create the variant to make user select beteen variants`,
+      description: 'Create Main Product',
       parameters: {
         type: 'object',
         properties: {
           brand_id: {
             type: 'string',
-            description: 'The ID of the brand.'
+            description: 'The brand id'
           },
           category_id: {
             type: 'string',
-            description: 'The ID of the category.'
+            description: 'The category id'
           },
           name: {
             type: 'string',
-            description: 'The name of the product.'
+            description: 'The name'
           },
           name_ar: {
             type: 'string',
-            description: 'The Arabic name of the product.'
+            description: 'The name ar'
           },
           preorder: {
-            type: 'integer',
-            description: 'Indicates if the product is a preorder.'
+            type: 'string',
+            description: 'The preorder'
           },
           available_soon: {
-            type: 'boolean',
-            description: 'Indicates if the product will be available soon.'
+            type: 'string',
+            description: 'The available soon'
           },
           bundle_checkout: {
-            type: 'boolean',
-            description: 'Indicates if the product is a bundle.'
+            type: 'string',
+            description: 'The bundle checkout'
           },
           product_variant_options: {
-            type: 'array',
-            items: {
-              type: 'integer'
-            },
-            description: 'An array of variant option IDs.'
+            type: 'string',
+            description: 'The product variant options'
           },
           sku: {
             type: 'string',
-            description: 'The SKU of the product.'
+            description: 'The sku'
           },
           type: {
             type: 'string',
-            description: 'The type of the product. "1" for regular product, "2" for bundle ( 1 is default )'
+            description: 'The type'
           }
         },
-        required: ['brand_id', 'category_id', 'name', 'sku', 'type', 'name_ar', 'available_soon', 'bundle_checkout'],
+        required: []
       }
     }
   }

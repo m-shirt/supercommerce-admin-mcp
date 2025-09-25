@@ -1,44 +1,50 @@
 /**
- * Function to get the list of all brands.
+ * Function to get all brands list (dropdown).
  *
- * @returns {Promise<Array>} - The list of brands.
- */
-const executeFunction = async () => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the request
-    const url = `${baseURL}/api/admin/brands`;
+ * @param {Object} params - The parameters for get all brands list (dropdown).
 
-    // Set up headers for the request
+
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+
+    } = params;
+
+    const url = `${baseURL}/api/admin/brands`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error fetching brands list:', error);
-    return { error: 'An error occurred while fetching the brands list.' };
+    console.error('Error in getAllBrandsListDropdown:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting the list of all brands.
+ * Tool configuration for get all brands list (dropdown).
  * @type {Object}
  */
 const apiTool = {
@@ -46,11 +52,13 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'get_all_brands',
-      description: 'Get the list of all brands.',
+      name: 'get_all_brands_list_dropdown',
+      description: 'Get All Brands List (Dropdown)',
       parameters: {
         type: 'object',
-        properties: {},
+        properties: {
+
+        },
         required: []
       }
     }

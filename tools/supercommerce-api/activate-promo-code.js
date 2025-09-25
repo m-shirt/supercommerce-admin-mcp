@@ -1,46 +1,51 @@
 /**
- * Function to activate a promo code.
+ * Function to activate promo code.
  *
- * @param {Object} args - Arguments for activating the promo code.
- * @param {string} args.id - The ID of the promo code to activate.
- * @returns {Promise<Object>} - The result of the activation request.
- */
-const executeFunction = async ({ id }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the activation request
-    const url = `${baseURL}/api/admin/promos/${id}/activate`;
+ * @param {Object} params - The parameters for activate promo code.
+ * @param {string} params.id - The id.
 
-    // Set up headers for the request
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      id,
+    } = params;
+
+    let url = `${baseURL}/api/admin/promos/${id}/activate`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'POST',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error activating promo code:', error);
-    return { error: 'An error occurred while activating the promo code.' };
+    console.error('Error in activatePromoCode:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for activating a promo code.
+ * Tool configuration for activate promo code.
  * @type {Object}
  */
 const apiTool = {
@@ -49,13 +54,13 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'activate_promo_code',
-      description: 'Activate a promo code.',
+      description: 'Activate Promo Code',
       parameters: {
         type: 'object',
         properties: {
           id: {
             type: 'string',
-            description: 'The ID of the promo code to activate.'
+            description: 'The id'
           }
         },
         required: ['id']

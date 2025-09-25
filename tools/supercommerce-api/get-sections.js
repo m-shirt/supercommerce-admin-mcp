@@ -1,28 +1,39 @@
 /**
- * Function to get a paginated list of sections.
+ * Function to get sections.
  *
- * @param {Object} params - The parameters for filtering sections.
- * @param {number} [params.page] - Page number for pagination (default: 1).
- * @param {string} [params.q] - Search query for filtering sections.
- * @returns {Promise<Object>} - The result containing sections list.
+ * @param {Object} params - The parameters for get sections.
+
+ * @param {string} [params.page] - page.
+ * @param {string} [params.q] - q.
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { page = 1, q = '' } = params;
+    const {
+      page,
+      q,
+    } = params;
 
-    const url = new URL(`${baseURL}/api/admin/sections`);
-    url.searchParams.append('page', page.toString());
-    url.searchParams.append('q', q);
+    const url = `${baseURL}/api/admin/sections?page=1&q=`;
+    
+    const queryParams = new URLSearchParams();
+    if (page !== undefined) queryParams.append('page', page);
+    if (q !== undefined) queryParams.append('q', q);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    const response = await fetch(url.toString(), {
+    
+
+    const response = await fetch(url, {
       method: 'GET',
       headers
     });
@@ -34,13 +45,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error getting sections:', error);
-    return { error: error.message || 'An error occurred while fetching sections.' };
+    console.error('Error in getSections:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting sections.
+ * Tool configuration for get sections.
  * @type {Object}
  */
 const apiTool = {
@@ -49,18 +60,17 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'get_sections',
-      description: 'Get a paginated list of store front sections with optional search filtering.',
+      description: 'Get Sections',
       parameters: {
         type: 'object',
         properties: {
           page: {
-            type: 'integer',
-            description: 'Page number for pagination (default: 1).',
-            minimum: 1
+            type: 'string',
+            description: 'page'
           },
           q: {
             type: 'string',
-            description: 'Search query for filtering sections by name or description.'
+            description: 'q'
           }
         },
         required: []

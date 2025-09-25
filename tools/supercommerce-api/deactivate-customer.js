@@ -1,52 +1,55 @@
 /**
- * Function to deactivate a customer.
+ * Function to deactivate customer.
  *
- * @param {Object} args - Arguments for the deactivation.
- * @param {string} args.id - The ID of the customer to deactivate.
- * @param {string} [args.deactivation_notes=""] - Notes regarding the deactivation.
- * @returns {Promise<Object>} - The result of the deactivation request.
- */
-const executeFunction = async ({ id, deactivation_notes = "" }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the request
-    const url = `${baseURL}/api/admin/customers/${id}/deactivate`;
+ * @param {Object} params - The parameters for deactivate customer.
+ * @param {string} params.id - The id.
 
-    // Set up headers for the request
+ * @param {string} [params.deactivation_notes] - The deactivation notes.
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      id,
+      deactivation_notes,
+    } = params;
+
+    let url = `${baseURL}/api/admin/customers/${id}/deactivate`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
 
-    // Prepare the request body
-    const body = JSON.stringify({ deactivation_notes });
+    const requestData = {
+      'deactivation_notes': deactivation_notes,
+    };
 
-    // Perform the fetch request
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body
+      body: JSON.stringify(requestData)
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error deactivating customer:', error);
-    return { error: 'An error occurred while deactivating the customer.' };
+    console.error('Error in deactivateCustomer:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for deactivating a customer.
+ * Tool configuration for deactivate customer.
  * @type {Object}
  */
 const apiTool = {
@@ -55,17 +58,17 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'deactivate_customer',
-      description: 'Deactivate a customer by ID.',
+      description: 'Deactivate Customer',
       parameters: {
         type: 'object',
         properties: {
           id: {
             type: 'string',
-            description: 'The ID of the customer to deactivate.'
+            description: 'The id'
           },
           deactivation_notes: {
             type: 'string',
-            description: 'Notes regarding the deactivation.'
+            description: 'The deactivation notes'
           }
         },
         required: ['id']

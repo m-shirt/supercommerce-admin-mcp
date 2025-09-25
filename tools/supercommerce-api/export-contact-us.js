@@ -1,13 +1,14 @@
 /**
- * Function to export contact us messages to a file.
+ * Function to export contact us.
  *
- * @param {Object} params - The parameters for exporting contact us messages.
- * @param {string} [params.q] - Search query to filter messages for export.
- * @param {string} [params.status] - Filter by status for export.
- * @param {string} [params.date_from] - Start date for filtering (YYYY-MM-DD).
- * @param {string} [params.date_to] - End date for filtering (YYYY-MM-DD).
- * @param {string} [params.type] - Export type (default: "12" for contact us).
- * @returns {Promise<Object>} - The result of the contact us export.
+ * @param {Object} params - The parameters for export contact us.
+
+
+ * @param {string} [params.page] - The page.
+ * @param {string} [params.q] - The q.
+ * @param {string} [params.id] - The id.
+ * @param {string} [params.type] - The type.
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
@@ -15,14 +16,14 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      q = '',
-      status,
-      date_from,
-      date_to,
-      type = '12'
+      page,
+      q,
+      id,
+      type,
     } = params;
 
     const url = `${baseURL}/api/admin/v2/files/exports/export`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -31,13 +32,11 @@ const executeFunction = async (params) => {
     };
 
     const requestData = {
-      q,
-      type: parseInt(type)
+      'page': page,
+      'q': q,
+      'id': id,
+      'type': type,
     };
-
-    if (status) requestData.status = status;
-    if (date_from) requestData.date_from = date_from;
-    if (date_to) requestData.date_to = date_to;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -52,13 +51,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error exporting contact us messages:', error);
-    return { error: error.message || 'An error occurred while exporting contact us messages.' };
+    console.error('Error in exportContactUs:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for exporting contact us messages.
+ * Tool configuration for export contact us.
  * @type {Object}
  */
 const apiTool = {
@@ -67,29 +66,25 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'export_contact_us',
-      description: 'Export contact us messages and customer inquiries to a file.',
+      description: 'Export Contact us',
       parameters: {
         type: 'object',
         properties: {
+          page: {
+            type: 'string',
+            description: 'The page'
+          },
           q: {
             type: 'string',
-            description: 'Search query to filter messages for export.'
+            description: 'The q'
           },
-          status: {
+          id: {
             type: 'string',
-            description: 'Filter messages by status for export.'
-          },
-          date_from: {
-            type: 'string',
-            description: 'Start date for filtering messages (YYYY-MM-DD format).'
-          },
-          date_to: {
-            type: 'string',
-            description: 'End date for filtering messages (YYYY-MM-DD format).'
+            description: 'The id'
           },
           type: {
             type: 'string',
-            description: 'Export type identifier (default: "12" for contact us).'
+            description: 'The type'
           }
         },
         required: []

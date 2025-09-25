@@ -1,46 +1,50 @@
 /**
- * Function to get all sub-categories by category ID.
+ * Function to get all  sub-categories by category id (dropdown).
  *
- * @param {Object} args - Arguments for the request.
- * @param {string} args.id - The ID of the category to retrieve sub-categories for.
- * @returns {Promise<Array>} - The list of sub-categories for the specified category.
- */
-const executeFunction = async ({ id }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the request
-    const url = `${baseURL}/api/admin/v2/dropdown/categories/${id}/subcategories`;
+ * @param {Object} params - The parameters for get all  sub-categories by category id (dropdown).
+ * @param {string} params.category_id - The category id.
 
-    // Set up headers for the request
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      category_id,
+    } = params;
+
+    let url = `${baseURL}/api/admin/v2/dropdown/categories/${category_id}/subcategories`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error getting sub-categories:', error);
-    return { error: 'An error occurred while getting sub-categories.' };
+    console.error('Error in getAllSubcategoriesByCategoryIdDropdown:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting sub-categories by category ID.
+ * Tool configuration for get all  sub-categories by category id (dropdown).
  * @type {Object}
  */
 const apiTool = {
@@ -48,17 +52,17 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'get_subcategories_by_category_id',
-      description: 'Get all sub-categories by category ID.',
+      name: 'get_all_subcategories_by_category_id_dropdown',
+      description: 'Get All  Sub-Categories by Category id (Dropdown)',
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          category_id: {
             type: 'string',
-            description: 'The ID of the category to retrieve sub-categories for.'
+            description: 'The category id'
           }
         },
-        required: ['id']
+        required: ['category_id']
       }
     }
   }

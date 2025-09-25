@@ -1,82 +1,109 @@
 /**
- * Function to create an address for a customer.
+ * Function to create address.
  *
- * @param {Object} args - The address details.
- * @param {string} args.id - The ID of the customer.
- * @param {string} args.name - The name associated with the address.
- * @param {string} args.address - The address details.
- * @param {number} args.city_id - The ID of the city.
- * @param {number} args.area_id - The ID of the area.
- * @param {string} [args.landmark] - The landmark for the address.
- * @param {string} [args.building] - The building name.
- * @param {string} [args.phone] - The phone number.
- * @param {string} [args.floor] - The floor number.
- * @param {string} [args.apartment] - The apartment number.
- * @param {string} [args.shop_name] - The name of the shop.
- * @param {string} [args.commercial_record] - The commercial record details.
- * @param {string} [args.bank_account] - The bank account details.
- * @param {string} [args.contact_number] - The contact number.
- * @param {string} [args.shop_image] - The image of the shop.
- * @param {string} [args.attachment_2] - Additional attachment.
- * @param {string} [args.attachment_3] - Additional attachment.
- * @param {string} [args.email] - The email address.
- * @param {number} [args.lat=0] - The latitude of the address.
- * @param {number} [args.lng=0] - The longitude of the address.
- * @returns {Promise<Object>} - The response from the API after creating the address.
- */
-const executeFunction = async ({ id, name, address, city_id, area_id, landmark = '', building = '', phone = '', floor = '', apartment = '', shop_name = '', commercial_record = '', bank_account = '', contact_number = '', shop_image = '', attachment_2 = '', attachment_3 = '', email = '', lat = 0, lng = 0 }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  const url = `${baseURL}/api/admin/customers/${id}/address`;
+ * @param {Object} params - The parameters for create address.
+ * @param {string} params.id - The id.
 
-  const body = {
-    name,
-    address,
-    city_id,
-    area_id,
-    landmark,
-    building,
-    phone,
-    floor,
-    apartment,
-    shop_name,
-    commercial_record,
-    bank_account,
-    contact_number,
-    shop_image,
-    attachment_2,
-    attachment_3,
-    email,
-    lat,
-    lng
-  };
+ * @param {string} [params.name] - The name.
+ * @param {string} [params.address] - The address.
+ * @param {string} [params.city_id] - The city id.
+ * @param {string} [params.area_id] - The area id.
+ * @param {string} [params.landmark] - The landmark.
+ * @param {string} [params.building] - The building.
+ * @param {string} [params.phone] - The phone.
+ * @param {string} [params.floor] - The floor.
+ * @param {string} [params.apartment] - The apartment.
+ * @param {string} [params.shop_name] - The shop name.
+ * @param {string} [params.commercial_record] - The commercial record.
+ * @param {string} [params.bank_account] - The bank account.
+ * @param {string} [params.contact_number] - The contact number.
+ * @param {string} [params.shop_image] - The shop image.
+ * @param {string} [params.attachment_2] - The attachment 2.
+ * @param {string} [params.attachment_3] - The attachment 3.
+ * @param {string} [params.email] - The email.
+ * @param {string} [params.lat] - The lat.
+ * @param {string} [params.lng] - The lng.
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
+    const {
+      id,
+      name,
+      address,
+      city_id,
+      area_id,
+      landmark,
+      building,
+      phone,
+      floor,
+      apartment,
+      shop_name,
+      commercial_record,
+      bank_account,
+      contact_number,
+      shop_image,
+      attachment_2,
+      attachment_3,
+      email,
+      lat,
+      lng,
+    } = params;
+
+    let url = `${baseURL}/api/admin/customers/${id}/address`;
+    
+
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    const requestData = {
+      'name': name,
+      'address': address,
+      'city_id': city_id,
+      'area_id': area_id,
+      'landmark': landmark,
+      'building': building,
+      'phone': phone,
+      'floor': floor,
+      'apartment': apartment,
+      'shop_name': shop_name,
+      'commercial_record': commercial_record,
+      'bank_account': bank_account,
+      'contact_number': contact_number,
+      'shop_image': shop_image,
+      'attachment_2': attachment_2,
+      'attachment_3': attachment_3,
+      'email': email,
+      'lat': lat,
+      'lng': lng,
+    };
+
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
+      headers,
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error creating address:', error);
-    return { error: 'An error occurred while creating the address.' };
+    console.error('Error in createAddress:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for creating an address for a customer.
+ * Tool configuration for create address.
  * @type {Object}
  */
 const apiTool = {
@@ -85,92 +112,92 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'create_address',
-      description: 'Create an address for a customer.',
+      description: 'Create Address',
       parameters: {
         type: 'object',
         properties: {
           id: {
             type: 'string',
-            description: 'The ID of the customer.'
+            description: 'The id'
           },
           name: {
             type: 'string',
-            description: 'The name associated with the address.'
+            description: 'The name'
           },
           address: {
             type: 'string',
-            description: 'The address details.'
+            description: 'The address'
           },
           city_id: {
-            type: 'integer',
-            description: 'The ID of the city.'
+            type: 'string',
+            description: 'The city id'
           },
           area_id: {
-            type: 'integer',
-            description: 'The ID of the area.'
+            type: 'string',
+            description: 'The area id'
           },
           landmark: {
             type: 'string',
-            description: 'The landmark for the address.'
+            description: 'The landmark'
           },
           building: {
             type: 'string',
-            description: 'The building name.'
+            description: 'The building'
           },
           phone: {
             type: 'string',
-            description: 'The phone number.'
+            description: 'The phone'
           },
           floor: {
             type: 'string',
-            description: 'The floor number.'
+            description: 'The floor'
           },
           apartment: {
             type: 'string',
-            description: 'The apartment number.'
+            description: 'The apartment'
           },
           shop_name: {
             type: 'string',
-            description: 'The name of the shop.'
+            description: 'The shop name'
           },
           commercial_record: {
             type: 'string',
-            description: 'The commercial record details.'
+            description: 'The commercial record'
           },
           bank_account: {
             type: 'string',
-            description: 'The bank account details.'
+            description: 'The bank account'
           },
           contact_number: {
             type: 'string',
-            description: 'The contact number.'
+            description: 'The contact number'
           },
           shop_image: {
             type: 'string',
-            description: 'The image of the shop.'
+            description: 'The shop image'
           },
           attachment_2: {
             type: 'string',
-            description: 'Additional attachment.'
+            description: 'The attachment 2'
           },
           attachment_3: {
             type: 'string',
-            description: 'Additional attachment.'
+            description: 'The attachment 3'
           },
           email: {
             type: 'string',
-            description: 'The email address.'
+            description: 'The email'
           },
           lat: {
-            type: 'number',
-            description: 'The latitude of the address.'
+            type: 'string',
+            description: 'The lat'
           },
           lng: {
-            type: 'number',
-            description: 'The longitude of the address.'
+            type: 'string',
+            description: 'The lng'
           }
         },
-        required: ['id', 'name', 'address', 'city_id', 'area_id']
+        required: ['id']
       }
     }
   }

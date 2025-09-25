@@ -1,23 +1,30 @@
 /**
- * Function to delete a push notification.
+ * Function to delete notification.
  *
- * @param {Object} params - The parameters for deleting a push notification.
- * @param {string} params.notification_id - The ID of the notification to delete.
- * @returns {Promise<Object>} - The result of deleting the push notification.
+ * @param {Object} params - The parameters for delete notification.
+ * @param {string} params.id - The id.
+
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { notification_id } = params;
+    const {
+      id,
+    } = params;
 
-    const url = `${baseURL}/api/admin/push_messages/${notification_id}`;
+    let url = `${baseURL}/api/admin/push_messages/${id}`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
+
+    
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -31,13 +38,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error deleting push notification:', error);
-    return { error: error.message || 'An error occurred while deleting push notification.' };
+    console.error('Error in deleteNotification:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for deleting push notifications.
+ * Tool configuration for delete notification.
  * @type {Object}
  */
 const apiTool = {
@@ -46,16 +53,16 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'delete_notification',
-      description: 'Delete a push notification by its ID.',
+      description: 'Delete Notification',
       parameters: {
         type: 'object',
         properties: {
-          notification_id: {
+          id: {
             type: 'string',
-            description: 'The ID of the notification to delete.'
+            description: 'The id'
           }
         },
-        required: ['notification_id']
+        required: ['id']
       }
     }
   }

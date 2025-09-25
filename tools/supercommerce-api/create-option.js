@@ -1,34 +1,26 @@
 /**
- * Function to create an option in the backend API.
+ * Function to create option.
  *
- * @param {Object} args - Arguments for creating an option.
- * @param {string} args.name_en - The English name of the option.
- * @param {string} args.name_ar - The Arabic name of the option.
- * @param {string} [args.description_en=""] - The English description of the option.
- * @param {string} [args.description_ar=""] - The Arabic description of the option.
- * @param {boolean} [args.appear_in_search=false] - Whether the option should appear in search results.
- * @param {number} [args.preview_type=1] - The preview type of the option.
- * @param {string} [args.type="1"] - The type of the option.
- * @param {number} [args.order=1] - The order of the option.
- * @param {Array<Object>} args.values - The values associated with the option.
- * @returns {Promise<Object>} - The result of the option creation.
+ * @param {Object} params - The parameters for create option.
+
+
+ * @param {string} [params.name_en] - The name en.
+ * @param {string} [params.name_ar] - The name ar.
+ * @param {string} [params.description_en] - The description en.
+ * @param {string} [params.description_ar] - The description ar.
+ * @param {string} [params.appear_in_search] - The appear in search.
+ * @param {string} [params.preview_type] - The preview type.
+ * @param {string} [params.type] - The type.
+ * @param {string} [params.order] - The order.
+ * @param {string} [params.values] - The values.
+ * @returns {Promise<Object>} - The result of the operation.
  */
-const executeFunction = async ({ name_en, name_ar, description_en = "", description_ar = "", appear_in_search = false, preview_type = 1, type = "1", order = 1, values }) => {
+const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
   try {
-    // Construct the URL for the API endpoint
-    const url = `${baseURL}/api/admin/options`;
-
-    // Set up headers for the request
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    };
-
-    // Prepare the request body
-    const body = JSON.stringify({
+    const {
       name_en,
       name_ar,
       description_en,
@@ -37,33 +29,50 @@ const executeFunction = async ({ name_en, name_ar, description_en = "", descript
       preview_type,
       type,
       order,
-      values
-    });
+      values,
+    } = params;
 
-    // Perform the fetch request
+    const url = `${baseURL}/api/admin/options`;
+    
+
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    const requestData = {
+      'name_en': name_en,
+      'name_ar': name_ar,
+      'description_en': description_en,
+      'description_ar': description_ar,
+      'appear_in_search': appear_in_search,
+      'preview_type': preview_type,
+      'type': type,
+      'order': order,
+      'values': values,
+    };
+
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body
+      body: JSON.stringify(requestData)
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error creating option:', error);
-    return { error: 'An error occurred while creating the option.' };
+    console.error('Error in createOption:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for creating an option in the backend API.
+ * Tool configuration for create option.
  * @type {Object}
  */
 const apiTool = {
@@ -72,60 +81,48 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'create_option',
-      description: 'Create an option in the backend API.',
+      description: 'Create Option',
       parameters: {
         type: 'object',
         properties: {
           name_en: {
             type: 'string',
-            description: 'The English name of the option.'
+            description: 'The name en'
           },
           name_ar: {
             type: 'string',
-            description: 'The Arabic name of the option.'
+            description: 'The name ar'
           },
           description_en: {
             type: 'string',
-            description: 'The English description of the option.'
+            description: 'The description en'
           },
           description_ar: {
             type: 'string',
-            description: 'The Arabic description of the option.'
+            description: 'The description ar'
           },
           appear_in_search: {
-            type: 'boolean',
-            description: 'Whether the option should appear in search results.'
+            type: 'string',
+            description: 'The appear in search'
           },
           preview_type: {
-            type: 'integer',
-            description: 'The preview type of the option.'
+            type: 'string',
+            description: 'The preview type'
           },
           type: {
             type: 'string',
-            description: 'The type of the option.'
+            description: 'The type'
           },
           order: {
-            type: 'integer',
-            description: 'The order of the option.'
+            type: 'string',
+            description: 'The order'
           },
           values: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                id: { type: 'string' },
-                name_en: { type: 'string' },
-                name_ar: { type: 'string' },
-                color_code: { type: 'string' },
-                order: { type: 'string' },
-                image: { type: 'string' }
-              },
-              required: ['name_en', 'name_ar', 'order']
-            },
-            description: 'The values associated with the option.'
+            type: 'string',
+            description: 'The values'
           }
         },
-        required: ['name_en', 'name_ar', 'values']
+        required: []
       }
     }
   }

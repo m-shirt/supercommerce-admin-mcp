@@ -1,13 +1,12 @@
 /**
- * Function to retrieve delivery managers.
+ * Function to get delivery managers.
  *
- * @param {Object} params - The parameters for retrieving delivery managers.
- * @param {number} [params.page] - Page number for pagination (default: 1).
- * @param {number} [params.per_page] - Number of items per page (default: 15).
- * @param {string} [params.q] - Search query to filter delivery managers.
- * @param {string} [params.status] - Filter delivery managers by status (active/inactive).
- * @param {string} [params.city_id] - Filter by city ID.
- * @returns {Promise<Object>} - The list of delivery managers.
+ * @param {Object} params - The parameters for get delivery managers.
+
+ * @param {string} [params.q] - q.
+ * @param {string} [params.page] - page.
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
@@ -15,31 +14,24 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      page = 1,
-      per_page = 15,
       q,
-      status,
-      city_id
+      page,
     } = params;
 
-    let url = `${baseURL}/api/admin/v2/deliverers?page=${page}&per_page=${per_page}`;
-
-    if (q) {
-      url += `&q=${encodeURIComponent(q)}`;
-    }
-
-    if (status) {
-      url += `&status=${status}`;
-    }
-
-    if (city_id) {
-      url += `&city_id=${city_id}`;
-    }
+    const url = `${baseURL}/api/admin/v2/deliverers?q=&page=1`;
+    
+    const queryParams = new URLSearchParams();
+    if (q !== undefined) queryParams.append('q', q);
+    if (page !== undefined) queryParams.append('page', page);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
+
+    
 
     const response = await fetch(url, {
       method: 'GET',
@@ -53,13 +45,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error retrieving delivery managers:', error);
-    return { error: error.message || 'An error occurred while retrieving delivery managers.' };
+    console.error('Error in getDeliveryManagers:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for retrieving delivery managers.
+ * Tool configuration for get delivery managers.
  * @type {Object}
  */
 const apiTool = {
@@ -68,29 +60,17 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'get_delivery_managers',
-      description: 'Retrieve delivery managers with filtering and pagination options.',
+      description: 'Get Delivery Managers',
       parameters: {
         type: 'object',
         properties: {
-          page: {
-            type: 'number',
-            description: 'Page number for pagination (default: 1).'
-          },
-          per_page: {
-            type: 'number',
-            description: 'Number of items per page (default: 15).'
-          },
           q: {
             type: 'string',
-            description: 'Search query to filter delivery managers by name, email, or phone.'
+            description: 'q'
           },
-          status: {
+          page: {
             type: 'string',
-            description: 'Filter delivery managers by status (e.g., "active", "inactive").'
-          },
-          city_id: {
-            type: 'string',
-            description: 'Filter delivery managers by city ID.'
+            description: 'page'
           }
         },
         required: []

@@ -1,53 +1,69 @@
 /**
- * Function to create a brand.
+ * Function to create brand.
  *
- * @param {Object} brandData - The data for the brand to be created.
- * @param {string} brandData.name - The name of the brand.
- * @param {string} brandData.name_ar - The Arabic name of the brand.
- * @param {string} brandData.slug - The slug for the brand.
- * @param {string} brandData.image - The URL of the brand image.
- * @param {boolean} brandData.featured - Indicates if the brand is featured.
- * @param {Array} brandData.images - An array of additional image URLs for the brand.
- * @returns {Promise<Object>} - The result of the brand creation.
- */
-const executeFunction = async (brandData) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Set up the URL for the request
-    const url = `${baseURL}/api/admin/brands`;
+ * @param {Object} params - The parameters for create brand.
 
-    // Set up headers for the request
+
+ * @param {string} [params.name] - The name.
+ * @param {string} [params.name_ar] - The name ar.
+ * @param {string} [params.slug] - The slug.
+ * @param {string} [params.image] - The image.
+ * @param {string} [params.featured] - The featured.
+ * @param {string} [params.images] - The images.
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      name,
+      name_ar,
+      slug,
+      image,
+      featured,
+      images,
+    } = params;
+
+    const url = `${baseURL}/api/admin/brands`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
 
-    // Perform the fetch request
+    const requestData = {
+      'name': name,
+      'name_ar': name_ar,
+      'slug': slug,
+      'image': image,
+      'featured': featured,
+      'images': images,
+    };
+
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify(brandData)
+      body: JSON.stringify(requestData)
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error creating brand:', error);
-    return { error: 'An error occurred while creating the brand.' };
+    console.error('Error in createBrand:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for creating a brand.
+ * Tool configuration for create brand.
  * @type {Object}
  */
 const apiTool = {
@@ -56,39 +72,36 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'create_brand',
-      description: 'Create a new brand.',
+      description: 'Create Brand',
       parameters: {
         type: 'object',
         properties: {
           name: {
             type: 'string',
-            description: 'The name of the brand.'
+            description: 'The name'
           },
           name_ar: {
             type: 'string',
-            description: 'The Arabic name of the brand.'
+            description: 'The name ar'
           },
           slug: {
             type: 'string',
-            description: 'The slug for the brand.'
+            description: 'The slug'
           },
           image: {
             type: 'string',
-            description: 'The URL of the brand image.'
+            description: 'The image'
           },
           featured: {
-            type: 'boolean',
-            description: 'Indicates if the brand is featured.'
+            type: 'string',
+            description: 'The featured'
           },
           images: {
-            type: 'array',
-            items: {
-              type: 'string'
-            },
-            description: 'An array of additional image URLs for the brand.'
+            type: 'string',
+            description: 'The images'
           }
         },
-        required: ['name', 'slug', 'image']
+        required: []
       }
     }
   }

@@ -1,44 +1,27 @@
 /**
- * Function to list customers from the backend API.
+ * Function to list customers.
  *
- * @param {Object} args - Arguments for the customer search.
- * @param {Array} [args.ids=[]] - Array of customer IDs to filter the search.
- * @param {string} [args.name=""] - Name of the customer to search for.
- * @param {string} [args.email=""] - Email of the customer to search for.
- * @param {string} [args.phone=""] - Phone number of the customer to search for.
- * @param {string|null} [args.customer_type=null] - Type of customer to filter the search.
- * @param {Array} [args.area_id=[]] - Array of area IDs to filter the search.
- * @param {Array} [args.city_id=[]] - Array of city IDs to filter the search.
- * @param {boolean|null} [args.active=null] - Filter for active customers.
- * @param {string} [args.page="1"] - Page number for pagination.
- * @param {string} [args.admin_approved=""] - Filter for admin-approved customers.
- * @returns {Promise<Array>} - The list of customers matching the search criteria.
- */
-const executeFunction = async ({
-  ids = [],
-  name = '',
-  email = '',
-  phone = '',
-  customer_type = null,
-  area_id = [],
-  city_id = [],
-  active = null,
-  page = '1',
-  admin_approved = ''
-}) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  
-  try {
-    const url = `${baseURL}/api/admin/v2/customers/search`;
-    
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    };
+ * @param {Object} params - The parameters for list customers.
 
-    const body = JSON.stringify({
+
+ * @param {string} [params.ids] - The ids.
+ * @param {string} [params.name] - The name.
+ * @param {string} [params.email] - The email.
+ * @param {string} [params.phone] - The phone.
+ * @param {string} [params.customer_type] - The customer type.
+ * @param {string} [params.area_id] - The area id.
+ * @param {string} [params.city_id] - The city id.
+ * @param {string} [params.active] - The active.
+ * @param {string} [params.page] - The page.
+ * @param {string} [params.admin_approved] - The admin approved.
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
       ids,
       name,
       email,
@@ -48,30 +31,51 @@ const executeFunction = async ({
       city_id,
       active,
       page,
-      admin_approved
-    });
+      admin_approved,
+    } = params;
+
+    const url = `${baseURL}/api/admin/v2/customers/search`;
+    
+
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    const requestData = {
+      'ids': ids,
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'customer_type': customer_type,
+      'area_id': area_id,
+      'city_id': city_id,
+      'active': active,
+      'page': page,
+      'admin_approved': admin_approved,
+    };
 
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error listing customers:', error);
-    return { error: 'An error occurred while listing customers.' };
+    console.error('Error in listCustomers:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for listing customers from the backend API.
+ * Tool configuration for list customers.
  * @type {Object}
  */
 const apiTool = {
@@ -80,54 +84,49 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'list_customers',
-      description: 'List customers from the backend API.',
+      description: 'List Customers',
       parameters: {
         type: 'object',
         properties: {
           ids: {
-            type: 'array',
-            items: { type: 'string' },
-            description: 'Array of customer IDs to filter the search.'
+            type: 'string',
+            description: 'The ids'
           },
           name: {
             type: 'string',
-            description: 'Name of the customer to search for.'
+            description: 'The name'
           },
           email: {
             type: 'string',
-            description: 'Email of the customer to search for.'
+            description: 'The email'
           },
           phone: {
             type: 'string',
-            description: 'Phone number of the customer to search for.'
+            description: 'The phone'
           },
           customer_type: {
             type: 'string',
-            nullable: true,
-            description: 'Type of customer to filter the search.'
+            description: 'The customer type'
           },
           area_id: {
-            type: 'array',
-            items: { type: 'string' },
-            description: 'Array of area IDs to filter the search.'
+            type: 'string',
+            description: 'The area id'
           },
           city_id: {
-            type: 'array',
-            items: { type: 'string' },
-            description: 'Array of city IDs to filter the search.'
+            type: 'string',
+            description: 'The city id'
           },
           active: {
-            type: 'boolean',
-            nullable: true,
-            description: 'Filter for active customers.'
+            type: 'string',
+            description: 'The active'
           },
           page: {
             type: 'string',
-            description: 'Page number for pagination.'
+            description: 'The page'
           },
           admin_approved: {
             type: 'string',
-            description: 'Filter for admin-approved customers.'
+            description: 'The admin approved'
           }
         },
         required: []

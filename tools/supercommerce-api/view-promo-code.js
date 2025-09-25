@@ -1,46 +1,50 @@
 /**
- * Function to view a promo code from the backend API.
+ * Function to view promo code.
  *
- * @param {Object} args - Arguments for the promo code retrieval.
- * @param {string} args.id - The ID of the promo code to retrieve.
- * @returns {Promise<Object>} - The result of the promo code retrieval.
- */
-const executeFunction = async ({ id }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the request
-    const url = `${baseURL}/api/admin/promos/${id}`;
+ * @param {Object} params - The parameters for view promo code.
+ * @param {string} params.id - The id.
 
-    // Set up headers for the request
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      id,
+    } = params;
+
+    let url = `${baseURL}/api/admin/promos/${id}`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error retrieving promo code:', error);
-    return { error: 'An error occurred while retrieving the promo code.' };
+    console.error('Error in viewPromoCode:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for viewing a promo code from the backend API.
+ * Tool configuration for view promo code.
  * @type {Object}
  */
 const apiTool = {
@@ -49,13 +53,13 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'view_promo_code',
-      description: 'Retrieve a promo code from the backend API.',
+      description: 'View Promo Code',
       parameters: {
         type: 'object',
         properties: {
           id: {
             type: 'string',
-            description: 'The ID of the promo code to retrieve.'
+            description: 'The id'
           }
         },
         required: ['id']

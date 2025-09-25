@@ -1,66 +1,87 @@
 /**
- * Function to create an order in the backend API.
+ * Function to create order.
  *
- * @param {Object} args - The order details.
- * @param {number} args.user_id - The ID of the user placing the order.
- * @param {number} args.address_id - The ID of the address for delivery.
- * @param {string} args.branch_id - The ID of the branch (optional).
- * @param {string} args.payment_method - The payment method ID.
- * @param {Array<Object>} args.items - The items in the order.
- * @param {string} args.notes - Any additional notes for the order.
- * @param {string} args.admin_notes - Notes for the admin.
- * @param {number} args.overwrite_fees - Fees to overwrite (if any).
- * @param {string} args.delivery_fees - Delivery fees (if any).
- * @param {number} args.has_address - Flag indicating if an address is provided.
- * @param {number} args.has_customer - Flag indicating if a customer is provided.
- * @param {boolean} args.notify_customer - Flag to notify the customer.
- * @returns {Promise<Object>} - The response from the API after creating the order.
+ * @param {Object} params - The parameters for create order.
+
+
+ * @param {string} [params.user_id] - The user id.
+ * @param {string} [params.address_id] - The address id.
+ * @param {string} [params.branch_id] - The branch id.
+ * @param {string} [params.payment_method] - The payment method.
+ * @param {string} [params.items] - The items.
+ * @param {string} [params.notes] - The notes.
+ * @param {string} [params.admin_notes] - The admin notes.
+ * @param {string} [params.overwrite_fees] - The overwrite fees.
+ * @param {string} [params.delivery_fees] - The delivery fees.
+ * @param {string} [params.has_address] - The has address.
+ * @param {string} [params.has_customer] - The has customer.
+ * @param {string} [params.notify_customer] - The notify customer.
+ * @returns {Promise<Object>} - The result of the operation.
  */
-const executeFunction = async ({ user_id, address_id, branch_id = '', payment_method, items, notes = '', admin_notes = '', overwrite_fees = 0, delivery_fees = '', has_address = 0, has_customer = 1, notify_customer = true }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
-  const orderData = {
-    user_id,
-    address_id,
-    branch_id,
-    payment_method,
-    items,
-    notes,
-    admin_notes,
-    overwrite_fees,
-    delivery_fees,
-    has_address,
-    has_customer,
-    notify_customer
-  };
-
   try {
-    const response = await fetch(`${baseURL}/api/admin/orders`, {
+    const {
+      user_id,
+      address_id,
+      branch_id,
+      payment_method,
+      items,
+      notes,
+      admin_notes,
+      overwrite_fees,
+      delivery_fees,
+      has_address,
+      has_customer,
+      notify_customer,
+    } = params;
+
+    const url = `${baseURL}/api/admin/orders`;
+    
+
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    const requestData = {
+      'user_id': user_id,
+      'address_id': address_id,
+      'branch_id': branch_id,
+      'payment_method': payment_method,
+      'items': items,
+      'notes': notes,
+      'admin_notes': admin_notes,
+      'overwrite_fees': overwrite_fees,
+      'delivery_fees': delivery_fees,
+      'has_address': has_address,
+      'has_customer': has_customer,
+      'notify_customer': notify_customer,
+    };
+
+    const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(orderData)
+      headers,
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error creating order:', error);
-    return { error: 'An error occurred while creating the order.' };
+    console.error('Error in createOrder:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for creating an order in the backend API.
+ * Tool configuration for create order.
  * @type {Object}
  */
 const apiTool = {
@@ -69,86 +90,60 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'create_order',
-      description: 'Create an order in the backend API.',
+      description: 'Create Order',
       parameters: {
         type: 'object',
         properties: {
           user_id: {
-            type: 'integer',
-            description: 'The ID of the user placing the order.'
+            type: 'string',
+            description: 'The user id'
           },
           address_id: {
-            type: 'integer',
-            description: 'The ID of the address for delivery.'
+            type: 'string',
+            description: 'The address id'
           },
           branch_id: {
             type: 'string',
-            description: 'The ID of the branch (optional).'
+            description: 'The branch id'
           },
           payment_method: {
             type: 'string',
-            description: 'The payment method ID.'
+            description: 'The payment method'
           },
           items: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                id: {
-                  type: 'integer',
-                  description: 'The ID of the product.'
-                },
-                amount: {
-                  type: 'integer',
-                  description: 'The quantity of the product.'
-                },
-                product_name: {
-                  type: 'string',
-                  description: 'The name of the product.'
-                },
-                sku: {
-                  type: 'string',
-                  description: 'The SKU of the product.'
-                },
-                disabled: {
-                  type: 'boolean',
-                  description: 'Flag indicating if the product is disabled.'
-                }
-              },
-              required: ['id', 'amount', 'product_name', 'sku', 'disabled']
-            },
-            description: 'The items in the order.'
+            type: 'string',
+            description: 'The items'
           },
           notes: {
             type: 'string',
-            description: 'Any additional notes for the order.'
+            description: 'The notes'
           },
           admin_notes: {
             type: 'string',
-            description: 'Notes for the admin.'
+            description: 'The admin notes'
           },
           overwrite_fees: {
-            type: 'integer',
-            description: 'Fees to overwrite (if any).'
+            type: 'string',
+            description: 'The overwrite fees'
           },
           delivery_fees: {
             type: 'string',
-            description: 'Delivery fees (if any).'
+            description: 'The delivery fees'
           },
           has_address: {
-            type: 'integer',
-            description: 'Flag indicating if an address is provided.'
+            type: 'string',
+            description: 'The has address'
           },
           has_customer: {
-            type: 'integer',
-            description: 'Flag indicating if a customer is provided.'
+            type: 'string',
+            description: 'The has customer'
           },
           notify_customer: {
-            type: 'boolean',
-            description: 'Flag to notify the customer.'
+            type: 'string',
+            description: 'The notify customer'
           }
         },
-        required: ['user_id', 'address_id', 'payment_method', 'items']
+        required: []
       }
     }
   }

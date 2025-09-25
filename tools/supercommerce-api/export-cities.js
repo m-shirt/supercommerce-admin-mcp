@@ -1,11 +1,11 @@
 /**
- * Function to export cities/governorates data to a file.
+ * Function to export cities.
  *
- * @param {Object} params - The parameters for exporting cities.
- * @param {string} [params.q] - Search query to filter cities for export.
- * @param {string} [params.status] - Filter by status for export.
- * @param {string} [params.type] - Export type (default: "11" for cities).
- * @returns {Promise<Object>} - The result of the cities export.
+ * @param {Object} params - The parameters for export cities.
+
+
+ * @param {string} [params.type] - The type.
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
@@ -13,12 +13,11 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      q = '',
-      status,
-      type = '11'
+      type,
     } = params;
 
     const url = `${baseURL}/api/admin/v2/files/exports/export`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -27,11 +26,8 @@ const executeFunction = async (params) => {
     };
 
     const requestData = {
-      q,
-      type: parseInt(type)
+      'type': type,
     };
-
-    if (status) requestData.status = status;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -46,13 +42,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error exporting cities:', error);
-    return { error: error.message || 'An error occurred while exporting cities.' };
+    console.error('Error in exportCities:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for exporting cities.
+ * Tool configuration for export cities.
  * @type {Object}
  */
 const apiTool = {
@@ -61,21 +57,13 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'export_cities',
-      description: 'Export cities/governorates data to a file with optional filtering.',
+      description: 'Export Cities',
       parameters: {
         type: 'object',
         properties: {
-          q: {
-            type: 'string',
-            description: 'Search query to filter cities for export.'
-          },
-          status: {
-            type: 'string',
-            description: 'Filter cities by status for export.'
-          },
           type: {
             type: 'string',
-            description: 'Export type identifier (default: "11" for cities).'
+            description: 'The type'
           }
         },
         required: []

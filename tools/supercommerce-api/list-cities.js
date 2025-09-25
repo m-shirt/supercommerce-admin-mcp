@@ -1,44 +1,50 @@
 /**
- * Function to list cities from the backend API.
+ * Function to list cities.
  *
- * @returns {Promise<Array>} - The list of cities.
- */
-const executeFunction = async () => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the request
-    const url = `${baseURL}/api/admin/v2/dropdown/cities`;
+ * @param {Object} params - The parameters for list cities.
 
-    // Set up headers for the request
+
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+
+    } = params;
+
+    const url = `${baseURL}/api/admin/v2/dropdown/cities`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error listing cities:', error);
-    return { error: 'An error occurred while listing cities.' };
+    console.error('Error in listCities:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for listing cities from the backend API.
+ * Tool configuration for list cities.
  * @type {Object}
  */
 const apiTool = {
@@ -47,10 +53,12 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'list_cities',
-      description: 'List cities from the backend API.',
+      description: 'List Cities',
       parameters: {
         type: 'object',
-        properties: {},
+        properties: {
+
+        },
         required: []
       }
     }

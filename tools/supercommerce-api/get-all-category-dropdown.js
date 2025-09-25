@@ -1,44 +1,50 @@
 /**
- * Function to get all categories for a dropdown.
+ * Function to get all category (dropdown).
  *
- * @returns {Promise<Array>} - The list of categories.
- */
-const executeFunction = async () => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the request
-    const url = `${baseURL}/api/admin/v2/dropdown/categories/`;
+ * @param {Object} params - The parameters for get all category (dropdown).
 
-    // Set up headers for the request
+
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+
+    } = params;
+
+    const url = `${baseURL}/api/admin/v2/dropdown/categories/`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error fetching categories:', error);
-    return { error: 'An error occurred while fetching categories.' };
+    console.error('Error in getAllCategoryDropdown:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting all categories for a dropdown.
+ * Tool configuration for get all category (dropdown).
  * @type {Object}
  */
 const apiTool = {
@@ -46,11 +52,13 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'get_all_categories',
-      description: 'Get all categories for a dropdown.',
+      name: 'get_all_category_dropdown',
+      description: 'Get All Category (Dropdown)',
       parameters: {
         type: 'object',
-        properties: {},
+        properties: {
+
+        },
         required: []
       }
     }

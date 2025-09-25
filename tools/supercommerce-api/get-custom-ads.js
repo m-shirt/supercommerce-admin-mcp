@@ -1,20 +1,30 @@
 /**
- * Function to get a list of custom ads.
+ * Function to get custom ads.
  *
- * @param {Object} params - The parameters for filtering custom ads (currently no filters supported).
- * @returns {Promise<Object>} - The result containing custom ads list.
+ * @param {Object} params - The parameters for get custom ads.
+
+
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
+    const {
+
+    } = params;
+
     const url = `${baseURL}/api/admin/custom-ads`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
+
+    
 
     const response = await fetch(url, {
       method: 'GET',
@@ -28,13 +38,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error getting custom ads:', error);
-    return { error: error.message || 'An error occurred while fetching custom ads.' };
+    console.error('Error in getCustomAds:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting custom ads.
+ * Tool configuration for get custom ads.
  * @type {Object}
  */
 const apiTool = {
@@ -43,10 +53,12 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'get_custom_ads',
-      description: 'Get a list of all custom ads in the store front.',
+      description: 'Get Custom Ads',
       parameters: {
         type: 'object',
-        properties: {},
+        properties: {
+
+        },
         required: []
       }
     }

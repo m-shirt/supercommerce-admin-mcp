@@ -1,156 +1,150 @@
 /**
- * Function to edit an order in the backend API.
+ * Function to edit order.
  *
- * @param {Object} args - Arguments for editing the order.
- * @param {number} args.id - The ID of the order to edit.
- * @param {number} args.user_id - The user ID associated with the order.
- * @param {number} args.address_id - The address ID for the order.
- * @param {Array<Object>} args.items - The items in the order.
- * @param {string} [args.notes=""] - Any notes related to the order.
- * @param {number} [args.delivery_fees=0] - The delivery fees for the order.
- *                                            If you want to override the delivery fees,
- *                                            set this to the new amount and `overwrite_fees` will be set to 1.
- *                                            If you do NOT want to edit delivery fees, send `"overwrite_fees": null`.
- * @param {boolean} [args.notify_customer=true] - Whether to notify the customer.
- * @param {number|null} [args.overwrite_fees=null] - Flag to indicate if delivery fees are overridden (1),
- *                                                   or null to leave as is.
- * @returns {Promise<Object>} - The result of the order edit operation.
+ * @param {Object} params - The parameters for edit order.
+ * @param {string} params.id - The id.
+
+ * @param {string} [params.user_id] - The user id.
+ * @param {string} [params.address_id] - The address id.
+ * @param {string} [params.branch_id] - The branch id.
+ * @param {string} [params.items] - The items.
+ * @param {string} [params.notes] - The notes.
+ * @param {string} [params.overwrite_fees] - The overwrite fees.
+ * @param {string} [params.delivery_fees] - The delivery fees.
+ * @param {string} [params.has_address] - The has address.
+ * @param {string} [params.has_customer] - The has customer.
+ * @param {string} [params.notify_customer] - The notify customer.
+ * @param {string} [params.deleted_items] - The deleted items.
+ * @returns {Promise<Object>} - The result of the operation.
  */
-const executeFunction = async ({
-  id,
-  user_id,
-  address_id,
-  items,
-  notes = "",
-  delivery_fees = 0,
-  notify_customer = true,
-  overwrite_fees = null,
-}) => {
+const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
   try {
-    const url = `${baseURL}/api/admin/orders/${id}`;
-
-    // Determine if overwrite_fees should be set to 1 or left as null
-    const shouldOverwrite = delivery_fees && overwrite_fees !== null ? 1 : overwrite_fees;
-
-    const body = {
+    const {
+      id,
       user_id,
       address_id,
+      branch_id,
       items,
       notes,
+      overwrite_fees,
       delivery_fees,
-      has_address: address_id ? 1 : 0,
-      has_customer: user_id ? 1 : 0,
+      has_address,
+      has_customer,
       notify_customer,
-      deleted_items: [],
-      overwrite_fees: shouldOverwrite,
-    };
+      deleted_items,
+    } = params;
+
+    let url = `${baseURL}/api/admin/orders/${id}`;
+    
 
     const headers = {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    const requestData = {
+      'user_id': user_id,
+      'address_id': address_id,
+      'branch_id': branch_id,
+      'items': items,
+      'notes': notes,
+      'overwrite_fees': overwrite_fees,
+      'delivery_fees': delivery_fees,
+      'has_address': has_address,
+      'has_customer': has_customer,
+      'notify_customer': notify_customer,
+      'deleted_items': deleted_items,
     };
 
     const response = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers,
-      body: JSON.stringify(body),
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error("Error editing order:", error);
-    return { error: "An error occurred while editing the order." };
+    console.error('Error in editOrder:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for editing orders in the backend API.
+ * Tool configuration for edit order.
  * @type {Object}
  */
 const apiTool = {
   function: executeFunction,
   definition: {
-    type: "function",
+    type: 'function',
     function: {
-      name: "edit_order",
-      description: "Edit an order in the backend API.",
+      name: 'edit_order',
+      description: 'Edit Order',
       parameters: {
-        type: "object",
+        type: 'object',
         properties: {
           id: {
-            type: "integer",
-            description: "The ID of the order to edit.",
+            type: 'string',
+            description: 'The id'
           },
           user_id: {
-            type: "integer",
-            description: "The user ID associated with the order.",
+            type: 'string',
+            description: 'The user id'
           },
           address_id: {
-            type: "integer",
-            description: "The address ID for the order.",
+            type: 'string',
+            description: 'The address id'
+          },
+          branch_id: {
+            type: 'string',
+            description: 'The branch id'
           },
           items: {
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                id: {
-                  type: "integer",
-                  description: "The ID of the item.",
-                },
-                amount: {
-                  type: "integer",
-                  description: "The amount of the item.",
-                },
-                product_name: {
-                  type: "string",
-                  description: "The name of the product.",
-                },
-                sku: {
-                  type: "string",
-                  description: "The SKU of the product.",
-                },
-                disabled: {
-                  type: "boolean",
-                  description: "Whether the item is disabled.",
-                },
-              },
-              required: ["id", "amount", "sku"],
-            },
-            description: "The items in the order.",
+            type: 'string',
+            description: 'The items'
           },
           notes: {
-            type: "string",
-            description: "Any notes related to the order.",
-          },
-          delivery_fees: {
-            type: "integer",
-            description:
-              "The delivery fees for the order. If you want to override the delivery fees, set this to the new amount.",
+            type: 'string',
+            description: 'The notes'
           },
           overwrite_fees: {
-            type: ["integer", "null"],
-            description:
-              "Set to 1 to override delivery fees with the new amount, or null to leave delivery fees unchanged.",
+            type: 'string',
+            description: 'The overwrite fees'
+          },
+          delivery_fees: {
+            type: 'string',
+            description: 'The delivery fees'
+          },
+          has_address: {
+            type: 'string',
+            description: 'The has address'
+          },
+          has_customer: {
+            type: 'string',
+            description: 'The has customer'
           },
           notify_customer: {
-            type: "boolean",
-            description: "Whether to notify the customer.",
+            type: 'string',
+            description: 'The notify customer'
           },
+          deleted_items: {
+            type: 'string',
+            description: 'The deleted items'
+          }
         },
-        required: ["id", "user_id", "items"],
-      },
-    },
-  },
+        required: ['id']
+      }
+    }
+  }
 };
 
 export { apiTool };

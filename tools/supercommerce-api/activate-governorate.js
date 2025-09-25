@@ -1,18 +1,23 @@
 /**
- * Function to activate a governorate.
+ * Function to activate governorate.
  *
- * @param {Object} params - The parameters for activating a governorate.
- * @param {string} params.city_id - The ID of the governorate to activate.
- * @returns {Promise<Object>} - The result of the governorate activation.
+ * @param {Object} params - The parameters for activate governorate.
+ * @param {string} params.id - The id.
+
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { city_id } = params;
+    const {
+      id,
+    } = params;
 
-    const url = `${baseURL}/api/admin/cities/${city_id}/activate`;
+    let url = `${baseURL}/api/admin/cities/${id}/activate`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -20,10 +25,11 @@ const executeFunction = async (params) => {
       'Content-Type': 'application/json'
     };
 
+    
+
     const response = await fetch(url, {
       method: 'POST',
-      headers,
-      body: JSON.stringify({})
+      headers
     });
 
     if (!response.ok) {
@@ -33,13 +39,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error activating governorate:', error);
-    return { error: error.message || 'An error occurred while activating the governorate.' };
+    console.error('Error in activateGovernorate:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for activating a governorate.
+ * Tool configuration for activate governorate.
  * @type {Object}
  */
 const apiTool = {
@@ -48,16 +54,16 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'activate_governorate',
-      description: 'Activate a governorate to enable delivery services in that area.',
+      description: 'Activate Governorate',
       parameters: {
         type: 'object',
         properties: {
-          city_id: {
+          id: {
             type: 'string',
-            description: 'The ID of the governorate to activate.'
+            description: 'The id'
           }
         },
-        required: ['city_id']
+        required: ['id']
       }
     }
   }

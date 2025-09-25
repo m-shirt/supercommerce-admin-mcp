@@ -1,19 +1,25 @@
 /**
- * Function to export branches to a CSV file.
+ * Function to export branches.
  *
- * @param {Object} params - The parameters for exporting branches.
- * @param {string} [params.q] - Search query to filter branches for export.
- * @param {string} [params.type] - Export type (default: "8" for branches).
- * @returns {Promise<Object>} - The result of the branches export.
+ * @param {Object} params - The parameters for export branches.
+
+
+ * @param {string} [params.q] - The q.
+ * @param {string} [params.type] - The type.
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { q = '', type = '8' } = params;
+    const {
+      q,
+      type,
+    } = params;
 
     const url = `${baseURL}/api/admin/v2/files/exports/export`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -22,8 +28,8 @@ const executeFunction = async (params) => {
     };
 
     const requestData = {
-      q,
-      type: parseInt(type)
+      'q': q,
+      'type': type,
     };
 
     const response = await fetch(url, {
@@ -39,13 +45,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error exporting branches:', error);
-    return { error: error.message || 'An error occurred while exporting branches.' };
+    console.error('Error in exportBranches:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for exporting branches.
+ * Tool configuration for export branches.
  * @type {Object}
  */
 const apiTool = {
@@ -54,17 +60,17 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'export_branches',
-      description: 'Export branches to a CSV file with optional search filtering.',
+      description: 'Export Branches',
       parameters: {
         type: 'object',
         properties: {
           q: {
             type: 'string',
-            description: 'Search query to filter branches for export.'
+            description: 'The q'
           },
           type: {
             type: 'string',
-            description: 'Export type identifier (default: "8" for branches).'
+            description: 'The type'
           }
         },
         required: []

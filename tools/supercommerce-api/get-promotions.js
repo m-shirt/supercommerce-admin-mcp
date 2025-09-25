@@ -1,12 +1,13 @@
 /**
- * Function to retrieve promotions.
+ * Function to get promotions.
  *
- * @param {Object} params - The parameters for retrieving promotions.
- * @param {number} [params.page] - Page number for pagination (default: 1).
- * @param {number} [params.per_page] - Number of items per page (default: 15).
- * @param {string} [params.q] - Search query to filter promotions.
- * @param {string} [params.status] - Filter promotions by status (active/inactive).
- * @returns {Promise<Object>} - The list of promotions.
+ * @param {Object} params - The parameters for get promotions.
+
+ * @param {string} [params.list_id] - list id.
+ * @param {string} [params.page] - page.
+ * @param {string} [params.q] - q.
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
@@ -14,26 +15,26 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      page = 1,
-      per_page = 15,
+      list_id,
+      page,
       q,
-      status
     } = params;
 
-    let url = `${baseURL}/api/admin/promotions?page=${page}&per_page=${per_page}`;
-
-    if (q) {
-      url += `&q=${encodeURIComponent(q)}`;
-    }
-
-    if (status) {
-      url += `&status=${status}`;
-    }
+    const url = `${baseURL}/api/admin/promotions?list_id=&page=1&q=`;
+    
+    const queryParams = new URLSearchParams();
+    if (list_id !== undefined) queryParams.append('list_id', list_id);
+    if (page !== undefined) queryParams.append('page', page);
+    if (q !== undefined) queryParams.append('q', q);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
+
+    
 
     const response = await fetch(url, {
       method: 'GET',
@@ -47,13 +48,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error retrieving promotions:', error);
-    return { error: error.message || 'An error occurred while retrieving promotions.' };
+    console.error('Error in getPromotions:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for retrieving promotions.
+ * Tool configuration for get promotions.
  * @type {Object}
  */
 const apiTool = {
@@ -62,25 +63,21 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'get_promotions',
-      description: 'Retrieve marketing promotions with filtering and pagination options.',
+      description: 'Get Promotions',
       parameters: {
         type: 'object',
         properties: {
-          page: {
-            type: 'number',
-            description: 'Page number for pagination (default: 1).'
+          list_id: {
+            type: 'string',
+            description: 'list id'
           },
-          per_page: {
-            type: 'number',
-            description: 'Number of items per page (default: 15).'
+          page: {
+            type: 'string',
+            description: 'page'
           },
           q: {
             type: 'string',
-            description: 'Search query to filter promotions by name or description.'
-          },
-          status: {
-            type: 'string',
-            description: 'Filter promotions by status (e.g., "active", "inactive").'
+            description: 'q'
           }
         },
         required: []

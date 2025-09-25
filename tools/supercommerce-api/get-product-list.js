@@ -1,59 +1,77 @@
 /**
- * Function to get the product list from the backend API.
+ * Function to get product list.
  *
- * @param {Object} args - Arguments for the product list retrieval.
- * @param {string} args.page - The page number for pagination.
- * @param {string} args.keyword_or_sku - The keyword or SKU to search for products.
- * @param {string} [args.category_id] - The category ID to filter products.
- * @param {string} [args.sub_category_id] - The sub-category ID to filter products.
- * @param {string} [args.inventory_id] - The inventory ID to filter products.
- * @param {string} [args.parent_id] - The parent ID to filter products.
- * 
- * @returns {Promise<Object>} - The result of the product list retrieval.
- */
-const executeFunction = async ({ page, keyword_or_sku, category_id, sub_category_id, inventory_id, parent_id  }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL with query parameters
-    const url = new URL(`${baseURL}/api/admin/v2/products`);
-    url.searchParams.append('page', page);
-    url.searchParams.append('q', keyword_or_sku);
-    if (category_id) url.searchParams.append('category_id', category_id);
-    if (sub_category_id) url.searchParams.append('sub_category_id', sub_category_id);
-    if (inventory_id) url.searchParams.append('inventory_id', inventory_id);
-    if (parent_id) url.searchParams.append('parent_id', parent_id);
+ * @param {Object} params - The parameters for get product list.
+ * @param {string} params.page - The page.
+ * @param {string} params.keyword_or_sku - The keyword or sku.
+ * @param {string} [params.in_stock] - in stock.
+ * @param {string} [params.active] - active.
+ * @param {string} [params.category_id] - category id.
+ * @param {string} [params.page] - page.
+ * @param {string} [params.sub_category_id] - sub category id.
+ * @param {string} [params.q] - q.
+ * @param {string} [params.inventory_id] - inventory id.
+ * @param {string} [params.parent_id] - parent id.
 
-    // Set up headers for the request
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      page,
+      keyword_or_sku,
+      in_stock,
+      active,
+      category_id,
+      sub_category_id,
+      q,
+      inventory_id,
+      parent_id,
+    } = params;
+
+    let url = `${baseURL}/api/admin/v2/products?page=${page}&q=${keyword_or_sku}`;
+    
+    const queryParams = new URLSearchParams();
+    if (in_stock !== undefined) queryParams.append('in_stock', in_stock);
+    if (active !== undefined) queryParams.append('active', active);
+    if (category_id !== undefined) queryParams.append('category_id', category_id);
+    if (page !== undefined) queryParams.append('page', page);
+    if (sub_category_id !== undefined) queryParams.append('sub_category_id', sub_category_id);
+    if (q !== undefined) queryParams.append('q', q);
+    if (inventory_id !== undefined) queryParams.append('inventory_id', inventory_id);
+    if (parent_id !== undefined) queryParams.append('parent_id', parent_id);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
-    const response = await fetch(url.toString(), {
+    
+
+    const response = await fetch(url, {
       method: 'GET',
       headers
     });
-    console.log('url:', url.toString());
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error retrieving product list:', error);
-    return { error: 'An error occurred while retrieving the product list.' };
+    console.error('Error in getProductList:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting the product list from the backend API.
+ * Tool configuration for get product list.
  * @type {Object}
  */
 const apiTool = {
@@ -62,33 +80,45 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'get_product_list',
-      description: 'Retrieve the product list from the backend API.',
+      description: 'Get Product List',
       parameters: {
         type: 'object',
         properties: {
           page: {
             type: 'string',
-            description: 'The page number for pagination.'
+            description: 'The page'
           },
           keyword_or_sku: {
             type: 'string',
-            description: 'The keyword or SKU to search for products.'
+            description: 'The keyword or sku'
+          },
+          in_stock: {
+            type: 'string',
+            description: 'in stock'
+          },
+          active: {
+            type: 'string',
+            description: 'active'
           },
           category_id: {
             type: 'string',
-            description: 'The category ID to filter products.'
+            description: 'category id'
           },
           sub_category_id: {
             type: 'string',
-            description: 'The sub-category ID to filter products.'
+            description: 'sub category id'
+          },
+          q: {
+            type: 'string',
+            description: 'q'
           },
           inventory_id: {
             type: 'string',
-            description: 'The inventory ID to filter products.'
+            description: 'inventory id'
           },
           parent_id: {
             type: 'string',
-            description: 'The parent ID to filter products.'
+            description: 'parent id'
           }
         },
         required: ['page', 'keyword_or_sku']

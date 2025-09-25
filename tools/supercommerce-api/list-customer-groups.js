@@ -1,44 +1,50 @@
 /**
- * Function to list customer groups for product pricing.
+ * Function to list customer groups.
  *
- * @returns {Promise<Array>} - The list of customer groups.
- */
-const executeFunction = async () => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the API request
-    const url = `${baseURL}/api/admin/customer_groups/for-product-pricing`;
+ * @param {Object} params - The parameters for list customer groups.
 
-    // Set up headers for the request
+
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+
+    } = params;
+
+    const url = `${baseURL}/api/admin/customer_groups/for-product-pricing`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error listing customer groups:', error);
-    return { error: 'An error occurred while listing customer groups.' };
+    console.error('Error in listCustomerGroups:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for listing customer groups.
+ * Tool configuration for list customer groups.
  * @type {Object}
  */
 const apiTool = {
@@ -47,10 +53,12 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'list_customer_groups',
-      description: 'List customer groups for product pricing.',
+      description: 'List Customer Groups',
       parameters: {
         type: 'object',
-        properties: {},
+        properties: {
+
+        },
         required: []
       }
     }

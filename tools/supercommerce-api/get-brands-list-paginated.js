@@ -1,49 +1,57 @@
 /**
- * Function to get a paginated list of brands from the API.
+ * Function to get brands list paginated.
  *
- * @param {Object} args - Arguments for the request.
- * @param {number} [args.page=1] - The page number to retrieve.
- * @param {string} [args.q=""] - The search query for filtering brands.
- * @returns {Promise<Object>} - The result of the brands list request.
- */
-const executeFunction = async ({ page = 1, q = "" }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL with query parameters
-    const url = new URL(`${baseURL}/api/admin/brands`);
-    url.searchParams.append('page', page.toString());
-    url.searchParams.append('q', q);
+ * @param {Object} params - The parameters for get brands list paginated.
 
-    // Set up headers for the request
+ * @param {string} [params.page] - page.
+ * @param {string} [params.q] - q.
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      page,
+      q,
+    } = params;
+
+    const url = `${baseURL}/api/admin/brands?page=1&q=`;
+    
+    const queryParams = new URLSearchParams();
+    if (page !== undefined) queryParams.append('page', page);
+    if (q !== undefined) queryParams.append('q', q);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
-    const response = await fetch(url.toString(), {
+    
+
+    const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error fetching brands list:', error);
-    return { error: 'An error occurred while fetching the brands list.' };
+    console.error('Error in getBrandsListPaginated:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting a paginated list of brands.
+ * Tool configuration for get brands list paginated.
  * @type {Object}
  */
 const apiTool = {
@@ -51,18 +59,18 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'get_brands_list',
-      description: 'Get a paginated list of brands from the API.',
+      name: 'get_brands_list_paginated',
+      description: 'Get Brands List Paginated',
       parameters: {
         type: 'object',
         properties: {
           page: {
-            type: 'integer',
-            description: 'The page number to retrieve.'
+            type: 'string',
+            description: 'page'
           },
           q: {
             type: 'string',
-            description: 'The search query for filtering brands.'
+            description: 'q'
           }
         },
         required: []

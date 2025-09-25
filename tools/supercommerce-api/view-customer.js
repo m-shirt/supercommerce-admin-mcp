@@ -1,46 +1,50 @@
 /**
- * Function to view a customer by ID.
+ * Function to view customer.
  *
- * @param {Object} args - Arguments for the customer view.
- * @param {string} args.id - The ID of the customer to view.
- * @returns {Promise<Object>} - The result of the customer view.
- */
-const executeFunction = async ({ id }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the request
-    const url = `${baseURL}/api/admin/customers/${id}`;
+ * @param {Object} params - The parameters for view customer.
+ * @param {string} params.id - The id.
 
-    // Set up headers for the request
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      id,
+    } = params;
+
+    let url = `${baseURL}/api/admin/customers/${id}`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error viewing customer:', error);
-    return { error: 'An error occurred while viewing the customer.' };
+    console.error('Error in viewCustomer:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for viewing a customer.
+ * Tool configuration for view customer.
  * @type {Object}
  */
 const apiTool = {
@@ -49,13 +53,13 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'view_customer',
-      description: 'View a customer by ID.',
+      description: 'View Customer',
       parameters: {
         type: 'object',
         properties: {
           id: {
             type: 'string',
-            description: 'The ID of the customer to view.'
+            description: 'The id'
           }
         },
         required: ['id']

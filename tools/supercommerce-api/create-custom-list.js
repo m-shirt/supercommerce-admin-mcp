@@ -1,20 +1,43 @@
 /**
- * Function to create a new custom list.
+ * Function to create custom list.
  *
- * @param {Object} params - The parameters for creating a custom list.
- * @param {string} params.name - Name of the custom list.
- * @param {string} [params.description] - Description of the custom list.
- * @param {string} [params.type] - Type of the custom list.
- * @param {Array} [params.items] - Array of items to include in the list.
- * @param {boolean} [params.active] - Whether the list is active (default: true).
- * @returns {Promise<Object>} - The result of the custom list creation.
+ * @param {Object} params - The parameters for create custom list.
+
+
+ * @param {string} [params.name_en] - The name en.
+ * @param {string} [params.name_ar] - The name ar.
+ * @param {string} [params.description_en] - The description en.
+ * @param {string} [params.description_ar] - The description ar.
+ * @param {string} [params.product_type] - The product type.
+ * @param {string} [params.image_en] - The image en.
+ * @param {string} [params.image_ar] - The image ar.
+ * @param {string} [params.type] - The type.
+ * @param {string} [params.list_method] - The list method.
+ * @param {string} [params.status] - The status.
+ * @param {string} [params.items] - The items.
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
+    const {
+      name_en,
+      name_ar,
+      description_en,
+      description_ar,
+      product_type,
+      image_en,
+      image_ar,
+      type,
+      list_method,
+      status,
+      items,
+    } = params;
+
     const url = `${baseURL}/api/admin/lists`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -23,11 +46,17 @@ const executeFunction = async (params) => {
     };
 
     const requestData = {
-      name: params.name,
-      description: params.description || '',
-      type: params.type || 'custom',
-      items: params.items || [],
-      active: params.active !== undefined ? params.active : true
+      'name_en': name_en,
+      'name_ar': name_ar,
+      'description_en': description_en,
+      'description_ar': description_ar,
+      'product_type': product_type,
+      'image_en': image_en,
+      'image_ar': image_ar,
+      'type': type,
+      'list_method': list_method,
+      'status': status,
+      'items': items,
     };
 
     const response = await fetch(url, {
@@ -43,13 +72,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error creating custom list:', error);
-    return { error: error.message || 'An error occurred while creating the custom list.' };
+    console.error('Error in createCustomList:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for creating a custom list.
+ * Tool configuration for create custom list.
  * @type {Object}
  */
 const apiTool = {
@@ -58,35 +87,56 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'create_custom_list',
-      description: 'Create a new custom list for organizing products or content.',
+      description: 'Create Custom List',
       parameters: {
         type: 'object',
         properties: {
-          name: {
+          name_en: {
             type: 'string',
-            description: 'Name of the custom list.'
+            description: 'The name en'
           },
-          description: {
+          name_ar: {
             type: 'string',
-            description: 'Description of the custom list.'
+            description: 'The name ar'
+          },
+          description_en: {
+            type: 'string',
+            description: 'The description en'
+          },
+          description_ar: {
+            type: 'string',
+            description: 'The description ar'
+          },
+          product_type: {
+            type: 'string',
+            description: 'The product type'
+          },
+          image_en: {
+            type: 'string',
+            description: 'The image en'
+          },
+          image_ar: {
+            type: 'string',
+            description: 'The image ar'
           },
           type: {
             type: 'string',
-            description: 'Type of the custom list.'
+            description: 'The type'
+          },
+          list_method: {
+            type: 'string',
+            description: 'The list method'
+          },
+          status: {
+            type: 'string',
+            description: 'The status'
           },
           items: {
-            type: 'array',
-            items: {
-              type: 'object'
-            },
-            description: 'Array of items to include in the list.'
-          },
-          active: {
-            type: 'boolean',
-            description: 'Whether the list is active (default: true).'
+            type: 'string',
+            description: 'The items'
           }
         },
-        required: ['name']
+        required: []
       }
     }
   }

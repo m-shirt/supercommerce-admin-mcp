@@ -1,70 +1,60 @@
 /**
- * Function to get the promo code list from the backend API.
+ * Function to get promo code list.
  *
- * @param {Object} args - Arguments for the request.
- * @param {number} [args.page=1] - The page number for pagination.
- * @param {string} [args.q=''] - The search query for filtering promo codes.
- * @param {string|Array|string[]} [args.mode='promocode'] - The mode for fetching promo codes.
- *                                                        Can be 'promocode', 'reward', 'all', or an array like ['promocode', 'reward'].
- * @returns {Promise<Array|Object>} - The list of promo codes or error object.
+ * @param {Object} params - The parameters for get promo code list.
+
+ * @param {string} [params.page] - page.
+ * @param {string} [params.q] - q.
+ * @param {string} [params.mode] - mode.
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
-const executeFunction = async ({ page = 1, q = '', mode = 'promocode' }) => {
+const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
-  // Determine API mode parameter based on input
-  let apiMode = mode;
-
-  if (mode === 'all') {
-    apiMode = null;
-  } else if (Array.isArray(mode)) {
-    const hasPromo = mode.includes('promocode');
-    const hasReward = mode.includes('reward');
-    if (hasPromo && hasReward) {
-      apiMode = null;
-    } else if (hasPromo) {
-      apiMode = 'promocode';
-    } else if (hasReward) {
-      apiMode = 'reward';
-    } else {
-      // If array is empty or doesn't contain valid modes, default to 'promocode'
-      apiMode = 'promocode';
-    }
-  }
-
   try {
-    const url = new URL(`${baseURL}/api/admin/promos`);
-    url.searchParams.append('page', page.toString());
-    url.searchParams.append('q', q);
-    if (apiMode !== null) {
-      url.searchParams.append('mode', apiMode);
-    }
+    const {
+      page,
+      q,
+      mode,
+    } = params;
+
+    const url = `${baseURL}/api/admin/promos?page=1&q=&mode=promocode`;
+    
+    const queryParams = new URLSearchParams();
+    if (page !== undefined) queryParams.append('page', page);
+    if (q !== undefined) queryParams.append('q', q);
+    if (mode !== undefined) queryParams.append('mode', mode);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    const response = await fetch(url.toString(), {
+    
+
+    const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(JSON.stringify(errorData));
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error fetching promo code list:', error);
-    return { error: 'An error occurred while fetching the promo code list.' };
+    console.error('Error in getPromoCodeList:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting the promo code list from the backend API.
+ * Tool configuration for get promo code list.
  * @type {Object}
  */
 const apiTool = {
@@ -73,21 +63,21 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'get_promo_code_list',
-      description: 'Fetch the list of promo codes from the backend API.',
+      description: 'Get Promo Code List',
       parameters: {
         type: 'object',
         properties: {
           page: {
-            type: 'integer',
-            description: 'The page number for pagination.'
+            type: 'string',
+            description: 'page'
           },
           q: {
             type: 'string',
-            description: 'The search query for filtering promo codes.'
+            description: 'q'
           },
           mode: {
-            type: ['string', 'array'],
-            description: "The mode for fetching promo codes: 'promocode', 'reward', 'all', or ['promocode', 'reward']."
+            type: 'string',
+            description: 'mode'
           }
         },
         required: []

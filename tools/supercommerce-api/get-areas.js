@@ -1,13 +1,13 @@
 /**
- * Function to retrieve areas within a specific governorate.
+ * Function to get areas.
  *
- * @param {Object} params - The parameters for retrieving areas.
- * @param {string} params.city_id - The ID of the governorate to get areas for.
- * @param {number} [params.page] - Page number for pagination (default: 1).
- * @param {number} [params.per_page] - Number of items per page (default: 15).
- * @param {string} [params.q] - Search query to filter areas.
- * @param {string} [params.status] - Filter areas by status (active/inactive).
- * @returns {Promise<Object>} - The list of areas.
+ * @param {Object} params - The parameters for get areas.
+
+ * @param {string} [params.limit] - limit.
+ * @param {string} [params.page] - page.
+ * @param {string} [params.q] - q.
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
@@ -15,27 +15,26 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      city_id,
-      page = 1,
-      per_page = 15,
+      limit,
+      page,
       q,
-      status
     } = params;
 
-    let url = `${baseURL}/api/admin/cities/${city_id}/areas?page=${page}&per_page=${per_page}`;
-
-    if (q) {
-      url += `&q=${encodeURIComponent(q)}`;
-    }
-
-    if (status) {
-      url += `&status=${status}`;
-    }
+    const url = `${baseURL}/api/admin/cities/10/areas?limit=20&page=1&q=`;
+    
+    const queryParams = new URLSearchParams();
+    if (limit !== undefined) queryParams.append('limit', limit);
+    if (page !== undefined) queryParams.append('page', page);
+    if (q !== undefined) queryParams.append('q', q);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
+
+    
 
     const response = await fetch(url, {
       method: 'GET',
@@ -49,13 +48,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error retrieving areas:', error);
-    return { error: error.message || 'An error occurred while retrieving areas.' };
+    console.error('Error in getAreas:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for retrieving areas.
+ * Tool configuration for get areas.
  * @type {Object}
  */
 const apiTool = {
@@ -64,32 +63,24 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'get_areas',
-      description: 'Retrieve areas within a specific governorate with filtering and pagination.',
+      description: 'Get Areas',
       parameters: {
         type: 'object',
         properties: {
-          city_id: {
+          limit: {
             type: 'string',
-            description: 'The ID of the governorate to get areas for.'
+            description: 'limit'
           },
           page: {
-            type: 'number',
-            description: 'Page number for pagination (default: 1).'
-          },
-          per_page: {
-            type: 'number',
-            description: 'Number of items per page (default: 15).'
+            type: 'string',
+            description: 'page'
           },
           q: {
             type: 'string',
-            description: 'Search query to filter areas by name.'
-          },
-          status: {
-            type: 'string',
-            description: 'Filter areas by status (e.g., "active", "inactive").'
+            description: 'q'
           }
         },
-        required: ['city_id']
+        required: []
       }
     }
   }

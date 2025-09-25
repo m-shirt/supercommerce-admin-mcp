@@ -1,46 +1,51 @@
 /**
- * Function to activate a customer in the backend API.
+ * Function to activate customer.
  *
- * @param {Object} args - Arguments for activating the customer.
- * @param {string} args.id - The ID of the customer to activate.
- * @returns {Promise<Object>} - The result of the activation request.
- */
-const executeFunction = async ({ id }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the activation request
-    const url = `${baseURL}/api/admin/customers/${id}/activate`;
+ * @param {Object} params - The parameters for activate customer.
+ * @param {string} params.id - The id.
 
-    // Set up headers for the request
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      id,
+    } = params;
+
+    let url = `${baseURL}/api/admin/customers/${id}/activate`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'POST',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error activating customer:', error);
-    return { error: 'An error occurred while activating the customer.' };
+    console.error('Error in activateCustomer:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for activating a customer in the backend API.
+ * Tool configuration for activate customer.
  * @type {Object}
  */
 const apiTool = {
@@ -49,13 +54,13 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'activate_customer',
-      description: 'Activate a customer in the backend API.',
+      description: 'Activate Customer',
       parameters: {
         type: 'object',
         properties: {
           id: {
             type: 'string',
-            description: 'The ID of the customer to activate.'
+            description: 'The id'
           }
         },
         required: ['id']

@@ -1,44 +1,54 @@
 /**
- * Function to get all options from the backend API.
+ * Function to get all options list (dropdown).
  *
- * @returns {Promise<Array>} - The list of options from the API.
- */
-const executeFunction = async () => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the request
-    const url = `${baseURL}/api/admin/options?active=1`;
+ * @param {Object} params - The parameters for get all options list (dropdown).
 
-    // Set up headers for the request
+ * @param {string} [params.active] - active.
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      active,
+    } = params;
+
+    const url = `${baseURL}/api/admin/options?active=1`;
+    
+    const queryParams = new URLSearchParams();
+    if (active !== undefined) queryParams.append('active', active);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error fetching options:', error);
-    return { error: 'An error occurred while fetching options.' };
+    console.error('Error in getAllOptionsListDropdown:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting all options from the backend API.
+ * Tool configuration for get all options list (dropdown).
  * @type {Object}
  */
 const apiTool = {
@@ -46,11 +56,16 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'get_all_options',
-      description: 'Get all options from the backend API.',
+      name: 'get_all_options_list_dropdown',
+      description: 'Get All Options List (Dropdown)',
       parameters: {
         type: 'object',
-        properties: {},
+        properties: {
+          active: {
+            type: 'string',
+            description: 'active'
+          }
+        },
         required: []
       }
     }

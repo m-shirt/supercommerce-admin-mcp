@@ -1,44 +1,50 @@
 /**
- * Function to list inventories from the backend API.
+ * Function to list inventories.
  *
- * @returns {Promise<Array>} - The list of inventories.
- */
-const executeFunction = async () => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the request
-    const url = `${baseURL}/api/admin/inventories/all`;
+ * @param {Object} params - The parameters for list inventories.
 
-    // Set up headers for the request
+
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+
+    } = params;
+
+    const url = `${baseURL}/api/admin/inventories/all`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error listing inventories:', error);
-    return { error: 'An error occurred while listing inventories.' };
+    console.error('Error in listInventories:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for listing inventories from the backend API.
+ * Tool configuration for list inventories.
  * @type {Object}
  */
 const apiTool = {
@@ -47,10 +53,12 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'list_inventories',
-      description: 'List all inventories from the backend API.',
+      description: 'List Inventories',
       parameters: {
         type: 'object',
-        properties: {},
+        properties: {
+
+        },
         required: []
       }
     }

@@ -1,49 +1,57 @@
 /**
- * Function to log in to the backend API.
+ * Function to login.
  *
- * @param {Object} args - Arguments for the login.
- * @param {string} args.email - The email address of the user.
- * @param {string} args.password - The password of the user.
- * @returns {Promise<Object>} - The result of the login attempt.
+ * @param {Object} params - The parameters for login.
+
+
+ * @param {string} [params.email] - The email.
+ * @param {string} [params.password] - The password.
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const { email, password } = params;
-  try {
-    // Construct the URL for the login endpoint
-    const url = `${baseURL}/api/admin/auth`;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
-    // Set up headers for the request
+  try {
+    const {
+      email,
+      password,
+    } = params;
+
+    const url = `${baseURL}/api/admin/auth`;
+    
+
     const headers = {
-      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     };
 
-    // Prepare the body of the request
-    const body = JSON.stringify({ email, password });
+    const requestData = {
+      'email': email,
+      'password': password,
+    };
 
-    // Perform the fetch request
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body,
+      body: JSON.stringify(requestData)
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
     return await response.json();
   } catch (error) {
-    console.error('Error logging in:', error);
-    return { error: error.message || 'An error occurred while logging in.' };
+    console.error('Error in login:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for logging in to the backend API.
+ * Tool configuration for login.
  * @type {Object}
  */
 const apiTool = {
@@ -51,21 +59,21 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'admin_login',
-      description: 'Admin login authentication to the backend API.',
+      name: 'login',
+      description: 'Login',
       parameters: {
         type: 'object',
         properties: {
           email: {
             type: 'string',
-            description: 'The email address of the user.'
+            description: 'The email'
           },
           password: {
             type: 'string',
-            description: 'The password of the user.'
+            description: 'The password'
           }
         },
-        required: ['email', 'password']
+        required: []
       }
     }
   }

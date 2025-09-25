@@ -1,57 +1,76 @@
 /**
- * Function to edit a customer in the backend API.
+ * Function to edit customer.
  *
- * @param {Object} args - Arguments for editing the customer.
- * @param {string} args.id - The ID of the customer to edit.
- * @param {Object} args.customerData - The data to update for the customer.
- * @param {string} args.customerData.name - The first name of the customer.
- * @param {string} args.customerData.last_name - The last name of the customer.
- * @param {string} args.customerData.email - The email of the customer.
- * @param {string} [args.customerData.group_id] - The group ID of the customer.
- * @param {string} args.customerData.phone - The phone number of the customer.
- * @param {string} args.customerData.password - The password for the customer.
- * @param {Array} args.customerData.closed_payment_methods - The closed payment methods for the customer.
- * @param {number} [args.customerData.postponed_payment_limit] - The postponed payment limit for the customer.
- * @returns {Promise<Object>} - The result of the customer edit operation.
- */
-const executeFunction = async ({ id, customerData }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the request
-    const url = `${baseURL}/api/admin/customers/${id}`;
+ * @param {Object} params - The parameters for edit customer.
+ * @param {string} params.id - The id.
 
-    // Set up headers for the request
+ * @param {string} [params.name] - The name.
+ * @param {string} [params.last_name] - The last name.
+ * @param {string} [params.email] - The email.
+ * @param {string} [params.group_id] - The group id.
+ * @param {string} [params.phone] - The phone.
+ * @param {string} [params.password] - The password.
+ * @param {string} [params.closed_payment_methods] - The closed payment methods.
+ * @param {string} [params.postponed_payment_limit] - The postponed payment limit.
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      id,
+      name,
+      last_name,
+      email,
+      group_id,
+      phone,
+      password,
+      closed_payment_methods,
+      postponed_payment_limit,
+    } = params;
+
+    let url = `${baseURL}/api/admin/customers/${id}`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
 
-    // Perform the fetch request
+    const requestData = {
+      'name': name,
+      'last_name': last_name,
+      'email': email,
+      'group_id': group_id,
+      'phone': phone,
+      'password': password,
+      'closed_payment_methods': closed_payment_methods,
+      'postponed_payment_limit': postponed_payment_limit,
+    };
+
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify(customerData)
+      body: JSON.stringify(requestData)
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error editing customer:', error);
-    return { error: 'An error occurred while editing the customer.' };
+    console.error('Error in editCustomer:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for editing a customer in the backend API.
+ * Tool configuration for edit customer.
  * @type {Object}
  */
 const apiTool = {
@@ -60,55 +79,48 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'edit_customer',
-      description: 'Edit a customer in the backend API.',
+      description: 'Edit Customer',
       parameters: {
         type: 'object',
         properties: {
           id: {
             type: 'string',
-            description: 'The ID of the customer to edit.'
+            description: 'The id'
           },
-          customerData: {
-            type: 'object',
-            properties: {
-              name: {
-                type: 'string',
-                description: 'The first name of the customer.'
-              },
-              last_name: {
-                type: 'string',
-                description: 'The last name of the customer.'
-              },
-              email: {
-                type: 'string',
-                description: 'The email of the customer.'
-              },
-              group_id: {
-                type: 'string',
-                description: 'The group ID of the customer.'
-              },
-              phone: {
-                type: 'string',
-                description: 'The phone number of the customer.'
-              },
-              password: {
-                type: 'string',
-                description: 'The password for the customer.'
-              },
-              closed_payment_methods: {
-                type: 'array',
-                items: { type: 'string' },
-                description: 'The closed payment methods for the customer.'
-              },
-              postponed_payment_limit: {
-                type: 'number',
-                description: 'The postponed payment limit for the customer.'
-              }
-            },
-            required: ['name', 'last_name', 'email', 'phone', 'password', 'closed_payment_methods']
+          name: {
+            type: 'string',
+            description: 'The name'
+          },
+          last_name: {
+            type: 'string',
+            description: 'The last name'
+          },
+          email: {
+            type: 'string',
+            description: 'The email'
+          },
+          group_id: {
+            type: 'string',
+            description: 'The group id'
+          },
+          phone: {
+            type: 'string',
+            description: 'The phone'
+          },
+          password: {
+            type: 'string',
+            description: 'The password'
+          },
+          closed_payment_methods: {
+            type: 'string',
+            description: 'The closed payment methods'
+          },
+          postponed_payment_limit: {
+            type: 'string',
+            description: 'The postponed payment limit'
           }
         },
-        required: ['id', 'customerData']
+        required: ['id']
       }
     }
   }

@@ -1,19 +1,24 @@
 /**
- * Function to deactivate a branch.
+ * Function to deactivate branch.
  *
- * @param {Object} params - The parameters for deactivating a branch.
- * @param {string} params.branch_id - The ID of the branch to deactivate.
- * @param {string} [params.deactivation_notes] - Optional notes for the deactivation.
- * @returns {Promise<Object>} - The result of the branch deactivation.
+ * @param {Object} params - The parameters for deactivate branch.
+ * @param {string} params.id - The id.
+
+ * @param {string} [params.deactivation_notes] - The deactivation notes.
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { branch_id, deactivation_notes = '' } = params;
+    const {
+      id,
+      deactivation_notes,
+    } = params;
 
-    const url = `${baseURL}/api/admin/branches/${branch_id}/deactivate`;
+    let url = `${baseURL}/api/admin/branches/${id}/deactivate`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -21,10 +26,14 @@ const executeFunction = async (params) => {
       'Content-Type': 'application/json'
     };
 
+    const requestData = {
+      'deactivation_notes': deactivation_notes,
+    };
+
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ deactivation_notes })
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
@@ -34,13 +43,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error deactivating branch:', error);
-    return { error: error.message || 'An error occurred while deactivating the branch.' };
+    console.error('Error in deactivateBranch:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for deactivating a branch.
+ * Tool configuration for deactivate branch.
  * @type {Object}
  */
 const apiTool = {
@@ -49,20 +58,20 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'deactivate_branch',
-      description: 'Deactivate a branch with optional notes.',
+      description: 'Deactivate Branch',
       parameters: {
         type: 'object',
         properties: {
-          branch_id: {
+          id: {
             type: 'string',
-            description: 'The ID of the branch to deactivate.'
+            description: 'The id'
           },
           deactivation_notes: {
             type: 'string',
-            description: 'Optional notes explaining the reason for deactivation.'
+            description: 'The deactivation notes'
           }
         },
-        required: ['branch_id']
+        required: ['id']
       }
     }
   }

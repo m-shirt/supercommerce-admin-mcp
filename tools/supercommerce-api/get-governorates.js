@@ -1,12 +1,13 @@
 /**
- * Function to retrieve governorates (cities).
+ * Function to get governorates.
  *
- * @param {Object} params - The parameters for retrieving governorates.
- * @param {number} [params.page] - Page number for pagination (default: 1).
- * @param {number} [params.per_page] - Number of items per page (default: 15).
- * @param {string} [params.q] - Search query to filter governorates.
- * @param {string} [params.status] - Filter governorates by status (active/inactive).
- * @returns {Promise<Object>} - The list of governorates.
+ * @param {Object} params - The parameters for get governorates.
+
+ * @param {string} [params.limit] - limit.
+ * @param {string} [params.page] - page.
+ * @param {string} [params.q] - q.
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
@@ -14,26 +15,26 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      page = 1,
-      per_page = 15,
+      limit,
+      page,
       q,
-      status
     } = params;
 
-    let url = `${baseURL}/api/admin/cities?page=${page}&per_page=${per_page}`;
-
-    if (q) {
-      url += `&q=${encodeURIComponent(q)}`;
-    }
-
-    if (status) {
-      url += `&status=${status}`;
-    }
+    const url = `${baseURL}/api/admin/cities?limit=20&page=1&q=`;
+    
+    const queryParams = new URLSearchParams();
+    if (limit !== undefined) queryParams.append('limit', limit);
+    if (page !== undefined) queryParams.append('page', page);
+    if (q !== undefined) queryParams.append('q', q);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
+
+    
 
     const response = await fetch(url, {
       method: 'GET',
@@ -47,13 +48,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error retrieving governorates:', error);
-    return { error: error.message || 'An error occurred while retrieving governorates.' };
+    console.error('Error in getGovernorates:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for retrieving governorates.
+ * Tool configuration for get governorates.
  * @type {Object}
  */
 const apiTool = {
@@ -62,25 +63,21 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'get_governorates',
-      description: 'Retrieve governorates (cities) with filtering and pagination options.',
+      description: 'Get Governorates',
       parameters: {
         type: 'object',
         properties: {
-          page: {
-            type: 'number',
-            description: 'Page number for pagination (default: 1).'
+          limit: {
+            type: 'string',
+            description: 'limit'
           },
-          per_page: {
-            type: 'number',
-            description: 'Number of items per page (default: 15).'
+          page: {
+            type: 'string',
+            description: 'page'
           },
           q: {
             type: 'string',
-            description: 'Search query to filter governorates by name.'
-          },
-          status: {
-            type: 'string',
-            description: 'Filter governorates by status (e.g., "active", "inactive").'
+            description: 'q'
           }
         },
         required: []

@@ -1,39 +1,66 @@
 /**
- * Function to update an existing group.
+ * Function to update group.
  *
- * @param {Object} params - The parameters for updating a group.
- * @param {string} params.group_id - The ID of the group to update.
- * @param {number} [params.id] - Internal ID of the group.
- * @param {string} params.name_en - Group name in English.
- * @param {string} params.name_ar - Group name in Arabic.
- * @param {string} [params.description_en] - Group description in English.
- * @param {string} [params.description_ar] - Group description in Arabic.
- * @param {string} [params.image] - Image URL for the group.
- * @param {string|number} params.categories_id - Category ID that this group belongs to.
- * @param {Array<number>} [params.sub_categories] - Array of subcategory IDs.
- * @param {number} [params.order] - Display order for the group.
- * @param {string} [params.slug] - URL slug for the group.
- * @param {string} [params.html_top_en] - HTML content at top in English.
- * @param {string} [params.html_top_ar] - HTML content at top in Arabic.
- * @param {string} [params.html_bottom_en] - HTML content at bottom in English.
- * @param {string} [params.html_bottom_ar] - HTML content at bottom in Arabic.
- * @param {string} [params.meta_tag_title_en] - SEO meta title in English.
- * @param {string} [params.meta_tag_title_ar] - SEO meta title in Arabic.
- * @param {string} [params.meta_tag_description_en] - SEO meta description in English.
- * @param {string} [params.meta_tag_description_ar] - SEO meta description in Arabic.
- * @param {string} [params.meta_tag_keywords_en] - SEO meta keywords in English.
- * @param {string} [params.meta_tag_keywords_ar] - SEO meta keywords in Arabic.
- * @param {string} [params.alt] - Alt text for image in English.
- * @param {string} [params.alt_ar] - Alt text for image in Arabic.
- * @returns {Promise<Object>} - The result of the group update.
+ * @param {Object} params - The parameters for update group.
+ * @param {string} params.group_id - The group id.
+
+ * @param {string} [params.id] - The id.
+ * @param {string} [params.name_en] - The name en.
+ * @param {string} [params.name_ar] - The name ar.
+ * @param {string} [params.description_en] - The description en.
+ * @param {string} [params.description_ar] - The description ar.
+ * @param {string} [params.image] - The image.
+ * @param {string} [params.categories_id] - The categories id.
+ * @param {string} [params.sub_categories] - The sub categories.
+ * @param {string} [params.order] - The order.
+ * @param {string} [params.slug] - The slug.
+ * @param {string} [params.html_top_en] - The html top en.
+ * @param {string} [params.html_top_ar] - The html top ar.
+ * @param {string} [params.html_bottom_en] - The html bottom en.
+ * @param {string} [params.html_bottom_ar] - The html bottom ar.
+ * @param {string} [params.meta_tag_title_en] - The meta tag title en.
+ * @param {string} [params.meta_tag_title_ar] - The meta tag title ar.
+ * @param {string} [params.meta_tag_description_en] - The meta tag description en.
+ * @param {string} [params.meta_tag_description_ar] - The meta tag description ar.
+ * @param {string} [params.meta_tag_keywords_en] - The meta tag keywords en.
+ * @param {string} [params.meta_tag_keywords_ar] - The meta tag keywords ar.
+ * @param {string} [params.alt] - The alt.
+ * @param {string} [params.alt_ar] - The alt ar.
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { group_id, ...updateData } = params;
-    const url = `${baseURL}/api/admin/groups/${group_id}`;
+    const {
+      group_id,
+      id,
+      name_en,
+      name_ar,
+      description_en,
+      description_ar,
+      image,
+      categories_id,
+      sub_categories,
+      order,
+      slug,
+      html_top_en,
+      html_top_ar,
+      html_bottom_en,
+      html_bottom_ar,
+      meta_tag_title_en,
+      meta_tag_title_ar,
+      meta_tag_description_en,
+      meta_tag_description_ar,
+      meta_tag_keywords_en,
+      meta_tag_keywords_ar,
+      alt,
+      alt_ar,
+    } = params;
+
+    let url = `${baseURL}/api/admin/groups/${group_id}`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -42,28 +69,28 @@ const executeFunction = async (params) => {
     };
 
     const requestData = {
-      id: updateData.id || parseInt(group_id),
-      name_en: updateData.name_en,
-      name_ar: updateData.name_ar,
-      description_en: updateData.description_en || '',
-      description_ar: updateData.description_ar || '',
-      image: updateData.image || '',
-      categories_id: updateData.categories_id,
-      sub_categories: updateData.sub_categories || [],
-      order: updateData.order || 1,
-      slug: updateData.slug || '',
-      html_top_en: updateData.html_top_en || '',
-      html_top_ar: updateData.html_top_ar || '',
-      html_bottom_en: updateData.html_bottom_en || '',
-      html_bottom_ar: updateData.html_bottom_ar || '',
-      meta_tag_title_en: updateData.meta_tag_title_en || '',
-      meta_tag_title_ar: updateData.meta_tag_title_ar || '',
-      meta_tag_description_en: updateData.meta_tag_description_en || '',
-      meta_tag_description_ar: updateData.meta_tag_description_ar || '',
-      meta_tag_keywords_en: updateData.meta_tag_keywords_en || '',
-      meta_tag_keywords_ar: updateData.meta_tag_keywords_ar || '',
-      alt: updateData.alt || '',
-      alt_ar: updateData.alt_ar || ''
+      'id': id,
+      'name_en': name_en,
+      'name_ar': name_ar,
+      'description_en': description_en,
+      'description_ar': description_ar,
+      'image': image,
+      'categories_id': categories_id,
+      'sub_categories': sub_categories,
+      'order': order,
+      'slug': slug,
+      'html_top_en': html_top_en,
+      'html_top_ar': html_top_ar,
+      'html_bottom_en': html_bottom_en,
+      'html_bottom_ar': html_bottom_ar,
+      'meta_tag_title_en': meta_tag_title_en,
+      'meta_tag_title_ar': meta_tag_title_ar,
+      'meta_tag_description_en': meta_tag_description_en,
+      'meta_tag_description_ar': meta_tag_description_ar,
+      'meta_tag_keywords_en': meta_tag_keywords_en,
+      'meta_tag_keywords_ar': meta_tag_keywords_ar,
+      'alt': alt,
+      'alt_ar': alt_ar,
     };
 
     const response = await fetch(url, {
@@ -79,13 +106,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error updating group:', error);
-    return { error: error.message || 'An error occurred while updating the group.' };
+    console.error('Error in updateGroup:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for updating a group.
+ * Tool configuration for update group.
  * @type {Object}
  */
 const apiTool = {
@@ -94,107 +121,104 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'update_group',
-      description: 'Update an existing group with comprehensive details including SEO and categorization.',
+      description: 'Update Group',
       parameters: {
         type: 'object',
         properties: {
           group_id: {
             type: 'string',
-            description: 'The ID of the group to update.'
+            description: 'The group id'
           },
           id: {
-            type: 'integer',
-            description: 'Internal ID of the group (optional, will use group_id if not provided).'
+            type: 'string',
+            description: 'The id'
           },
           name_en: {
             type: 'string',
-            description: 'Group name in English.'
+            description: 'The name en'
           },
           name_ar: {
             type: 'string',
-            description: 'Group name in Arabic.'
+            description: 'The name ar'
           },
           description_en: {
             type: 'string',
-            description: 'Group description in English.'
+            description: 'The description en'
           },
           description_ar: {
             type: 'string',
-            description: 'Group description in Arabic.'
+            description: 'The description ar'
           },
           image: {
             type: 'string',
-            description: 'Image URL for the group.'
+            description: 'The image'
           },
           categories_id: {
-            type: 'integer',
-            description: 'Category ID that this group belongs to.'
+            type: 'string',
+            description: 'The categories id'
           },
           sub_categories: {
-            type: 'array',
-            items: {
-              type: 'integer'
-            },
-            description: 'Array of subcategory IDs.'
+            type: 'string',
+            description: 'The sub categories'
           },
           order: {
-            type: 'integer',
-            description: 'Display order for the group.'
+            type: 'string',
+            description: 'The order'
           },
           slug: {
             type: 'string',
-            description: 'URL slug for the group.'
+            description: 'The slug'
           },
           html_top_en: {
             type: 'string',
-            description: 'HTML content at top in English.'
+            description: 'The html top en'
           },
           html_top_ar: {
             type: 'string',
-            description: 'HTML content at top in Arabic.'
+            description: 'The html top ar'
           },
           html_bottom_en: {
             type: 'string',
-            description: 'HTML content at bottom in English.'
+            description: 'The html bottom en'
           },
           html_bottom_ar: {
             type: 'string',
-            description: 'HTML content at bottom in Arabic.'
+            description: 'The html bottom ar'
           },
           meta_tag_title_en: {
             type: 'string',
-            description: 'SEO meta title in English.'
+            description: 'The meta tag title en'
           },
           meta_tag_title_ar: {
             type: 'string',
-            description: 'SEO meta title in Arabic.'
+            description: 'The meta tag title ar'
           },
           meta_tag_description_en: {
             type: 'string',
-            description: 'SEO meta description in English.'
+            description: 'The meta tag description en'
           },
           meta_tag_description_ar: {
             type: 'string',
-            description: 'SEO meta description in Arabic.'
+            description: 'The meta tag description ar'
           },
           meta_tag_keywords_en: {
             type: 'string',
-            description: 'SEO meta keywords in English.'
+            description: 'The meta tag keywords en'
           },
           meta_tag_keywords_ar: {
             type: 'string',
-            description: 'SEO meta keywords in Arabic.'
+            description: 'The meta tag keywords ar'
           },
           alt: {
             type: 'string',
-            description: 'Alt text for image in English.'
+            description: 'The alt'
           },
           alt_ar: {
             type: 'string',
-            description: 'Alt text for image in Arabic.'
+            description: 'The alt ar'
           }
         },
-        required: ['group_id', 'name_en', 'name_ar', 'categories_id']
+        required: ['group_id']
       }
     }
   }

@@ -1,23 +1,30 @@
 /**
- * Function to delete a governorate.
+ * Function to delete governorate.
  *
- * @param {Object} params - The parameters for deleting a governorate.
- * @param {string} params.city_id - The ID of the governorate to delete.
- * @returns {Promise<Object>} - The result of the governorate deletion.
+ * @param {Object} params - The parameters for delete governorate.
+ * @param {string} params.id - The id.
+
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { city_id } = params;
+    const {
+      id,
+    } = params;
 
-    const url = `${baseURL}/api/admin/cities/${city_id}`;
+    let url = `${baseURL}/api/admin/cities/${id}`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
+
+    
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -31,13 +38,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error deleting governorate:', error);
-    return { error: error.message || 'An error occurred while deleting the governorate.' };
+    console.error('Error in deleteGovernorate:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for deleting a governorate.
+ * Tool configuration for delete governorate.
  * @type {Object}
  */
 const apiTool = {
@@ -46,16 +53,16 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'delete_governorate',
-      description: 'Delete a governorate permanently from the system.',
+      description: 'Delete Governorate',
       parameters: {
         type: 'object',
         properties: {
-          city_id: {
+          id: {
             type: 'string',
-            description: 'The ID of the governorate to delete.'
+            description: 'The id'
           }
         },
-        required: ['city_id']
+        required: ['id']
       }
     }
   }

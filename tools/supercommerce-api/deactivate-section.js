@@ -1,19 +1,24 @@
 /**
- * Function to deactivate a section.
+ * Function to deactivate section.
  *
- * @param {Object} params - The parameters for deactivating a section.
- * @param {string} params.section_id - The ID of the section to deactivate.
- * @param {string} [params.deactivation_notes] - Optional notes for the deactivation.
- * @returns {Promise<Object>} - The result of the section deactivation.
+ * @param {Object} params - The parameters for deactivate section.
+ * @param {string} params.id - The id.
+
+ * @param {string} [params.deactivation_notes] - The deactivation notes.
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { section_id, deactivation_notes = '' } = params;
+    const {
+      id,
+      deactivation_notes,
+    } = params;
 
-    const url = `${baseURL}/api/admin/sections/${section_id}/deactivate`;
+    let url = `${baseURL}/api/admin/sections/${id}/deactivate`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -21,10 +26,14 @@ const executeFunction = async (params) => {
       'Content-Type': 'application/json'
     };
 
+    const requestData = {
+      'deactivation_notes': deactivation_notes,
+    };
+
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ deactivation_notes })
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
@@ -34,13 +43,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error deactivating section:', error);
-    return { error: error.message || 'An error occurred while deactivating the section.' };
+    console.error('Error in deactivateSection:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for deactivating a section.
+ * Tool configuration for deactivate section.
  * @type {Object}
  */
 const apiTool = {
@@ -49,20 +58,20 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'deactivate_section',
-      description: 'Deactivate a store front section with optional notes.',
+      description: 'Deactivate Section',
       parameters: {
         type: 'object',
         properties: {
-          section_id: {
+          id: {
             type: 'string',
-            description: 'The ID of the section to deactivate.'
+            description: 'The id'
           },
           deactivation_notes: {
             type: 'string',
-            description: 'Optional notes explaining the reason for deactivation.'
+            description: 'The deactivation notes'
           }
         },
-        required: ['section_id']
+        required: ['id']
       }
     }
   }

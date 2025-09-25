@@ -1,32 +1,52 @@
 /**
- * Function to edit an existing section.
+ * Function to edit section.
  *
- * @param {Object} params - The parameters for editing a section.
- * @param {string} params.section_id - The ID of the section to edit.
- * @param {string} [params.name_en] - Updated section name in English.
- * @param {string} [params.name_ar] - Updated section name in Arabic.
- * @param {string} [params.type] - Updated type of section.
- * @param {string} [params.item_id] - Updated ID of the item this section relates to.
- * @param {string} [params.item_parent_id] - Updated parent ID of the item.
- * @param {boolean} [params.show_products] - Whether to show products in this section.
- * @param {number} [params.order] - Updated display order of the section.
- * @param {number} [params.active] - Whether the section is active (1 for active, 0 for inactive).
- * @param {number} [params.image_type] - Updated type of image display.
- * @param {boolean} [params.show_title] - Whether to show the section title.
- * @param {Array} [params.images] - Updated array of images for the section.
- * @param {string} [params.start_date] - Updated start date for the section.
- * @param {string} [params.start_time] - Updated start time for the section.
- * @param {string} [params.end_date] - Updated end date for the section.
- * @param {string} [params.expiration_time] - Updated expiration time for the section.
- * @returns {Promise<Object>} - The result of the section update.
+ * @param {Object} params - The parameters for edit section.
+ * @param {string} params.section_id - The section id.
+
+ * @param {string} [params.name_en] - The name en.
+ * @param {string} [params.name_ar] - The name ar.
+ * @param {string} [params.type] - The type.
+ * @param {string} [params.item_id] - The item id.
+ * @param {string} [params.item_parent_id] - The item parent id.
+ * @param {string} [params.show_products] - The show products.
+ * @param {string} [params.order] - The order.
+ * @param {string} [params.active] - The active.
+ * @param {string} [params.image_type] - The image type.
+ * @param {string} [params.show_title] - The show title.
+ * @param {string} [params.images] - The images.
+ * @param {string} [params.start_date] - The start date.
+ * @param {string} [params.start_time] - The start time.
+ * @param {string} [params.end_date] - The end date.
+ * @param {string} [params.expiration_time] - The expiration time.
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { section_id, ...updateData } = params;
-    const url = `${baseURL}/api/admin/sections/${section_id}`;
+    const {
+      section_id,
+      name_en,
+      name_ar,
+      type,
+      item_id,
+      item_parent_id,
+      show_products,
+      order,
+      active,
+      image_type,
+      show_title,
+      images,
+      start_date,
+      start_time,
+      end_date,
+      expiration_time,
+    } = params;
+
+    let url = `${baseURL}/api/admin/sections/${section_id}`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -34,13 +54,23 @@ const executeFunction = async (params) => {
       'Content-Type': 'application/json'
     };
 
-    // Only include fields that are provided
-    const requestData = {};
-    Object.keys(updateData).forEach(key => {
-      if (updateData[key] !== undefined) {
-        requestData[key] = updateData[key];
-      }
-    });
+    const requestData = {
+      'name_en': name_en,
+      'name_ar': name_ar,
+      'type': type,
+      'item_id': item_id,
+      'item_parent_id': item_parent_id,
+      'show_products': show_products,
+      'order': order,
+      'active': active,
+      'image_type': image_type,
+      'show_title': show_title,
+      'images': images,
+      'start_date': start_date,
+      'start_time': start_time,
+      'end_date': end_date,
+      'expiration_time': expiration_time,
+    };
 
     const response = await fetch(url, {
       method: 'PUT',
@@ -55,13 +85,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error editing section:', error);
-    return { error: error.message || 'An error occurred while editing the section.' };
+    console.error('Error in editSection:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for editing a section.
+ * Tool configuration for edit section.
  * @type {Object}
  */
 const apiTool = {
@@ -70,78 +100,73 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'edit_section',
-      description: 'Edit an existing store front section with updated information.',
+      description: 'Edit Section',
       parameters: {
         type: 'object',
         properties: {
           section_id: {
             type: 'string',
-            description: 'The ID of the section to edit.'
+            description: 'The section id'
           },
           name_en: {
             type: 'string',
-            description: 'Updated section name in English.'
+            description: 'The name en'
           },
           name_ar: {
             type: 'string',
-            description: 'Updated section name in Arabic.'
+            description: 'The name ar'
           },
           type: {
             type: 'string',
-            description: 'Updated type of section.'
+            description: 'The type'
           },
           item_id: {
             type: 'string',
-            description: 'Updated ID of the item this section relates to.'
+            description: 'The item id'
           },
           item_parent_id: {
             type: 'string',
-            description: 'Updated parent ID of the item.'
+            description: 'The item parent id'
           },
           show_products: {
-            type: 'boolean',
-            description: 'Whether to show products in this section.'
+            type: 'string',
+            description: 'The show products'
           },
           order: {
-            type: 'integer',
-            description: 'Updated display order of the section.',
-            minimum: 1
+            type: 'string',
+            description: 'The order'
           },
           active: {
-            type: 'integer',
-            description: 'Whether the section is active (1 for active, 0 for inactive).',
-            enum: [0, 1]
+            type: 'string',
+            description: 'The active'
           },
           image_type: {
-            type: 'integer',
-            description: 'Updated type of image display.'
+            type: 'string',
+            description: 'The image type'
           },
           show_title: {
-            type: 'boolean',
-            description: 'Whether to show the section title.'
+            type: 'string',
+            description: 'The show title'
           },
           images: {
-            type: 'array',
-            items: {
-              type: 'object'
-            },
-            description: 'Updated array of images for the section.'
+            type: 'string',
+            description: 'The images'
           },
           start_date: {
             type: 'string',
-            description: 'Updated start date for the section (format: YYYY-MM-DD HH:MM).'
+            description: 'The start date'
           },
           start_time: {
             type: 'string',
-            description: 'Updated start time for the section (format: HH:MM).'
+            description: 'The start time'
           },
           end_date: {
             type: 'string',
-            description: 'Updated end date for the section (format: YYYY-MM-DD HH:MM).'
+            description: 'The end date'
           },
           expiration_time: {
             type: 'string',
-            description: 'Updated expiration time for the section (format: HH:MM).'
+            description: 'The expiration time'
           }
         },
         required: ['section_id']

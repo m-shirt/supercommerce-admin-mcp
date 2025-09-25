@@ -1,19 +1,24 @@
 /**
- * Function to deactivate a delivery manager.
+ * Function to deactivate delivery manager.
  *
- * @param {Object} params - The parameters for deactivating a delivery manager.
- * @param {string} params.deliverer_id - The ID of the delivery manager to deactivate.
- * @param {string} [params.deactivation_notes] - Optional notes for the deactivation.
- * @returns {Promise<Object>} - The result of the delivery manager deactivation.
+ * @param {Object} params - The parameters for deactivate delivery manager.
+ * @param {string} params.id - The id.
+
+ * @param {string} [params.deactivation_notes] - The deactivation notes.
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { deliverer_id, deactivation_notes = '' } = params;
+    const {
+      id,
+      deactivation_notes,
+    } = params;
 
-    const url = `${baseURL}/api/admin/deliverers/${deliverer_id}/deactivate`;
+    let url = `${baseURL}/api/admin/deliverers/${id}/deactivate`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -21,10 +26,14 @@ const executeFunction = async (params) => {
       'Content-Type': 'application/json'
     };
 
+    const requestData = {
+      'deactivation_notes': deactivation_notes,
+    };
+
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ deactivation_notes })
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
@@ -34,13 +43,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error deactivating delivery manager:', error);
-    return { error: error.message || 'An error occurred while deactivating the delivery manager.' };
+    console.error('Error in deactivateDeliveryManager:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for deactivating a delivery manager.
+ * Tool configuration for deactivate delivery manager.
  * @type {Object}
  */
 const apiTool = {
@@ -49,20 +58,20 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'deactivate_delivery_manager',
-      description: 'Deactivate a delivery manager to prevent them from receiving new delivery assignments.',
+      description: 'Deactivate Delivery Manager',
       parameters: {
         type: 'object',
         properties: {
-          deliverer_id: {
+          id: {
             type: 'string',
-            description: 'The ID of the delivery manager to deactivate.'
+            description: 'The id'
           },
           deactivation_notes: {
             type: 'string',
-            description: 'Optional notes explaining the reason for deactivation.'
+            description: 'The deactivation notes'
           }
         },
-        required: ['deliverer_id']
+        required: ['id']
       }
     }
   }

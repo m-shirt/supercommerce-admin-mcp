@@ -1,26 +1,34 @@
 /**
- * Function to delete a campaign.
+ * Function to delete campaign.
  *
- * @param {Object} params - The parameters for deleting a campaign.
- * @param {string} params.campaign_id - The ID of the campaign to delete.
- * @returns {Promise<Object>} - The result of the campaign deletion.
+ * @param {Object} params - The parameters for delete campaign.
+ * @param {string} params.id - The id.
+
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { campaign_id } = params;
+    const {
+      id,
+    } = params;
 
-    const url = `${baseURL}/api/admin/campaigns/${campaign_id}/delete`;
+    let url = `${baseURL}/api/admin/campaigns/${id}/delete/`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     };
 
+    
+
     const response = await fetch(url, {
-      method: 'DELETE',
+      method: 'POST',
       headers
     });
 
@@ -31,13 +39,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error deleting campaign:', error);
-    return { error: error.message || 'An error occurred while deleting the campaign.' };
+    console.error('Error in deleteCampaign:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for deleting a campaign.
+ * Tool configuration for delete campaign.
  * @type {Object}
  */
 const apiTool = {
@@ -46,16 +54,16 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'delete_campaign',
-      description: 'Delete a campaign by its ID.',
+      description: 'Delete Campaign',
       parameters: {
         type: 'object',
         properties: {
-          campaign_id: {
+          id: {
             type: 'string',
-            description: 'The ID of the campaign to delete.'
+            description: 'The id'
           }
         },
-        required: ['campaign_id']
+        required: ['id']
       }
     }
   }

@@ -1,36 +1,27 @@
 /**
- * Function to update the main product in the backend API.
+ * Function to update main product.
  *
- * @param {Object} args - Arguments for the product update.
- * @param {string} args.id - The ID of the product to update.
- * @param {number} args.brand_id - The ID of the brand.
- * @param {string} args.category_id - The ID of the category.
- * @param {string} args.name - The name of the product.
- * @param {string} args.name_ar - The Arabic name of the product.
- * @param {number} args.preorder - Indicates if the product is a preorder.
- * @param {boolean} args.available_soon - Indicates if the product will be available soon.
- * @param {Array<number>} args.product_variant_options - Array of variant option IDs.
- * @param {string} args.sku - The SKU of the product.
- * @param {string} args.type - The type of the product.
- * @returns {Promise<Object>} - The result of the product update.
+ * @param {Object} params - The parameters for update main product.
+ * @param {string} params.id - The id.
+
+ * @param {string} [params.brand_id] - The brand id.
+ * @param {string} [params.category_id] - The category id.
+ * @param {string} [params.name] - The name.
+ * @param {string} [params.name_ar] - The name ar.
+ * @param {string} [params.preorder] - The preorder.
+ * @param {string} [params.available_soon] - The available soon.
+ * @param {string} [params.product_variant_options] - The product variant options.
+ * @param {string} [params.sku] - The sku.
+ * @param {string} [params.type] - The type.
+ * @returns {Promise<Object>} - The result of the operation.
  */
-const executeFunction = async ({ id, brand_id, category_id, name, name_ar, preorder, available_soon, product_variant_options, sku, type }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    // Construct the URL for the product update
-    const url = `${baseURL}/api/admin/products/${id}`;
-
-    // Set up headers for the request
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    };
-
-    // Create the request body
-    const body = JSON.stringify({
+    const {
+      id,
       brand_id,
       category_id,
       name,
@@ -39,33 +30,50 @@ const executeFunction = async ({ id, brand_id, category_id, name, name_ar, preor
       available_soon,
       product_variant_options,
       sku,
-      type
-    });
+      type,
+    } = params;
 
-    // Perform the fetch request
+    let url = `${baseURL}/api/admin/products/${id}`;
+    
+
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    const requestData = {
+      'brand_id': brand_id,
+      'category_id': category_id,
+      'name': name,
+      'name_ar': name_ar,
+      'preorder': preorder,
+      'available_soon': available_soon,
+      'product_variant_options': product_variant_options,
+      'sku': sku,
+      'type': type,
+    };
+
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body
+      body: JSON.stringify(requestData)
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error updating the product:', error);
-    return { error: 'An error occurred while updating the product.' };
+    console.error('Error in updateMainProduct:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for updating the main product in the backend API.
+ * Tool configuration for update main product.
  * @type {Object}
  */
 const apiTool = {
@@ -74,55 +82,52 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'update_main_product',
-      description: 'Update the main product in the backend API.',
+      description: 'Update Main Product',
       parameters: {
         type: 'object',
         properties: {
           id: {
             type: 'string',
-            description: 'The ID of the product to update.'
+            description: 'The id'
           },
           brand_id: {
             type: 'string',
-            description: 'The ID of the brand.'
+            description: 'The brand id'
           },
           category_id: {
             type: 'string',
-            description: 'The ID of the category.'
+            description: 'The category id'
           },
           name: {
             type: 'string',
-            description: 'The name of the product.'
+            description: 'The name'
           },
           name_ar: {
             type: 'string',
-            description: 'The Arabic name of the product.'
+            description: 'The name ar'
           },
           preorder: {
-            type: 'integer',
-            description: 'Indicates if the product is a preorder.'
+            type: 'string',
+            description: 'The preorder'
           },
           available_soon: {
-            type: 'boolean',
-            description: 'Indicates if the product will be available soon.'
+            type: 'string',
+            description: 'The available soon'
           },
           product_variant_options: {
-            type: 'array',
-            items: {
-              type: 'integer'
-            },
-            description: 'Array of variant option IDs.'
+            type: 'string',
+            description: 'The product variant options'
           },
           sku: {
             type: 'string',
-            description: 'The SKU of the product.'
+            description: 'The sku'
           },
           type: {
             type: 'string',
-            description: 'The type of the product.  "1" for regular product, "2" for bundle ( 1 is default )'
+            description: 'The type'
           }
         },
-        required: ['id', 'brand_id', 'category_id', 'name', 'sku', 'type', 'available_soon', 'bundle_checkout']
+        required: ['id']
       }
     }
   }

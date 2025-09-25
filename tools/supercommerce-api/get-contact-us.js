@@ -1,14 +1,13 @@
 /**
- * Function to retrieve contact us messages/inquiries.
+ * Function to get contact us.
  *
- * @param {Object} params - The parameters for retrieving contact us messages.
- * @param {number} [params.page] - Page number for pagination (default: 1).
- * @param {number} [params.per_page] - Number of items per page (default: 15).
- * @param {string} [params.q] - Search query to filter messages.
- * @param {string} [params.status] - Filter messages by status (e.g., "read", "unread").
- * @param {string} [params.date_from] - Start date for filtering (YYYY-MM-DD).
- * @param {string} [params.date_to] - End date for filtering (YYYY-MM-DD).
- * @returns {Promise<Object>} - The list of contact us messages.
+ * @param {Object} params - The parameters for get contact us.
+
+ * @param {string} [params.page] - page.
+ * @param {string} [params.q] - q.
+ * @param {string} [params.id] - id.
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
@@ -16,36 +15,26 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      page = 1,
-      per_page = 15,
+      page,
       q,
-      status,
-      date_from,
-      date_to
+      id,
     } = params;
 
-    let url = `${baseURL}/api/admin/contact_us?page=${page}&per_page=${per_page}`;
-
-    if (q) {
-      url += `&q=${encodeURIComponent(q)}`;
-    }
-
-    if (status) {
-      url += `&status=${status}`;
-    }
-
-    if (date_from) {
-      url += `&date_from=${date_from}`;
-    }
-
-    if (date_to) {
-      url += `&date_to=${date_to}`;
-    }
+    const url = `${baseURL}/api/admin/contact_us?page=1&q=&id=`;
+    
+    const queryParams = new URLSearchParams();
+    if (page !== undefined) queryParams.append('page', page);
+    if (q !== undefined) queryParams.append('q', q);
+    if (id !== undefined) queryParams.append('id', id);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
+
+    
 
     const response = await fetch(url, {
       method: 'GET',
@@ -59,13 +48,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error retrieving contact us messages:', error);
-    return { error: error.message || 'An error occurred while retrieving contact us messages.' };
+    console.error('Error in getContactUs:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for retrieving contact us messages.
+ * Tool configuration for get contact us.
  * @type {Object}
  */
 const apiTool = {
@@ -74,33 +63,21 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'get_contact_us',
-      description: 'Retrieve contact us messages and customer inquiries with filtering options.',
+      description: 'Get Contact Us',
       parameters: {
         type: 'object',
         properties: {
           page: {
-            type: 'number',
-            description: 'Page number for pagination (default: 1).'
-          },
-          per_page: {
-            type: 'number',
-            description: 'Number of items per page (default: 15).'
+            type: 'string',
+            description: 'page'
           },
           q: {
             type: 'string',
-            description: 'Search query to filter messages by name, email, or subject.'
+            description: 'q'
           },
-          status: {
+          id: {
             type: 'string',
-            description: 'Filter messages by status (e.g., "read", "unread", "replied").'
-          },
-          date_from: {
-            type: 'string',
-            description: 'Start date for filtering messages (YYYY-MM-DD format).'
-          },
-          date_to: {
-            type: 'string',
-            description: 'End date for filtering messages (YYYY-MM-DD format).'
+            description: 'id'
           }
         },
         required: []

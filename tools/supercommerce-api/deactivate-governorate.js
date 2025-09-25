@@ -1,19 +1,24 @@
 /**
- * Function to deactivate a governorate.
+ * Function to deactivate governorate.
  *
- * @param {Object} params - The parameters for deactivating a governorate.
- * @param {string} params.city_id - The ID of the governorate to deactivate.
- * @param {string} [params.deactivation_notes] - Optional notes for the deactivation.
- * @returns {Promise<Object>} - The result of the governorate deactivation.
+ * @param {Object} params - The parameters for deactivate governorate.
+ * @param {string} params.id - The id.
+
+ * @param {string} [params.deactivation_notes] - The deactivation notes.
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { city_id, deactivation_notes = '' } = params;
+    const {
+      id,
+      deactivation_notes,
+    } = params;
 
-    const url = `${baseURL}/api/admin/cities/${city_id}/deactivate`;
+    let url = `${baseURL}/api/admin/cities/${id}/deactivate`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -21,10 +26,14 @@ const executeFunction = async (params) => {
       'Content-Type': 'application/json'
     };
 
+    const requestData = {
+      'deactivation_notes': deactivation_notes,
+    };
+
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ deactivation_notes })
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
@@ -34,13 +43,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error deactivating governorate:', error);
-    return { error: error.message || 'An error occurred while deactivating the governorate.' };
+    console.error('Error in deactivateGovernorate:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for deactivating a governorate.
+ * Tool configuration for deactivate governorate.
  * @type {Object}
  */
 const apiTool = {
@@ -49,20 +58,20 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'deactivate_governorate',
-      description: 'Deactivate a governorate to suspend delivery services in that area.',
+      description: 'Deactivate Governorate',
       parameters: {
         type: 'object',
         properties: {
-          city_id: {
+          id: {
             type: 'string',
-            description: 'The ID of the governorate to deactivate.'
+            description: 'The id'
           },
           deactivation_notes: {
             type: 'string',
-            description: 'Optional notes explaining the reason for deactivation.'
+            description: 'The deactivation notes'
           }
         },
-        required: ['city_id']
+        required: ['id']
       }
     }
   }

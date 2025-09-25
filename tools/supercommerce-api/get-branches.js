@@ -1,28 +1,39 @@
 /**
- * Function to get a paginated list of branches.
+ * Function to get branches.
  *
- * @param {Object} params - The parameters for filtering branches.
- * @param {string} [params.q] - Search query for filtering branches.
- * @param {number} [params.page] - Page number for pagination (default: 1).
- * @returns {Promise<Object>} - The result containing branches list.
+ * @param {Object} params - The parameters for get branches.
+
+ * @param {string} [params.q] - q.
+ * @param {string} [params.page] - page.
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { q = '', page = 1 } = params;
+    const {
+      q,
+      page,
+    } = params;
 
-    const url = new URL(`${baseURL}/api/admin/branches`);
-    url.searchParams.append('q', q);
-    url.searchParams.append('page', page.toString());
+    const url = `${baseURL}/api/admin/branches?q=&page=1`;
+    
+    const queryParams = new URLSearchParams();
+    if (q !== undefined) queryParams.append('q', q);
+    if (page !== undefined) queryParams.append('page', page);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    const response = await fetch(url.toString(), {
+    
+
+    const response = await fetch(url, {
       method: 'GET',
       headers
     });
@@ -34,13 +45,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error getting branches:', error);
-    return { error: error.message || 'An error occurred while fetching branches.' };
+    console.error('Error in getBranches:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting branches.
+ * Tool configuration for get branches.
  * @type {Object}
  */
 const apiTool = {
@@ -49,18 +60,17 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'get_branches',
-      description: 'Get a paginated list of branches with optional search filtering.',
+      description: 'Get Branches',
       parameters: {
         type: 'object',
         properties: {
           q: {
             type: 'string',
-            description: 'Search query for filtering branches by name or location.'
+            description: 'q'
           },
           page: {
-            type: 'integer',
-            description: 'Page number for pagination (default: 1).',
-            minimum: 1
+            type: 'string',
+            description: 'page'
           }
         },
         required: []

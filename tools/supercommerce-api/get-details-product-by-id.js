@@ -1,46 +1,50 @@
 /**
- * Function to get product details by ID.
+ * Function to get details product by id.
  *
- * @param {Object} args - Arguments for the product details request.
- * @param {string} args.id - The ID of the product to retrieve details for.
- * @returns {Promise<Object>} - The result of the product details request.
- */
-const executeFunction = async ({ id }) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
-  const token = process.env.SUPERCOMMERCE_API_API_KEY;
-  try {
-    // Construct the URL for the product details request
-    const url = `${baseURL}/api/admin/products/${id}`;
+ * @param {Object} params - The parameters for get details product by id.
+ * @param {string} params.id - The id.
 
-    // Set up headers for the request
+
+ * @returns {Promise<Object>} - The result of the operation.
+ */
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const token = process.env.SUPERCOMMERCE_API_API_KEY;
+
+  try {
+    const {
+      id,
+    } = params;
+
+    let url = `${baseURL}/api/admin/products/${id}`;
+    
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    // Perform the fetch request
+    
+
     const response = await fetch(url, {
       method: 'GET',
       headers
     });
 
-    // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error getting product details:', error);
-    return { error: 'An error occurred while getting product details.' };
+    console.error('Error in getDetailsProductById:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting product details by ID.
+ * Tool configuration for get details product by id.
  * @type {Object}
  */
 const apiTool = {
@@ -48,14 +52,14 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'get_product_details',
-      description: 'Get details of a product by its ID.',
+      name: 'get_details_product_by_id',
+      description: 'Get Details Product By id',
       parameters: {
         type: 'object',
         properties: {
           id: {
             type: 'string',
-            description: 'The ID of the product to retrieve details for.'
+            description: 'The id'
           }
         },
         required: ['id']

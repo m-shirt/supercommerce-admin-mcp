@@ -1,28 +1,39 @@
 /**
- * Function to get a paginated list of custom lists.
+ * Function to get custom lists.
  *
- * @param {Object} params - The parameters for filtering custom lists.
- * @param {string} [params.q] - Search query for filtering custom lists.
- * @param {number} [params.page] - Page number for pagination (default: 1).
- * @returns {Promise<Object>} - The result containing custom lists.
+ * @param {Object} params - The parameters for get custom lists.
+
+ * @param {string} [params.page] - page.
+ * @param {string} [params.q] - q.
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { q = '', page = 1 } = params;
+    const {
+      page,
+      q,
+    } = params;
 
-    const url = new URL(`${baseURL}/api/admin/lists`);
-    url.searchParams.append('page', page.toString());
-    url.searchParams.append('q', q);
+    const url = `${baseURL}/api/admin/lists?page=1&q=`;
+    
+    const queryParams = new URLSearchParams();
+    if (page !== undefined) queryParams.append('page', page);
+    if (q !== undefined) queryParams.append('q', q);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
 
-    const response = await fetch(url.toString(), {
+    
+
+    const response = await fetch(url, {
       method: 'GET',
       headers
     });
@@ -34,13 +45,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error getting custom lists:', error);
-    return { error: error.message || 'An error occurred while fetching custom lists.' };
+    console.error('Error in getCustomLists:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for getting custom lists.
+ * Tool configuration for get custom lists.
  * @type {Object}
  */
 const apiTool = {
@@ -49,18 +60,17 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'get_custom_lists',
-      description: 'Get a paginated list of custom lists with optional search filtering.',
+      description: 'Get Custom Lists',
       parameters: {
         type: 'object',
         properties: {
+          page: {
+            type: 'string',
+            description: 'page'
+          },
           q: {
             type: 'string',
-            description: 'Search query for filtering custom lists by name or description.'
-          },
-          page: {
-            type: 'integer',
-            description: 'Page number for pagination (default: 1).',
-            minimum: 1
+            description: 'q'
           }
         },
         required: []

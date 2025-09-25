@@ -1,18 +1,23 @@
 /**
- * Function to activate a branch.
+ * Function to activate branch.
  *
- * @param {Object} params - The parameters for activating a branch.
- * @param {string} params.branch_id - The ID of the branch to activate.
- * @returns {Promise<Object>} - The result of the branch activation.
+ * @param {Object} params - The parameters for activate branch.
+ * @param {string} params.id - The id.
+
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { branch_id } = params;
+    const {
+      id,
+    } = params;
 
-    const url = `${baseURL}/api/admin/branches/${branch_id}/activate`;
+    let url = `${baseURL}/api/admin/branches/${id}/activate`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -20,10 +25,11 @@ const executeFunction = async (params) => {
       'Content-Type': 'application/json'
     };
 
+    
+
     const response = await fetch(url, {
       method: 'POST',
-      headers,
-      body: JSON.stringify({})
+      headers
     });
 
     if (!response.ok) {
@@ -33,13 +39,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error activating branch:', error);
-    return { error: error.message || 'An error occurred while activating the branch.' };
+    console.error('Error in activateBranch:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for activating a branch.
+ * Tool configuration for activate branch.
  * @type {Object}
  */
 const apiTool = {
@@ -48,16 +54,16 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'activate_branch',
-      description: 'Activate a branch by its ID.',
+      description: 'Activate Branch',
       parameters: {
         type: 'object',
         properties: {
-          branch_id: {
+          id: {
             type: 'string',
-            description: 'The ID of the branch to activate.'
+            description: 'The id'
           }
         },
-        required: ['branch_id']
+        required: ['id']
       }
     }
   }

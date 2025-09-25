@@ -1,23 +1,30 @@
 /**
- * Function to delete a custom list.
+ * Function to delete custom list.
  *
- * @param {Object} params - The parameters for deleting a custom list.
- * @param {string} params.list_id - The ID of the custom list to delete.
- * @returns {Promise<Object>} - The result of the custom list deletion.
+ * @param {Object} params - The parameters for delete custom list.
+ * @param {string} params.list_id - The list id.
+
+
+ * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
   const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
-    const { list_id } = params;
+    const {
+      list_id,
+    } = params;
 
-    const url = `${baseURL}/api/admin/lists/${list_id}`;
+    let url = `${baseURL}/api/admin/lists/${list_id}`;
+    
 
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
     };
+
+    
 
     const response = await fetch(url, {
       method: 'DELETE',
@@ -31,13 +38,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error deleting custom list:', error);
-    return { error: error.message || 'An error occurred while deleting the custom list.' };
+    console.error('Error in deleteCustomList:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for deleting a custom list.
+ * Tool configuration for delete custom list.
  * @type {Object}
  */
 const apiTool = {
@@ -46,13 +53,13 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'delete_custom_list',
-      description: 'Delete a custom list by its ID.',
+      description: 'Delete Custom List',
       parameters: {
         type: 'object',
         properties: {
           list_id: {
             type: 'string',
-            description: 'The ID of the custom list to delete.'
+            description: 'The list id'
           }
         },
         required: ['list_id']

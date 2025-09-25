@@ -1,52 +1,114 @@
 /**
- * Function to create a category in the backend API.
+ * Function to create category.
  *
- * @param {Object} categoryData - The data for the category to be created.
- * @param {string} categoryData.name - The name of the category.
- * @param {string} categoryData.name_ar - The Arabic name of the category.
- * @param {string} categoryData.image - The URL of the category image.
- * @param {string} categoryData.slug - The slug for the category.
- * @param {string} [categoryData.description=""] - The description of the category.
- * @param {string} [categoryData.description_ar=""] - The Arabic description of the category.
- * @param {number} categoryData.order - The order of the category.
- * @param {number} categoryData.featured - Whether the category is featured.
- * @param {Array<Object>} categoryData.sub_categories - The subcategories of the category.
- * @returns {Promise<Object>} - The result of the category creation.
+ * @param {Object} params - The parameters for create category.
+
+
+ * @param {string} [params.name] - The name.
+ * @param {string} [params.name_ar] - The name ar.
+ * @param {string} [params.image] - The image.
+ * @param {string} [params.slug] - The slug.
+ * @param {string} [params.description] - The description.
+ * @param {string} [params.description_ar] - The description ar.
+ * @param {string} [params.order] - The order.
+ * @param {string} [params.featured] - The featured.
+ * @param {string} [params.sub_categories] - The sub categories.
+ * @param {string} [params.html_top_en] - The html top en.
+ * @param {string} [params.html_top_ar] - The html top ar.
+ * @param {string} [params.html_bottom_en] - The html bottom en.
+ * @param {string} [params.html_bottom_ar] - The html bottom ar.
+ * @param {string} [params.meta_tag_title_en] - The meta tag title en.
+ * @param {string} [params.meta_tag_title_ar] - The meta tag title ar.
+ * @param {string} [params.meta_tag_description_en] - The meta tag description en.
+ * @param {string} [params.meta_tag_description_ar] - The meta tag description ar.
+ * @param {string} [params.meta_tag_keywords_en] - The meta tag keywords en.
+ * @param {string} [params.meta_tag_keywords_ar] - The meta tag keywords ar.
+ * @param {string} [params.alt] - The alt.
+ * @param {string} [params.alt_ar] - The alt ar.
+ * @returns {Promise<Object>} - The result of the operation.
  */
-const executeFunction = async (categoryData) => {
- const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
   const token = process.env.SUPERCOMMERCE_API_API_KEY;
 
   try {
+    const {
+      name,
+      name_ar,
+      image,
+      slug,
+      description,
+      description_ar,
+      order,
+      featured,
+      sub_categories,
+      html_top_en,
+      html_top_ar,
+      html_bottom_en,
+      html_bottom_ar,
+      meta_tag_title_en,
+      meta_tag_title_ar,
+      meta_tag_description_en,
+      meta_tag_description_ar,
+      meta_tag_keywords_en,
+      meta_tag_keywords_ar,
+      alt,
+      alt_ar,
+    } = params;
+
     const url = `${baseURL}/api/admin/categories`;
     
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
 
+    const requestData = {
+      'name': name,
+      'name_ar': name_ar,
+      'image': image,
+      'slug': slug,
+      'description': description,
+      'description_ar': description_ar,
+      'order': order,
+      'featured': featured,
+      'sub_categories': sub_categories,
+      'html_top_en': html_top_en,
+      'html_top_ar': html_top_ar,
+      'html_bottom_en': html_bottom_en,
+      'html_bottom_ar': html_bottom_ar,
+      'meta_tag_title_en': meta_tag_title_en,
+      'meta_tag_title_ar': meta_tag_title_ar,
+      'meta_tag_description_en': meta_tag_description_en,
+      'meta_tag_description_ar': meta_tag_description_ar,
+      'meta_tag_keywords_en': meta_tag_keywords_en,
+      'meta_tag_keywords_ar': meta_tag_keywords_ar,
+      'alt': alt,
+      'alt_ar': alt_ar,
+    };
+
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify(categoryData)
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error('Error creating category:', error);
-    return { error: 'An error occurred while creating the category.' };
+    console.error('Error in createCategory:', error);
+    return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for creating a category in the backend API.
+ * Tool configuration for create category.
  * @type {Object}
  */
 const apiTool = {
@@ -55,73 +117,96 @@ const apiTool = {
     type: 'function',
     function: {
       name: 'create_category',
-      description: 'Create a new category in the backend API.',
+      description: 'Create Category',
       parameters: {
         type: 'object',
         properties: {
           name: {
             type: 'string',
-            description: 'The name of the category.'
+            description: 'The name'
           },
           name_ar: {
             type: 'string',
-            description: 'The Arabic name of the category.'
+            description: 'The name ar'
           },
           image: {
             type: 'string',
-            description: 'The URL of the category image.'
+            description: 'The image'
           },
           slug: {
             type: 'string',
-            description: 'The slug for the category.'
+            description: 'The slug'
           },
           description: {
             type: 'string',
-            description: 'The description of the category.'
+            description: 'The description'
           },
           description_ar: {
             type: 'string',
-            description: 'The Arabic description of the category.'
+            description: 'The description ar'
           },
           order: {
-            type: 'integer',
-            description: 'The order of the category.'
+            type: 'string',
+            description: 'The order'
           },
           featured: {
-            type: 'integer',
-            description: 'Whether the category is featured.'
+            type: 'string',
+            description: 'The featured'
           },
           sub_categories: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                name: { type: 'string' },
-                name_ar: { type: 'string' },
-                image: { type: 'string' },
-                order: { type: 'integer' },
-                slug: { type: 'string' },
-                options: { type: 'array' , items: { type: 'string' },},
-                active: { type: 'boolean' },
-                hasHTMLEditor: { type: 'boolean' },
-                html_top_en: { type: 'string' },
-                html_top_ar: { type: 'string' },
-                html_bottom_en: { type: 'string' },
-                html_bottom_ar: { type: 'string' },
-                meta_tag_title_en: { type: 'string' },
-                meta_tag_title_ar: { type: 'string' },
-                meta_tag_description_en: { type: 'string' },
-                meta_tag_description_ar: { type: 'string' },
-                meta_tag_keywords_en: { type: 'string' },
-                meta_tag_keywords_ar: { type: 'string' },
-                alt: { type: 'string' },
-                alt_ar: { type: 'string' }
-              }
-            },
-            description: 'The subcategories of the category.'
+            type: 'string',
+            description: 'The sub categories'
+          },
+          html_top_en: {
+            type: 'string',
+            description: 'The html top en'
+          },
+          html_top_ar: {
+            type: 'string',
+            description: 'The html top ar'
+          },
+          html_bottom_en: {
+            type: 'string',
+            description: 'The html bottom en'
+          },
+          html_bottom_ar: {
+            type: 'string',
+            description: 'The html bottom ar'
+          },
+          meta_tag_title_en: {
+            type: 'string',
+            description: 'The meta tag title en'
+          },
+          meta_tag_title_ar: {
+            type: 'string',
+            description: 'The meta tag title ar'
+          },
+          meta_tag_description_en: {
+            type: 'string',
+            description: 'The meta tag description en'
+          },
+          meta_tag_description_ar: {
+            type: 'string',
+            description: 'The meta tag description ar'
+          },
+          meta_tag_keywords_en: {
+            type: 'string',
+            description: 'The meta tag keywords en'
+          },
+          meta_tag_keywords_ar: {
+            type: 'string',
+            description: 'The meta tag keywords ar'
+          },
+          alt: {
+            type: 'string',
+            description: 'The alt'
+          },
+          alt_ar: {
+            type: 'string',
+            description: 'The alt ar'
           }
         },
-        required: ['name', 'name_ar', 'image', 'slug', 'order', 'featured', 'sub_categories']
+        required: []
       }
     }
   }
