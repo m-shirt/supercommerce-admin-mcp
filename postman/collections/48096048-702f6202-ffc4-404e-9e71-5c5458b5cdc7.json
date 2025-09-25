@@ -5846,8 +5846,35 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"!p@$$w0rd123\",\n    \"password_confirm\": \"!p@$$w0rd123\",\n    \"token\": \"cg1qjXIAsSxD60keUfTOwDDsaaaddBOlsN5CvyksXkwvZAARyuDWhbpQuW\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/admin//auth/reset_password",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"",
+								"auth",
+								"reset_password"
+							]
+						}
 					},
 					"response": []
 				}
