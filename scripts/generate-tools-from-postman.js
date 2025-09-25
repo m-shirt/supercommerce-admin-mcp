@@ -98,17 +98,20 @@ function generateToolFromRequest(request, parentPath = '') {
   const fileName = convertToFileName(request.name);
   const functionName = convertToFunctionName(request.name);
 
+  // Sanitize parameter names (replace hyphens with underscores for valid JS variables)
+  const sanitizeName = (name) => name.replace(/-/g, '_');
+
   // Combine all parameters and remove duplicates
-  const allParams = [...new Set([...pathParams, ...queryParams.map(q => q.key), ...bodyParams])];
+  const allParams = [...new Set([...pathParams.map(sanitizeName), ...queryParams.map(q => sanitizeName(q.key)), ...bodyParams.map(sanitizeName)])];
 
   // Generate the tool code
   const toolCode = `/**
  * Function to ${request.name.toLowerCase()}.
  *
  * @param {Object} params - The parameters for ${request.name.toLowerCase()}.
-${pathParams.map(p => ` * @param {string} params.${p} - The ${p.replace(/_/g, ' ')}.`).join('\n')}
-${queryParams.map(q => ` * @param {${q.value ? 'string' : 'string'}} [params.${q.key}] - ${q.description || q.key.replace(/_/g, ' ')}.`).join('\n')}
-${bodyParams.map(b => ` * @param {string} [params.${b}] - The ${b.replace(/_/g, ' ')}.`).join('\n')}
+${pathParams.map(p => ` * @param {string} params.${sanitizeName(p)} - The ${p.replace(/_/g, ' ')}.`).join('\n')}
+${queryParams.map(q => ` * @param {${q.value ? 'string' : 'string'}} [params.${sanitizeName(q.key)}] - ${q.description || q.key.replace(/_/g, ' ')}.`).join('\n')}
+${bodyParams.map(b => ` * @param {string} [params.${sanitizeName(b)}] - The ${b.replace(/_/g, ' ')}.`).join('\n')}
  * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
@@ -123,7 +126,7 @@ ${allParams.map(p => `      ${p},`).join('\n')}
     ${pathParams.length > 0 ? `let url = \`${urlPath}\`;` : `const url = \`${urlPath}\`;`}
     ${queryParams.length > 0 ? `
     const queryParams = new URLSearchParams();
-${queryParams.map(q => `    if (${q.key} !== undefined) queryParams.append('${q.key}', ${q.key});`).join('\n')}
+${queryParams.map(q => `    if (${sanitizeName(q.key)} !== undefined) queryParams.append('${q.key}', ${sanitizeName(q.key)});`).join('\n')}
     const queryString = queryParams.toString();
     if (queryString) url += \`?\${queryString}\`;` : ''}
 
@@ -134,7 +137,7 @@ ${queryParams.map(q => `    if (${q.key} !== undefined) queryParams.append('${q.
     };
 
     ${bodyParams.length > 0 ? `const requestData = {
-${bodyParams.map(b => `      ${b},`).join('\n')}
+${bodyParams.map(b => `      '${b}': ${sanitizeName(b)},`).join('\n')}
     };` : ''}
 
     const response = await fetch(url, {
@@ -169,20 +172,20 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-${[...pathParams.map(p => `          ${p}: {
+${[...pathParams.map(p => `          ${sanitizeName(p)}: {
             type: 'string',
             description: 'The ${p.replace(/_/g, ' ')}'
           }`),
-   ...queryParams.filter(q => !pathParams.includes(q.key) && !bodyParams.includes(q.key)).map(q => `          ${q.key}: {
+   ...queryParams.filter(q => !pathParams.includes(q.key) && !bodyParams.includes(q.key)).map(q => `          ${sanitizeName(q.key)}: {
             type: '${q.value ? 'string' : 'string'}',
             description: '${q.description || q.key.replace(/_/g, ' ')}'
           }`),
-   ...bodyParams.filter(b => !pathParams.includes(b)).map(b => `          ${b}: {
+   ...bodyParams.filter(b => !pathParams.includes(b)).map(b => `          ${sanitizeName(b)}: {
             type: 'string',
             description: 'The ${b.replace(/_/g, ' ')}'
           }`)].join(',\n')}
         },
-        required: [${pathParams.map(p => `'${p}'`).join(', ')}]
+        required: [${pathParams.map(p => `'${sanitizeName(p)}'`).join(', ')}]
       }
     }
   }
