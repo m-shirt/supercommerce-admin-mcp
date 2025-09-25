@@ -16,7 +16,7 @@ const executeFunction = async (params) => {
       active,
     } = params;
 
-    const url = `${baseURL}/api/admin/options?active=1`;
+    let url = `${baseURL}/api/admin/options?active=1`;
     
     const queryParams = new URLSearchParams();
     if (active !== undefined) queryParams.append('active', active);

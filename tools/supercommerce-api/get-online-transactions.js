@@ -24,7 +24,7 @@ const executeFunction = async (params) => {
       status,
     } = params;
 
-    const url = `${baseURL}/api/admin/transactions?q=&page=1&date_from=&date_to=&status=`;
+    let url = `${baseURL}/api/admin/transactions?q=&page=1&date_from=&date_to=&status=`;
     
     const queryParams = new URLSearchParams();
     if (q !== undefined) queryParams.append('q', q);

@@ -123,7 +123,7 @@ const executeFunction = async (params) => {
 ${allParams.map(p => `      ${p},`).join('\n')}
     } = params;
 
-    ${pathParams.length > 0 ? `let url = \`${urlPath}\`;` : `const url = \`${urlPath}\`;`}
+    ${pathParams.length > 0 || queryParams.length > 0 ? `let url = \`${urlPath}\`;` : `const url = \`${urlPath}\`;`}
     ${queryParams.length > 0 ? `
     const queryParams = new URLSearchParams();
 ${queryParams.map(q => `    if (${sanitizeName(q.key)} !== undefined) queryParams.append('${q.key}', ${sanitizeName(q.key)});`).join('\n')}

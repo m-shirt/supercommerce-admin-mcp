@@ -16,7 +16,7 @@ const executeFunction = async (params) => {
       type,
     } = params;
 
-    const url = `${baseURL}/api/admin/pages/all?type=landing_page`;
+    let url = `${baseURL}/api/admin/pages/all?type=landing_page`;
     
     const queryParams = new URLSearchParams();
     if (type !== undefined) queryParams.append('type', type);

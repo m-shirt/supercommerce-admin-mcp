@@ -16,7 +16,7 @@ const executeFunction = async (params) => {
       flag,
     } = params;
 
-    const url = `${baseURL}/api/admin/pages?flag=non-general`;
+    let url = `${baseURL}/api/admin/pages?flag=non-general`;
     
     const queryParams = new URLSearchParams();
     if (flag !== undefined) queryParams.append('flag', flag);

@@ -166,6 +166,161 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 📊 Summary
 - Total new tools: 0
 - Total updated tools: 144
+- Timestamp: 2025-09-25T11:05:28.159Z
+
+---
+
+## [Automated Update] - 2025-09-25
+
+### 🔄 Updated
+- `createOption` - Updated from Postman collection
+- `editOption` - Updated from Postman collection
+- `getOptionsListPaginated` - Updated from Postman collection
+- `getAllOptionsListDropdown` - Updated from Postman collection
+- `getCategoryListPaginated` - Updated from Postman collection
+- `getAllCategoryDropdown` - Updated from Postman collection
+- `getAllSubcategoriesByCategoryIdDropdown` - Updated from Postman collection
+- `createCategory` - Updated from Postman collection
+- `editCategoryAddSubcategory` - Updated from Postman collection
+- `groupList` - Updated from Postman collection
+- `activeGroup` - Updated from Postman collection
+- `creatNewGroup` - Updated from Postman collection
+- `importGroup` - Updated from Postman collection
+- `exportGroupsCsv` - Updated from Postman collection
+- `updateGroup` - Updated from Postman collection
+- `deactiveGroup` - Updated from Postman collection
+- `getProductList` - Updated from Postman collection
+- `createMainProduct` - Updated from Postman collection
+- `getDetailsProductById` - Updated from Postman collection
+- `updateMainProduct` - Updated from Postman collection
+- `createVariantProduct` - Updated from Postman collection
+- `updateVariantProduct` - Updated from Postman collection
+- `getBrandsListPaginated` - Updated from Postman collection
+- `getAllBrandsListDropdown` - Updated from Postman collection
+- `createBrand` - Updated from Postman collection
+- `editBrand` - Updated from Postman collection
+- `getCustomLists` - Updated from Postman collection
+- `createCustomList` - Updated from Postman collection
+- `deleteCustomList` - Updated from Postman collection
+- `editCustomList` - Updated from Postman collection
+- `saveCustomList` - Updated from Postman collection
+- `exportCustomList` - Updated from Postman collection
+- `importCutomList` - Updated from Postman collection
+- `getSections` - Updated from Postman collection
+- `createNewSection` - Updated from Postman collection
+- `newRequest` - Updated from Postman collection
+- `deactivateSection` - Updated from Postman collection
+- `activateSection` - Updated from Postman collection
+- `editSection` - Updated from Postman collection
+- `getCustomAds` - Updated from Postman collection
+- `deactivateAds` - Updated from Postman collection
+- `activateAds` - Updated from Postman collection
+- `updateCustomAds` - Updated from Postman collection
+- `getSliders` - Updated from Postman collection
+- `createNewAdSlider` - Updated from Postman collection
+- `deleteSlider` - Updated from Postman collection
+- `updateSlider` - Updated from Postman collection
+- `activateSlider` - Updated from Postman collection
+- `deactivateSlider` - Updated from Postman collection
+- `getBranches` - Updated from Postman collection
+- `createNewBranches` - Updated from Postman collection
+- `deleteBranches` - Updated from Postman collection
+- `deactivateBranch` - Updated from Postman collection
+- `activateBranch` - Updated from Postman collection
+- `exportBranches` - Updated from Postman collection
+- `importBranches` - Updated from Postman collection
+- `getWebsitePolicy` - Updated from Postman collection
+- `showEdit` - Updated from Postman collection
+- `updateTermsAndConditions` - Updated from Postman collection
+- `updatePrivacypolicy` - Updated from Postman collection
+- `updateCookiesPolicy` - Updated from Postman collection
+- `getYourPages` - Updated from Postman collection
+- `showEdit` - Updated from Postman collection
+- `createNewStaticPage` - Updated from Postman collection
+- `deleteStaticPage` - Updated from Postman collection
+- `getCampaigns` - Updated from Postman collection
+- `createCampaign` - Updated from Postman collection
+- `deleteCampaign` - Updated from Postman collection
+- `viewCampaign` - Updated from Postman collection
+- `updateCampaign` - Updated from Postman collection
+- `listOrders` - Updated from Postman collection
+- `viewOrder` - Updated from Postman collection
+- `createOrder` - Updated from Postman collection
+- `editOrder` - Updated from Postman collection
+- `editOrderStatus` - Updated from Postman collection
+- `getOnlineTransactions` - Updated from Postman collection
+- `exportTransactions` - Updated from Postman collection
+- `getContactUs` - Updated from Postman collection
+- `exportContactUs` - Updated from Postman collection
+- `pickups` - Updated from Postman collection
+- `viewDeliveryDetails` - Updated from Postman collection
+- `listCustomers` - Updated from Postman collection
+- `viewCustomer` - Updated from Postman collection
+- `createCustomer` - Updated from Postman collection
+- `editCustomer` - Updated from Postman collection
+- `deactivateCustomer` - Updated from Postman collection
+- `activateCustomer` - Updated from Postman collection
+- `createAddress` - Updated from Postman collection
+- `getPrescription` - Updated from Postman collection
+- `exportPrescription` - Updated from Postman collection
+- `changeStatus` - Updated from Postman collection
+- `getMenuCreator` - Updated from Postman collection
+- `applyChanges` - Updated from Postman collection
+- `generateFromCategories` - Updated from Postman collection
+- `getDeliveryManagers` - Updated from Postman collection
+- `createNewDeliveryManager` - Updated from Postman collection
+- `getEditDeliveryManager` - Updated from Postman collection
+- `saveEditUpdateDeliveryManager` - Updated from Postman collection
+- `exportDeliveryManagers` - Updated from Postman collection
+- `importDeliveryManager` - Updated from Postman collection
+- `activeDeliveryManager` - Updated from Postman collection
+- `deactivateDeliveryManager` - Updated from Postman collection
+- `getGovernorates` - Updated from Postman collection
+- `newGovernorate` - Updated from Postman collection
+- `exportCities` - Updated from Postman collection
+- `importCities` - Updated from Postman collection
+- `deactivateGovernorate` - Updated from Postman collection
+- `activateGovernorate` - Updated from Postman collection
+- `deleteGovernorate` - Updated from Postman collection
+- `getAreas` - Updated from Postman collection
+- `newArea` - Updated from Postman collection
+- `deactivateArea` - Updated from Postman collection
+- `activateAreas` - Updated from Postman collection
+- `getPromotions` - Updated from Postman collection
+- `newPromotion` - Updated from Postman collection
+- `deletePromotion` - Updated from Postman collection
+- `editePromotion` - Updated from Postman collection
+- `activatePromotion` - Updated from Postman collection
+- `deactivatePromotion` - Updated from Postman collection
+- `getPromoCodeList` - Updated from Postman collection
+- `viewPromoCode` - Updated from Postman collection
+- `createPromoCode` - Updated from Postman collection
+- `editPromoCode` - Updated from Postman collection
+- `deactivatePromoCode` - Updated from Postman collection
+- `activatePromoCode` - Updated from Postman collection
+- `getNotifications` - Updated from Postman collection
+- `pushNotification` - Updated from Postman collection
+- `deleteNotification` - Updated from Postman collection
+- `activateReward` - Updated from Postman collection
+- `deactivateRewards` - Updated from Postman collection
+- `getRewards` - Updated from Postman collection
+- `newRewards` - Updated from Postman collection
+- `getGiftRequests` - Updated from Postman collection
+- `login` - Updated from Postman collection
+- `forgetPassword` - Updated from Postman collection
+- `listCancellationReasons` - Updated from Postman collection
+- `listProductsForCreateOrder` - Updated from Postman collection
+- `listCities` - Updated from Postman collection
+- `listOrderStatus` - Updated from Postman collection
+- `listInventories` - Updated from Postman collection
+- `listCustomerGroups` - Updated from Postman collection
+- `listPaymentMethods` - Updated from Postman collection
+- `branchesType` - Updated from Postman collection
+- `uploadImage` - Updated from Postman collection
+
+### 📊 Summary
+- Total new tools: 0
+- Total updated tools: 144
 - Timestamp: 2025-09-25T10:58:42.190Z
 
 ---

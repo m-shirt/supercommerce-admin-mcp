@@ -20,7 +20,7 @@ const executeFunction = async (params) => {
       q,
     } = params;
 
-    const url = `${baseURL}/api/admin/promotions?list_id=&page=1&q=`;
+    let url = `${baseURL}/api/admin/promotions?list_id=&page=1&q=`;
     
     const queryParams = new URLSearchParams();
     if (list_id !== undefined) queryParams.append('list_id', list_id);

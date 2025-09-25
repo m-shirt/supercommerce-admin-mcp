@@ -1,0 +1,14 @@
+# Ignore backup files
+tools/backups/
+
+# Ignore development files
+.env.local
+.env.development
+.env.test
+
+# Ignore logs
+*.log
+
+# Ignore temporary files
+.tmp/
+temp/

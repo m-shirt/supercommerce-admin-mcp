@@ -18,7 +18,7 @@ const executeFunction = async (params) => {
       q,
     } = params;
 
-    const url = `${baseURL}/api/admin/v2/categories?page=1&q=`;
+    let url = `${baseURL}/api/admin/v2/categories?page=1&q=`;
     
     const queryParams = new URLSearchParams();
     if (page !== undefined) queryParams.append('page', page);

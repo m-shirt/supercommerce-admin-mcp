@@ -20,7 +20,7 @@ const executeFunction = async (params) => {
       q,
     } = params;
 
-    const url = `${baseURL}/api/admin/cities/10/areas?limit=20&page=1&q=`;
+    let url = `${baseURL}/api/admin/cities/10/areas?limit=20&page=1&q=`;
     
     const queryParams = new URLSearchParams();
     if (limit !== undefined) queryParams.append('limit', limit);

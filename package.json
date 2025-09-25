@@ -36,5 +36,8 @@
     "node": ">=18"
   },
   "author": "Postman, Inc.",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "ignore-loader": "^0.1.2"
+  }
 }

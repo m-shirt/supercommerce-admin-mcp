@@ -18,7 +18,7 @@ const executeFunction = async (params) => {
       page,
     } = params;
 
-    const url = `${baseURL}/api/admin/v2/groups?q=&page=1`;
+    let url = `${baseURL}/api/admin/v2/groups?q=&page=1`;
     
     const queryParams = new URLSearchParams();
     if (q !== undefined) queryParams.append('q', q);
