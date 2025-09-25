@@ -65,4 +65,22 @@ export const toolPaths = [
   'supercommerce-api/export-custom-lists.js',
   'supercommerce-api/import-custom-lists.js',
 
+  // Store Front Management APIs - Sections
+  'supercommerce-api/get-sections.js',
+  'supercommerce-api/create-section.js',
+  'supercommerce-api/get-section-details.js',
+  'supercommerce-api/deactivate-section.js',
+  'supercommerce-api/activate-section.js',
+  'supercommerce-api/edit-section.js',
+
+  // Store Front Management APIs - Custom Ads
+  'supercommerce-api/get-custom-ads.js',
+  'supercommerce-api/deactivate-custom-ad.js',
+  'supercommerce-api/activate-custom-ad.js',
+  'supercommerce-api/edit-custom-ad.js',
+
+  // Store Front Management APIs - Pages & Ads
+  'supercommerce-api/get-landing-pages.js',
+  'supercommerce-api/manage-ads.js',
+
 ];
