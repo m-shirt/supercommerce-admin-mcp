@@ -20,7 +20,7 @@ const executeFunction = async (params) => {
       token,
     } = params;
 
-    const url = `${baseURL}/api/admin/auth/reset_password_admin`;
+    const url = `${baseURL}/api/admin/auth/reset_password`;
     
 
     const headers = {

@@ -1,11 +1,12 @@
-name: Postman Collection Sync
+name: Manual Postman Sync
 
 on:
+  workflow_dispatch:
+  # Only trigger on master if it's a manual push (not from postman-updates branch)
   push:
     paths:
       - 'postman/collections/*.json'
     branches: [master, main]
-  workflow_dispatch:
 
 jobs:
   sync:

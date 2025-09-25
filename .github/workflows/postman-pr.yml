@@ -1,0 +1,61 @@
+name: Create PR from Postman Updates
+
+on:
+  push:
+    branches: ['postman-updates']
+  workflow_dispatch:
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      repository-projects: write
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Check for existing PR
+      id: check-pr
+      run: |
+        PR_EXISTS=$(gh pr list --head postman-updates --base master --json number --jq length)
+        echo "pr_exists=$PR_EXISTS" >> $GITHUB_OUTPUT
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Pull Request
+      if: steps.check-pr.outputs.pr_exists == '0'
+      run: |
+        gh pr create \
+          --title "📋 Postman Collection Updates" \
+          --body "$(cat <<'EOF'
+        ## 📊 Postman Collection Update
+
+        This PR contains updates from the Postman collection.
+
+        ### 🔍 Changes
+        - Postman collection files have been updated
+        - Review the collection changes and merge when ready
+
+        ---
+        *This PR was automatically created when Postman pushed to postman-updates branch.*
+        EOF
+        )" \
+          --head postman-updates \
+          --base master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update existing PR comment
+      if: steps.check-pr.outputs.pr_exists != '0'
+      run: |
+        PR_NUMBER=$(gh pr list --head postman-updates --base master --json number --jq '.[0].number')
+        gh pr comment $PR_NUMBER --body "🔄 **New changes detected:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+        Additional Postman collection updates have been pushed to this branch."
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
