@@ -3057,7 +3057,7 @@
 					"response": []
 				},
 				{
-					"name": "List Orders Copy",
+					"name": "List Cancelled Orders",
 					"id": "48096048-9ae5a964-3221-435a-b7cb-8ac12b342168",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
