@@ -159,4 +159,9 @@ export const toolPaths = [
   // Phase 15: Marketing Promotions APIs
   'supercommerce-api/get-promotions.js',
 
+  // Phase 16: Marketing Notifications APIs
+  'supercommerce-api/get-notifications.js',
+  'supercommerce-api/send-notification.js',
+  'supercommerce-api/delete-notification.js',
+
 ];
