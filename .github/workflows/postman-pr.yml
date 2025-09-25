@@ -22,7 +22,7 @@ jobs:
     - name: Check for existing PR
       id: check-pr
       run: |
-        PR_EXISTS=$(gh pr list --head postman-updates --base master --json number --jq length)
+        PR_EXISTS=$(gh pr list --head postman-updates --base staging --json number --jq length)
         echo "pr_exists=$PR_EXISTS" >> $GITHUB_OUTPUT
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -46,14 +46,14 @@ jobs:
         EOF
         )" \
           --head postman-updates \
-          --base master
+          --base staging
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Update existing PR comment
       if: steps.check-pr.outputs.pr_exists != '0'
       run: |
-        PR_NUMBER=$(gh pr list --head postman-updates --base master --json number --jq '.[0].number')
+        PR_NUMBER=$(gh pr list --head postman-updates --base staging --json number --jq '.[0].number')
         gh pr comment $PR_NUMBER --body "🔄 **New changes detected:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
 
         Additional Postman collection updates have been pushed to this branch."
