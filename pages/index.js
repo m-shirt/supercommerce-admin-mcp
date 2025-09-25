@@ -1,0 +1,3 @@
+// /pages/index.js
+import Home from "./home/Home";
+export default Home;
