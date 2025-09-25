@@ -3,6 +3,7 @@ name: Create PR from Postman Updates
 on:
   push:
     branches: ['postman-updates']
+  workflow_dispatch:
 
 jobs:
   create-pr:
