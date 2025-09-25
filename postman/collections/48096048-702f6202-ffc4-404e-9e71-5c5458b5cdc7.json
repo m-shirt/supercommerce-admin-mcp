@@ -3057,7 +3057,7 @@
 					"response": []
 				},
 				{
-					"name": "List Orders Copy",
+					"name": "List delivered Orders",
 					"id": "48096048-d5b3562f-8c82-4db6-b441-4d0e2b6f7ad5",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
