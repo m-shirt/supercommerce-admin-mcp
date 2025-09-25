@@ -76,8 +76,8 @@ jobs:
           LAST_SYNC=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
 
           # Update tool count in README
-          sed -i "s/144+ tools/\${TOTAL_TOOLS}+ tools/g" README.md
-          sed -i "s/\*\*144+ tools\*\*/\*\*\${TOTAL_TOOLS}+ tools\*\*/g" README.md
+          sed -i "s/144+ tools/${TOTAL_TOOLS}+ tools/g" README.md
+          sed -i "s/\*\*144+ tools\*\*/\*\*${TOTAL_TOOLS}+ tools\*\*/g" README.md
 
           # Update last sync timestamp in README
           if grep -q "Last sync:" README.md; then
