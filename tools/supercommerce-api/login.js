@@ -6,8 +6,9 @@
  * @param {string} args.password - The password of the user.
  * @returns {Promise<Object>} - The result of the login attempt.
  */
-const executeFunction = async ({ email, password }) => {
-  const baseURL = 'https://storeapi.el-dokan.com'; // will be provided by the user
+const executeFunction = async (params) => {
+  const baseURL = process.env.SUPERCOMMERCE_BASE_URL;
+  const { email, password } = params;
   try {
     // Construct the URL for the login endpoint
     const url = `${baseURL}/api/admin/auth`;
@@ -30,15 +31,14 @@ const executeFunction = async ({ email, password }) => {
     // Check if the response was successful
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData);
+      throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
     // Parse and return the response data
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
     console.error('Error logging in:', error);
-    return { error: 'An error occurred while logging in.' };
+    return { error: error.message || 'An error occurred while logging in.' };
   }
 };
 
@@ -51,8 +51,8 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'login',
-      description: 'Log in to the backend API.',
+      name: 'admin_login',
+      description: 'Admin login authentication to the backend API.',
       parameters: {
         type: 'object',
         properties: {

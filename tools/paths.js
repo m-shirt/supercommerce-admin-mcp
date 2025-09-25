@@ -6,7 +6,6 @@ export const toolPaths = [
   'supercommerce-api/list-cities.js',
   'supercommerce-api/list-cancellation-reasons.js',
   'supercommerce-api/view-order.js',
-  //'supercommerce-api/login.js',
   'supercommerce-api/activate-promo-code.js',
   'supercommerce-api/deactivate-customer.js',
   'supercommerce-api/view-customer.js',
@@ -113,5 +112,26 @@ export const toolPaths = [
   'supercommerce-api/get-menu.js',
   'supercommerce-api/update-menu.js',
   'supercommerce-api/generate-menu.js',
+
+  // Phase 8+: High Priority APIs
+  // Authentication
+  'supercommerce-api/login.js',
+
+  // Transactions Management APIs
+  'supercommerce-api/get-transactions.js',
+  'supercommerce-api/export-transactions.js',
+
+  // Order Delivery Management APIs
+  'supercommerce-api/get-pickups.js',
+  'supercommerce-api/get-pickup-details.js',
+
+  // Delivery Management APIs
+  'supercommerce-api/get-delivery-managers.js',
+  'supercommerce-api/create-delivery-manager.js',
+  'supercommerce-api/get-delivery-manager-details.js',
+  'supercommerce-api/update-delivery-manager.js',
+  'supercommerce-api/activate-delivery-manager.js',
+  'supercommerce-api/deactivate-delivery-manager.js',
+  'supercommerce-api/export-delivery-managers.js',
 
 ];
