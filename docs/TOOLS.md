@@ -4,7 +4,7 @@
 
 This document provides comprehensive documentation for all 190 MCP tools available in the SuperCommerce Admin API integration.
 
-Last Updated: 2025-09-25T12:04:01.324Z
+Last Updated: 2025-09-25T12:06:12.023Z
 
 ## Business Model Categories
 
@@ -410,6 +410,7 @@ Last Updated: 2025-09-25T12:04:01.324Z
 - `getGiftRequests` - Get Gift Requests
 - `login` - Login
 - `forgetPassword` - Forget Password
+- `resetPassword` - Reset Password
 - `listCancellationReasons` - List Cancellation Reasons
 - `listProductsForCreateOrder` - List Products For Create Order
 - `listCities` - List Cities
