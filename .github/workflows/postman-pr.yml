@@ -43,7 +43,6 @@ jobs:
 
         ---
         *This PR was automatically created when Postman pushed to postman-updates branch.*
-        *Created at: $(date -u +"%Y-%m-%d %H:%M:%S UTC")*
         EOF
         )" \
           --head postman-updates \
