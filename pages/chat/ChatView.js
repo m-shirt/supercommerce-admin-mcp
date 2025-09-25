@@ -82,57 +82,59 @@ export default function ChatView({
     return (
       <div key={index} className={`${styles.message} ${isUser ? styles.userMessage : styles.assistantMessage}`}>
         <div className={styles.messageContent}>
-          {isUser ? (
-            <div className={styles.textContent}>
-              {message.content}
-            </div>
-          ) : (
-            <div className={styles.markdownContent}>
-              <ReactMarkdown
-                components={{
-                  code({ node, inline, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || '');
-                    return !inline && match ? (
-                      <SyntaxHighlighter
-                        style={vscDarkPlus}
-                        language={match[1]}
-                        PreTag="div"
-                        {...props}
-                      >
-                        {String(children).replace(/\n$/, '')}
-                      </SyntaxHighlighter>
-                    ) : (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    );
-                  }
-                }}
-              >
+          <div className={styles.messageBubble}>
+            {isUser ? (
+              <div className={styles.textContent}>
                 {message.content}
-              </ReactMarkdown>
+              </div>
+            ) : (
+              <div className={styles.markdownContent}>
+                <ReactMarkdown
+                  components={{
+                    code({ node, inline, className, children, ...props }) {
+                      const match = /language-(\w+)/.exec(className || '');
+                      return !inline && match ? (
+                        <SyntaxHighlighter
+                          style={vscDarkPlus}
+                          language={match[1]}
+                          PreTag="div"
+                          {...props}
+                        >
+                          {String(children).replace(/\n$/, '')}
+                        </SyntaxHighlighter>
+                      ) : (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    }
+                  }}
+                >
+                  {message.content}
+                </ReactMarkdown>
 
-              {message.tool_calls && message.tool_calls.length > 0 && (
-                <div className={styles.toolCalls}>
-                  <div className={styles.toolCallsHeader}>🛠️ Using Tools:</div>
-                  {message.tool_calls.map((toolCall, idx) => (
-                    <div key={idx} className={styles.toolCall}>
-                      <strong>{toolCall.function.name}</strong>
-                      {toolCall.function.arguments && (
-                        <pre>{(() => {
-                          try {
-                            return JSON.stringify(JSON.parse(toolCall.function.arguments), null, 2);
-                          } catch (e) {
-                            return toolCall.function.arguments;
-                          }
-                        })()}</pre>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+                {message.tool_calls && message.tool_calls.length > 0 && (
+                  <div className={styles.toolCalls}>
+                    <div className={styles.toolCallsHeader}>🛠️ Using Tools:</div>
+                    {message.tool_calls.map((toolCall, idx) => (
+                      <div key={idx} className={styles.toolCall}>
+                        <strong>{toolCall.function.name}</strong>
+                        {toolCall.function.arguments && (
+                          <pre>{(() => {
+                            try {
+                              return JSON.stringify(JSON.parse(toolCall.function.arguments), null, 2);
+                            } catch (e) {
+                              return toolCall.function.arguments;
+                            }
+                          })()}</pre>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
           <div className={styles.messageActions}>
             <button
@@ -140,7 +142,9 @@ export default function ChatView({
               className={styles.actionBtn}
               title="Copy message"
             >
-              📋
+              <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
             </button>
             {message.timestamp && (
               <span className={styles.timestamp}>
@@ -206,10 +210,10 @@ export default function ChatView({
           <h1>{currentChat?.title || 'Chat'}</h1>
           <div className={styles.headerActions}>
             <a href="/settings" className={styles.settingsBtn}>
-              ⚙️ Settings
+               Settings
             </a>
             <a href="/inspector" className={styles.inspectorBtn}>
-              🔍 Inspector
+               Inspector
             </a>
           </div>
         </div>
@@ -244,30 +248,32 @@ export default function ChatView({
               {streamingMessage && (
                 <div className={`${styles.message} ${styles.assistantMessage} ${styles.streaming}`}>
                   <div className={styles.messageContent}>
-                    <div className={styles.markdownContent}>
-                      <ReactMarkdown
-                        components={{
-                          code({ node, inline, className, children, ...props }) {
-                            const match = /language-(\w+)/.exec(className || '');
-                            return !inline && match ? (
-                              <SyntaxHighlighter
-                                style={vscDarkPlus}
-                                language={match[1]}
-                                PreTag="div"
-                                {...props}
-                              >
-                                {String(children).replace(/\n$/, '')}
-                              </SyntaxHighlighter>
-                            ) : (
-                              <code className={className} {...props}>
-                                {children}
-                              </code>
-                            );
-                          }
-                        }}
-                      >
-                        {streamingMessage}
-                      </ReactMarkdown>
+                    <div className={styles.messageBubble}>
+                      <div className={styles.markdownContent}>
+                        <ReactMarkdown
+                          components={{
+                            code({ node, inline, className, children, ...props }) {
+                              const match = /language-(\w+)/.exec(className || '');
+                              return !inline && match ? (
+                                <SyntaxHighlighter
+                                  style={vscDarkPlus}
+                                  language={match[1]}
+                                  PreTag="div"
+                                  {...props}
+                                >
+                                  {String(children).replace(/\n$/, '')}
+                                </SyntaxHighlighter>
+                              ) : (
+                                <code className={className} {...props}>
+                                  {children}
+                                </code>
+                              );
+                            }
+                          }}
+                        >
+                          {streamingMessage}
+                        </ReactMarkdown>
+                      </div>
                     </div>
                     <div className={styles.streamingIndicator}>●●●</div>
                   </div>
@@ -310,7 +316,7 @@ export default function ChatView({
                       disabled={!inputValue.trim()}
                       className={styles.sendBtn}
                     >
-                      ➤
+                      ↑
                     </button>
                   )}
                 </div>

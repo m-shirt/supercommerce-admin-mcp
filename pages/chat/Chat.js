@@ -53,6 +53,10 @@ export default function Chat() {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
+
+
+
+
   const startNewChat = () => {
     const newChat = createNewChat();
     const savedChat = saveChat(newChat);
@@ -219,7 +223,7 @@ export default function Chat() {
       let assistantContent = '';
       let toolCalls = [];
 
-      // Stream the response via our API
+      // Make non-streaming API call
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
@@ -234,7 +238,7 @@ export default function Chat() {
           tools: tools.length > 0 ? tools : undefined,
           temperature: settings.temperature,
           maxTokens: settings.maxTokens,
-          stream: true
+          stream: false
         }),
         signal: abortControllerRef.current.signal
       });
@@ -244,30 +248,11 @@ export default function Chat() {
         throw new Error(errorData.error || 'Chat request failed');
       }
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
+      const result = await response.json();
+      assistantContent = result.content || '';
+      toolCalls = result.tool_calls || [];
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done || abortControllerRef.current.signal.aborted) break;
-
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n').filter(line => line.trim());
-
-        for (const line of lines) {
-          try {
-            const data = JSON.parse(line);
-            if (data.type === 'content') {
-              assistantContent += data.content;
-              setStreamingMessage(assistantContent);
-            } else if (data.type === 'tool_calls') {
-              toolCalls = toolCalls.concat(data.tool_calls);
-            }
-          } catch (e) {
-            // Ignore malformed JSON lines
-          }
-        }
-      }
+      setStreamingMessage(assistantContent);
 
       if (!abortControllerRef.current.signal.aborted) {
         // Add assistant message
@@ -309,35 +294,16 @@ export default function Chat() {
               messages: followUpMessages,
               temperature: settings.temperature,
               maxTokens: settings.maxTokens,
-              stream: true
+              stream: false
             }),
             signal: abortControllerRef.current.signal
           });
 
           if (followUpResponse.ok) {
-            const reader = followUpResponse.body.getReader();
-            const decoder = new TextDecoder();
+            const followUpResult = await followUpResponse.json();
+            const followUpContent = followUpResult.content || '';
 
-            let followUpContent = '';
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done || abortControllerRef.current.signal.aborted) break;
-
-              const chunk = decoder.decode(value);
-              const lines = chunk.split('\n').filter(line => line.trim());
-
-              for (const line of lines) {
-                try {
-                  const data = JSON.parse(line);
-                  if (data.type === 'content') {
-                    followUpContent += data.content;
-                    setStreamingMessage(followUpContent);
-                  }
-                } catch (e) {
-                  // Ignore malformed JSON lines
-                }
-              }
-            }
+            setStreamingMessage(followUpContent);
 
             if (!abortControllerRef.current.signal.aborted && followUpContent) {
               const followUpMessage = addMessageToChat(currentChat.id, {
