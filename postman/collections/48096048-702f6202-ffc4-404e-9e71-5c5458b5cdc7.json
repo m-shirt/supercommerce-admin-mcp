@@ -5857,8 +5857,13 @@
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "34216e96-1148-4ce6-a779-ee1581755292",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
 								"packages": {},
-								"type": "text/javascript"
+								"requests": {}
 							}
 						}
 					],
@@ -5871,7 +5876,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"user@exapmle.com\"\n}",
+							"raw": "{\n    \"password\": \"!p@$$w0rd123\",\n    \"password_confirm\": \"!p@$$w0rd123\",\n    \"token\": \"cg1qjXIAsSxD60keUfTOwDDsaaaddBOlsN5CvyksXkwvZAARyuDWhbpQuW\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5879,7 +5884,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin//auth/forget_password",
+							"raw": "{{baseURL}}/api/admin//auth/reset_password",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -5888,7 +5893,7 @@
 								"admin",
 								"",
 								"auth",
-								"forget_password"
+								"reset_password"
 							]
 						}
 					},
