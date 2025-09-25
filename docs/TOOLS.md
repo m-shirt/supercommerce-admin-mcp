@@ -2,9 +2,9 @@
 
 ## Overview
 
-This document provides comprehensive documentation for all 189 MCP tools available in the SuperCommerce Admin API integration.
+This document provides comprehensive documentation for all 190 MCP tools available in the SuperCommerce Admin API integration.
 
-Last Updated: 2025-09-25T11:44:04.887Z
+Last Updated: 2025-09-25T11:52:07.515Z
 
 ## Business Model Categories
 
@@ -263,14 +263,19 @@ Last Updated: 2025-09-25T11:44:04.887Z
 - `list_payment_methods` - List Payment Methods
 - `upload_image` - Upload Image
 
-### Other (6 tools)
+### Other (7 tools)
 
 - `apply_changes` - Apply Changes
 - `change_status` - Change Status
 - `generate_from_categories` - Generate From Categories
 - `get_gift_requests` - Get Gift Requests
 - `new_request` - New Request
+- `reset_password` - Reset Password
 - `show_edit` - Show Edit
+
+## 🆕 Recently Added Tools
+
+- `resetPassword` - Reset Password
 
 ## 🔄 Recently Updated Tools
 

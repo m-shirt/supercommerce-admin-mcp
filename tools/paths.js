@@ -230,5 +230,9 @@ export const toolPaths = [
   'supercommerce-api/get-gift-requests.js',
   'supercommerce-api/forget-password.js',
   'supercommerce-api/branches-type.js'
+,
+
+  // Auto-generated tools - 2025-09-25T11:52:07.514Z
+  'supercommerce-api/reset-password.js',
 
 ];
