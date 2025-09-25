@@ -53,10 +53,10 @@ for (const tool of tools) {
     hasError = true;
    // console.log(`❌ Invalid JSON Schema in: ${name}`);
    // console.log([
-      {
-        message: "Array type missing required 'items' property",
-      },
-    ]);
+   //   {
+   //     message: "Array type missing required 'items' property",
+   //   },
+   // ]);
     continue;
   }
 

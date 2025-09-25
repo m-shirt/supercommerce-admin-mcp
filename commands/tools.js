@@ -40,18 +40,12 @@ export function registerToolsCommand(program) {
               },
             }) => {
              // console.log(`    ${name}`);
-             // console.log(
-                `      Description: ${description || "No description provided"}`
-              );
+             // console.log(`      Description: ${description || "No description provided"}`);
               if (parameters?.properties) {
                // console.log("      Parameters:");
                 Object.entries(parameters.properties).forEach(
                   ([name, details]) => {
-                   // console.log(
-                      `        - ${name}: ${
-                        details.description || "No description"
-                      }`
-                    );
+                   // console.log(`        - ${name}: ${details.description || "No description"}`);
                   }
                 );
               }

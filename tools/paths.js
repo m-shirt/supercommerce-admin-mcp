@@ -47,4 +47,22 @@ export const toolPaths = [
   'supercommerce-api/edit-category-add-subcategory.js',
   'supercommerce-api/list-customer-groups.js',
 
+  // Groups Management APIs
+  'supercommerce-api/get-groups-list.js',
+  'supercommerce-api/activate-group.js',
+  'supercommerce-api/create-group.js',
+  'supercommerce-api/update-group.js',
+  'supercommerce-api/deactivate-group.js',
+  'supercommerce-api/import-groups.js',
+  'supercommerce-api/export-groups.js',
+
+  // Custom Lists Management APIs
+  'supercommerce-api/get-custom-lists.js',
+  'supercommerce-api/create-custom-list.js',
+  'supercommerce-api/delete-custom-list.js',
+  'supercommerce-api/edit-custom-list.js',
+  'supercommerce-api/save-custom-list.js',
+  'supercommerce-api/export-custom-lists.js',
+  'supercommerce-api/import-custom-lists.js',
+
 ];
