@@ -16,7 +16,7 @@ const executeFunction = async (params) => {
       static_page_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/pages/${static-page_id}/delete`;
+    let url = `${baseURL}/api/admin/pages/${static_page_id}/delete`;
     
 
     const headers = {
