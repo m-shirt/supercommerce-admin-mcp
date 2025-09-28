@@ -43,6 +43,7 @@ jobs:
           BRANCH_NAME="auto-fix/issue-${{ github.event.issue.number }}"
           git config --global user.name "Claude Bot"
           git config --global user.email "claude-bot@github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
           git checkout -b $BRANCH_NAME
           git push -u origin $BRANCH_NAME
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
@@ -79,6 +80,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
           if [ -n "$(git status --porcelain)" ]; then
             echo "changes_made=true" >> $GITHUB_OUTPUT
             git add -A
