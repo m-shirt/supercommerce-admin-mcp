@@ -82,6 +82,24 @@ SUPERCOMMERCE_API_API_KEY=<JWT_BEARER_TOKEN>
 4. Run `node validateTools.js` to verify schema
 5. Test using web interface at http://localhost:3000 or MCP inspector
 
+### 🔍 Tool Validation System
+
+**IMPORTANT:** This repository has comprehensive validation to prevent tool registration errors.
+
+- **All PRs** are automatically validated for tool syntax and duplicates
+- **Auto-fix workflows** test builds before creating PRs
+- **Staging promotions** validate before auto-merging
+- **Postman sync** validates before creating PRs
+
+**Validation includes:**
+- Duplicate tool detection
+- Syntax validation of paths.js
+- Tool definition validation
+- Build testing
+- MCP server startup testing
+
+See `.github/TOOL_VALIDATION.md` for complete details.
+
 ## Web Interface
 
 The Next.js application provides:

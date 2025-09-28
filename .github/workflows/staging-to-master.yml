@@ -38,6 +38,47 @@ jobs:
         SUPERCOMMERCE_BASE_URL: ${{ secrets.SUPERCOMMERCE_BASE_URL }}
         SUPERCOMMERCE_API_API_KEY: ${{ secrets.SUPERCOMMERCE_API_API_KEY }}
 
+    - name: Validate tools after generation
+      id: validate
+      run: |
+        echo "Validating generated tools..."
+
+        # Check for syntax errors
+        node -e "
+        try {
+          const { toolPaths } = require('./tools/paths.js');
+          console.log('✅ paths.js syntax valid');
+        } catch (error) {
+          console.error('❌ paths.js syntax error:', error.message);
+          process.exit(1);
+        }"
+
+        # Check for duplicates
+        node -e "
+        const fs = require('fs');
+        const pathsContent = fs.readFileSync('./tools/paths.js', 'utf8');
+        const paths = pathsContent.match(/'[^']+\.js'/g) || [];
+        const seen = new Set();
+        const duplicates = [];
+        paths.forEach(path => {
+          if (seen.has(path)) duplicates.push(path);
+          seen.add(path);
+        });
+        if (duplicates.length > 0) {
+          console.error('❌ DUPLICATE TOOLS:', duplicates);
+          process.exit(1);
+        }
+        console.log('✅ No duplicates found');
+        "
+
+        # Run full validation
+        node validateTools.js
+
+        # Test build
+        npm run build
+
+        echo "validation_passed=true" >> $GITHUB_OUTPUT
+
     - name: Check for tool changes
       id: check-changes
       run: |
@@ -51,7 +92,7 @@ jobs:
         fi
 
     - name: Commit tool updates
-      if: steps.check-changes.outputs.changes == 'true'
+      if: steps.check-changes.outputs.changes == 'true' && steps.validate.outputs.validation_passed == 'true'
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
@@ -82,6 +123,12 @@ jobs:
         - All changes have been processed and validated
         - Ready for Vercel deployment
 
+        ### 🔍 Validation Status
+        - Tool definitions: ✅ Validated
+        - Build test: ✅ Passed
+        - Duplicate check: ✅ Passed
+        - Syntax check: ✅ Passed
+
         ### 🔄 Auto-merge eligible
         This PR can be safely auto-merged as it contains only chore commits.
 
@@ -100,11 +147,45 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Auto-merge PR to master
+      if: steps.validate.outputs.validation_passed == 'true'
       run: |
         PR_NUMBER=$(gh pr list --head staging --base master --json number --jq '.[0].number')
         if [ "$PR_NUMBER" != "null" ] && [ "$PR_NUMBER" != "" ]; then
           echo "Enabling auto-merge for PR #$PR_NUMBER"
           gh pr merge $PR_NUMBER --auto --squash
         fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create issue if validation fails
+      if: failure()
+      run: |
+        gh issue create \
+          --title "🚨 Staging to Master Failed - Tool Validation Error" \
+          --body "## ❌ Tool Validation Failed During Staging Promotion
+
+        The staging to master promotion failed due to tool validation errors.
+
+        ### 🔍 Error Details
+        Check the workflow logs for specific validation errors:
+        ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+        ### 🛠 Next Steps
+        1. Review the validation errors in the workflow logs
+        2. Fix any issues in the Postman collection or generation script
+        3. Check for syntax errors or duplicates in generated tools
+        4. Re-run the staging to master workflow
+
+        ### 📊 Failed Validation Checks
+        This could be due to:
+        - Duplicate tool entries
+        - Syntax errors in paths.js
+        - Invalid tool definitions
+        - Build failures
+
+        **Production deployment is blocked until this is resolved.**" \
+          --label "bug" \
+          --label "production-blocked" \
+          --label "validation-failed"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

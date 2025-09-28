@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# Pre-commit hook for tool validation
+# Prevents commits with broken tool definitions
+
+echo "🔍 Running pre-commit tool validation..."
+
+# Check if tools directory or paths.js changed
+TOOLS_CHANGED=$(git diff --cached --name-only | grep -E "(tools/|lib/tools.js)" | wc -l)
+
+if [ "$TOOLS_CHANGED" -gt 0 ]; then
+    echo "📁 Tool files changed, running validation..."
+
+    # Check for syntax errors in paths.js
+    echo "Checking paths.js syntax..."
+    if ! node -e "
+    try {
+      const { toolPaths } = require('./tools/paths.js');
+      if (!Array.isArray(toolPaths)) {
+        console.error('❌ toolPaths is not an array');
+        process.exit(1);
+      }
+      console.log('✅ paths.js syntax valid');
+    } catch (error) {
+      console.error('❌ paths.js syntax error:', error.message);
+      process.exit(1);
+    }"; then
+        echo "❌ Syntax validation failed!"
+        exit 1
+    fi
+
+    # Check for duplicates
+    echo "Checking for duplicate tools..."
+    if ! node -e "
+    const fs = require('fs');
+    const pathsContent = fs.readFileSync('./tools/paths.js', 'utf8');
+    const paths = pathsContent.match(/'[^']+\.js'/g) || [];
+    const seen = new Set();
+    const duplicates = [];
+
+    paths.forEach(path => {
+      if (seen.has(path)) {
+        duplicates.push(path);
+      }
+      seen.add(path);
+    });
+
+    if (duplicates.length > 0) {
+      console.error('❌ DUPLICATE TOOLS FOUND:');
+      duplicates.forEach(d => console.error('  - ' + d));
+      process.exit(1);
+    } else {
+      console.log('✅ No duplicate tools found');
+    }"; then
+        echo "❌ Duplicate validation failed!"
+        exit 1
+    fi
+
+    # Run tool validation
+    echo "Running tool definition validation..."
+    if ! node validateTools.js; then
+        echo "❌ Tool validation failed!"
+        echo "Fix tool definitions before committing."
+        exit 1
+    fi
+
+    echo "✅ All tool validations passed!"
+else
+    echo "No tool files changed, skipping validation."
+fi
+
+echo "✅ Pre-commit validation complete!"
