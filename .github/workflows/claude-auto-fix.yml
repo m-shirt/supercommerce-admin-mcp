@@ -24,6 +24,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -36,6 +37,8 @@ jobs:
 
       - name: Create fix branch
         id: branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           BRANCH_NAME="auto-fix/issue-${{ github.event.issue.number }}"
           git config --global user.name "Claude Bot"
@@ -69,10 +72,12 @@ jobs:
             Use the repository's CLAUDE.md for guidance on style and conventions.
             Make sure to actually fix the issue, not just analyze it.
 
-          claude_args: '--allowed-tools "*"'
+          claude_args: '--allowed-tools "Bash,Read,Write,Edit,Glob,Grep,TodoWrite"'
 
       - name: Check if changes were made
         id: check-changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             echo "changes_made=true" >> $GITHUB_OUTPUT
