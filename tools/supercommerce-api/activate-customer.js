@@ -2,7 +2,7 @@
  * Function to activate customer.
  *
  * @param {Object} params - The parameters for activate customer.
- * @param {string} params.id - The id.
+ * @param {string} params.cutomer_id - The cutomer id.
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      cutomer_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/customers/${id}/activate`;
+    let url = `${baseURL}/api/admin/customers/${cutomer_id}/activate`;
     
 
     const headers = {
@@ -58,12 +58,12 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          cutomer_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The cutomer id'
           }
         },
-        required: ['id']
+        required: ['cutomer_id']
       }
     }
   }

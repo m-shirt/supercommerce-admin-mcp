@@ -1,8 +1,8 @@
 /**
- * Function to view order.
+ * Function to api key.
  *
- * @param {Object} params - The parameters for view order.
- * @param {string} params.order_id - The order id.
+ * @param {Object} params - The parameters for api key.
+
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      order_id,
+
     } = params;
 
-    let url = `${baseURL}/api/admin/orders/${order_id}`;
+    const url = `${baseURL}/api/tenant/api_tokens`;
     
 
     const headers = {
@@ -38,13 +38,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error in viewOrder:', error);
+    console.error('Error in apiKey:', error);
     return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for view order.
+ * Tool configuration for api key.
  * @type {Object}
  */
 const apiTool = {
@@ -52,17 +52,14 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'view_order',
-      description: 'View Order',
+      name: 'api_key',
+      description: 'Api Key',
       parameters: {
         type: 'object',
         properties: {
-          order_id: {
-            type: 'string',
-            description: 'The order id'
-          }
+
         },
-        required: ['order_id']
+        required: []
       }
     }
   }

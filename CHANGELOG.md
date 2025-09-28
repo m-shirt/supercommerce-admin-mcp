@@ -15,6 +15,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Automated Update] - 2025-09-28
+
+### ✨ Added
+- `apiKey` - Api Key
+
+### 🔄 Updated
+- `deleteSlider` - Updated from Postman collection
+- `updateSlider` - Updated from Postman collection
+- `activateSlider` - Updated from Postman collection
+- `deactivateSlider` - Updated from Postman collection
+- `deleteBranches` - Updated from Postman collection
+- `deactivateBranch` - Updated from Postman collection
+- `activateBranch` - Updated from Postman collection
+- `deleteStaticPage` - Updated from Postman collection
+- `deleteCampaign` - Updated from Postman collection
+- `viewCampaign` - Updated from Postman collection
+- `viewOrder` - Updated from Postman collection
+- `editOrder` - Updated from Postman collection
+- `viewCustomer` - Updated from Postman collection
+- `editCustomer` - Updated from Postman collection
+- `deactivateCustomer` - Updated from Postman collection
+- `activateCustomer` - Updated from Postman collection
+- `createAddress` - Updated from Postman collection
+- `activeDeliveryManager` - Updated from Postman collection
+- `deactivateDeliveryManager` - Updated from Postman collection
+- `deactivateGovernorate` - Updated from Postman collection
+- `activateGovernorate` - Updated from Postman collection
+- `deleteGovernorate` - Updated from Postman collection
+- `deletePromotion` - Updated from Postman collection
+- `editePromotion` - Updated from Postman collection
+- `activatePromotion` - Updated from Postman collection
+- `deactivatePromotion` - Updated from Postman collection
+- `viewPromoCode` - Updated from Postman collection
+- `editPromoCode` - Updated from Postman collection
+- `deactivatePromoCode` - Updated from Postman collection
+- `activatePromoCode` - Updated from Postman collection
+- `activateReward` - Updated from Postman collection
+- `deactivateRewards` - Updated from Postman collection
+
+### 📊 Summary
+- Total new tools: 1
+- Total updated tools: 32
+- Timestamp: 2025-09-28T09:46:52.338Z
+
+---
+
+## [Automated Update] - 2025-09-25
+
+### ✨ Added
+- `listDeliveredOrders` - List delivered Orders
+
+### 📊 Summary
+- Total new tools: 1
+- Total updated tools: 0
+- Timestamp: 2025-09-25T21:09:25.155Z
+
+---
+
 ## [Automated Update] - 2025-09-25
 
 ### ✨ Added

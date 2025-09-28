@@ -2,7 +2,7 @@
  * Function to create address.
  *
  * @param {Object} params - The parameters for create address.
- * @param {string} params.id - The id.
+ * @param {string} params.cutomer_id - The cutomer id.
 
  * @param {string} [params.name] - The name.
  * @param {string} [params.address] - The address.
@@ -31,7 +31,7 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      cutomer_id,
       name,
       address,
       city_id,
@@ -53,7 +53,7 @@ const executeFunction = async (params) => {
       lng,
     } = params;
 
-    let url = `${baseURL}/api/admin/customers/${id}/address`;
+    let url = `${baseURL}/api/admin/customers/${cutomer_id}/address`;
     
 
     const headers = {
@@ -116,9 +116,9 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          cutomer_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The cutomer id'
           },
           name: {
             type: 'string',
@@ -197,7 +197,7 @@ const apiTool = {
             description: 'The lng'
           }
         },
-        required: ['id']
+        required: ['cutomer_id']
       }
     }
   }

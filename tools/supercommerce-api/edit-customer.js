@@ -2,7 +2,7 @@
  * Function to edit customer.
  *
  * @param {Object} params - The parameters for edit customer.
- * @param {string} params.id - The id.
+ * @param {string} params.cutomer_id - The cutomer id.
 
  * @param {string} [params.name] - The name.
  * @param {string} [params.last_name] - The last name.
@@ -20,7 +20,7 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      cutomer_id,
       name,
       last_name,
       email,
@@ -31,7 +31,7 @@ const executeFunction = async (params) => {
       postponed_payment_limit,
     } = params;
 
-    let url = `${baseURL}/api/admin/customers/${id}`;
+    let url = `${baseURL}/api/admin/customers/${cutomer_id}`;
     
 
     const headers = {
@@ -83,9 +83,9 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          cutomer_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The cutomer id'
           },
           name: {
             type: 'string',
@@ -120,7 +120,7 @@ const apiTool = {
             description: 'The postponed payment limit'
           }
         },
-        required: ['id']
+        required: ['cutomer_id']
       }
     }
   }

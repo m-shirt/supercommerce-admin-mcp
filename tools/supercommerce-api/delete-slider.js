@@ -2,7 +2,7 @@
  * Function to delete slider.
  *
  * @param {Object} params - The parameters for delete slider.
- * @param {string} params.id - The id.
+ * @param {string} params.slider_id - The slider-id.
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      slider_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/ads/${id}`;
+    let url = `${baseURL}/api/admin/ads/${slider-id}`;
     
 
     const headers = {
@@ -57,12 +57,12 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          slider_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The slider-id'
           }
         },
-        required: ['id']
+        required: ['slider_id']
       }
     }
   }

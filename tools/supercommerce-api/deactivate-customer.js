@@ -2,7 +2,7 @@
  * Function to deactivate customer.
  *
  * @param {Object} params - The parameters for deactivate customer.
- * @param {string} params.id - The id.
+ * @param {string} params.cutomer_id - The cutomer id.
 
  * @param {string} [params.deactivation_notes] - The deactivation notes.
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,11 +13,11 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      cutomer_id,
       deactivation_notes,
     } = params;
 
-    let url = `${baseURL}/api/admin/customers/${id}/deactivate`;
+    let url = `${baseURL}/api/admin/customers/${cutomer_id}/deactivate`;
     
 
     const headers = {
@@ -62,16 +62,16 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          cutomer_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The cutomer id'
           },
           deactivation_notes: {
             type: 'string',
             description: 'The deactivation notes'
           }
         },
-        required: ['id']
+        required: ['cutomer_id']
       }
     }
   }

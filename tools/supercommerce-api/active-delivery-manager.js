@@ -2,7 +2,7 @@
  * Function to active delivery manager.
  *
  * @param {Object} params - The parameters for active delivery manager.
- * @param {string} params.id - The id.
+ * @param {string} params.delivery_id - The delivery id.
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      delivery_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/deliverers/${id}/activate`;
+    let url = `${baseURL}/api/admin/deliverers/${delivery_id}/activate`;
     
 
     const headers = {
@@ -58,12 +58,12 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          delivery_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The delivery id'
           }
         },
-        required: ['id']
+        required: ['delivery_id']
       }
     }
   }

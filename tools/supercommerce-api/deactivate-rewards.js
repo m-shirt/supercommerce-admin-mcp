@@ -2,7 +2,7 @@
  * Function to deactivate rewards.
  *
  * @param {Object} params - The parameters for deactivate rewards.
-
+ * @param {string} params.reward_id - The reward id.
 
  * @param {string} [params.deactivation_notes] - The deactivation notes.
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,11 @@ const executeFunction = async (params) => {
 
   try {
     const {
+      reward_id,
       deactivation_notes,
     } = params;
 
-    const url = `${baseURL}/api/admin/rewards/12/deactivate`;
+    let url = `${baseURL}/api/admin/rewards/${reward_id}/deactivate`;
     
 
     const headers = {
@@ -61,12 +62,16 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
+          reward_id: {
+            type: 'string',
+            description: 'The reward id'
+          },
           deactivation_notes: {
             type: 'string',
             description: 'The deactivation notes'
           }
         },
-        required: []
+        required: ['reward_id']
       }
     }
   }

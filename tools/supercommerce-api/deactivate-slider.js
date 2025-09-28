@@ -2,7 +2,7 @@
  * Function to deactivate slider.
  *
  * @param {Object} params - The parameters for deactivate slider.
- * @param {string} params.id - The id.
+ * @param {string} params.slider_id - The slider-id.
 
  * @param {string} [params.deactivation_notes] - The deactivation notes.
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,11 +13,11 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      slider_id,
       deactivation_notes,
     } = params;
 
-    let url = `${baseURL}/api/admin/ads/${id}/deactivate`;
+    let url = `${baseURL}/api/admin/ads/${slider-id}/deactivate`;
     
 
     const headers = {
@@ -62,16 +62,16 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          slider_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The slider-id'
           },
           deactivation_notes: {
             type: 'string',
             description: 'The deactivation notes'
           }
         },
-        required: ['id']
+        required: ['slider_id']
       }
     }
   }

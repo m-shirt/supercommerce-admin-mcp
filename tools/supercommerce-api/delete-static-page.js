@@ -2,7 +2,7 @@
  * Function to delete static page.
  *
  * @param {Object} params - The parameters for delete static page.
- * @param {string} params.id - The id.
+ * @param {string} params.static_page_id - The static-page id.
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      static_page_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/pages/${id}/delete`;
+    let url = `${baseURL}/api/admin/pages/${static-page_id}/delete`;
     
 
     const headers = {
@@ -58,12 +58,12 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          static_page_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The static-page id'
           }
         },
-        required: ['id']
+        required: ['static_page_id']
       }
     }
   }

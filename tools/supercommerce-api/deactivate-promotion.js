@@ -2,7 +2,7 @@
  * Function to deactivate promotion.
  *
  * @param {Object} params - The parameters for deactivate promotion.
- * @param {string} params.id - The id.
+ * @param {string} params.promotion_id - The promotion id.
 
  * @param {string} [params.deactivation_notes] - The deactivation notes.
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,11 +13,11 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      promotion_id,
       deactivation_notes,
     } = params;
 
-    let url = `${baseURL}/api/admin/promotions/${id}/deactivate`;
+    let url = `${baseURL}/api/admin/promotions/${promotion_id}/deactivate`;
     
 
     const headers = {
@@ -62,16 +62,16 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          promotion_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The promotion id'
           },
           deactivation_notes: {
             type: 'string',
             description: 'The deactivation notes'
           }
         },
-        required: ['id']
+        required: ['promotion_id']
       }
     }
   }

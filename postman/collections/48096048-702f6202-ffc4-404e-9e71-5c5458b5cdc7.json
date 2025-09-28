@@ -1963,7 +1963,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseURL}}/api/admin/ads/{{id}}",
+									"raw": "{{baseURL}}/api/admin/ads/{{slider-id}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -1971,7 +1971,7 @@
 										"api",
 										"admin",
 										"ads",
-										"{{id}}"
+										"{{slider-id}}"
 									]
 								}
 							},
@@ -2005,7 +2005,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/ads/{{id}}",
+									"raw": "{{baseURL}}/api/admin/ads/{{slider-id}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2013,7 +2013,7 @@
 										"api",
 										"admin",
 										"ads",
-										"{{id}}"
+										"{{slider-id}}"
 									]
 								}
 							},
@@ -2047,7 +2047,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/ads/{{id}}/activate",
+									"raw": "{{baseURL}}/api/admin/ads/{{slider-id}}/activate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2055,7 +2055,7 @@
 										"api",
 										"admin",
 										"ads",
-										"{{id}}",
+										"{{slider-id}}",
 										"activate"
 									]
 								}
@@ -2090,7 +2090,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/ads/{{id}}/deactivate",
+									"raw": "{{baseURL}}/api/admin/ads/{{slider-id}}/deactivate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2098,7 +2098,7 @@
 										"api",
 										"admin",
 										"ads",
-										"{{id}}",
+										"{{slider-id}}",
 										"deactivate"
 									]
 								}
@@ -2225,7 +2225,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/branches/{{id}}/delete",
+							"raw": "{{baseURL}}/api/admin/branches/{{branch_id}}/delete",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -2233,7 +2233,7 @@
 								"api",
 								"admin",
 								"branches",
-								"{{id}}",
+								"{{branch_id}}",
 								"delete"
 							]
 						}
@@ -2268,7 +2268,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/branches/{{id}}/deactivate",
+							"raw": "{{baseURL}}/api/admin/branches/{{branch_id}}/deactivate",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -2276,7 +2276,7 @@
 								"api",
 								"admin",
 								"branches",
-								"{{id}}",
+								"{{branch_id}}",
 								"deactivate"
 							]
 						}
@@ -2311,7 +2311,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/branches/{{id}}/activate",
+							"raw": "{{baseURL}}/api/admin/branches/{{branch_id}}/activate",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -2319,7 +2319,7 @@
 								"api",
 								"admin",
 								"branches",
-								"{{id}}",
+								"{{branch_id}}",
 								"activate"
 							]
 						}
@@ -2780,7 +2780,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/pages/{{id}}/delete",
+									"raw": "{{baseURL}}/api/admin/pages/{{static-page_id}}/delete",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -2788,7 +2788,7 @@
 										"api",
 										"admin",
 										"pages",
-										"{{id}}",
+										"{{static-page_id}}",
 										"delete"
 									]
 								}
@@ -2915,7 +2915,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/campaigns/{{id}}/delete/",
+							"raw": "{{baseURL}}/api/admin/campaigns/{{campaign_id}}/delete/",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -2923,7 +2923,7 @@
 								"api",
 								"admin",
 								"campaigns",
-								"{{id}}",
+								"{{campaign_id}}",
 								"delete",
 								""
 							]
@@ -2950,7 +2950,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL}}/api/admin/campaigns/{{id}}",
+							"raw": "{{baseURL}}/api/admin/campaigns/{{campaign_id}}",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -2958,7 +2958,7 @@
 								"api",
 								"admin",
 								"campaigns",
-								"{{id}}"
+								"{{campaign_id}}"
 							]
 						}
 					},
@@ -3117,7 +3117,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL}}/api/admin/orders/{{id}}",
+							"raw": "{{baseURL}}/api/admin/orders/{{order_id}}",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -3125,7 +3125,7 @@
 								"api",
 								"admin",
 								"orders",
-								"{{id}}"
+								"{{order_id}}"
 							]
 						}
 					},
@@ -3200,7 +3200,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/orders/{{id}}",
+							"raw": "{{baseURL}}/api/admin/orders/{{order_id}}",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -3208,7 +3208,7 @@
 								"api",
 								"admin",
 								"orders",
-								"{{id}}"
+								"{{order_id}}"
 							]
 						}
 					},
@@ -3613,7 +3613,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL}}/api/admin/customers/{{id}}",
+							"raw": "{{baseURL}}/api/admin/customers/{{cutomer_id}}",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -3621,7 +3621,7 @@
 								"api",
 								"admin",
 								"customers",
-								"{{id}}"
+								"{{cutomer_id}}"
 							]
 						}
 					},
@@ -3696,7 +3696,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/customers/{{id}}",
+							"raw": "{{baseURL}}/api/admin/customers/{{cutomer_id}}",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -3704,7 +3704,7 @@
 								"api",
 								"admin",
 								"customers",
-								"{{id}}"
+								"{{cutomer_id}}"
 							]
 						}
 					},
@@ -3738,7 +3738,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/customers/{{id}}/deactivate",
+							"raw": "{{baseURL}}/api/admin/customers/{{cutomer_id}}/deactivate",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -3746,7 +3746,7 @@
 								"api",
 								"admin",
 								"customers",
-								"{{id}}",
+								"{{cutomer_id}}",
 								"deactivate"
 							]
 						}
@@ -3781,7 +3781,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/customers/{{id}}/activate",
+							"raw": "{{baseURL}}/api/admin/customers/{{cutomer_id}}/activate",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -3789,7 +3789,7 @@
 								"api",
 								"admin",
 								"customers",
-								"{{id}}",
+								"{{cutomer_id}}",
 								"activate"
 							]
 						}
@@ -3824,7 +3824,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/customers/{{id}}/address",
+							"raw": "{{baseURL}}/api/admin/customers/{{cutomer_id}}/address",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -3832,7 +3832,7 @@
 								"api",
 								"admin",
 								"customers",
-								"{{id}}",
+								"{{cutomer_id}}",
 								"address"
 							]
 						},
@@ -4370,7 +4370,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/deliverers/{{id}}/activate",
+									"raw": "{{baseURL}}/api/admin/deliverers/{{delivery_id}}/activate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -4378,7 +4378,7 @@
 										"api",
 										"admin",
 										"deliverers",
-										"{{id}}",
+										"{{delivery_id}}",
 										"activate"
 									]
 								}
@@ -4413,7 +4413,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/deliverers/{{id}}/deactivate",
+									"raw": "{{baseURL}}/api/admin/deliverers/{{delivery_id}}/deactivate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -4421,7 +4421,7 @@
 										"api",
 										"admin",
 										"deliverers",
-										"{{id}}",
+										"{{delivery_id}}",
 										"deactivate"
 									]
 								}
@@ -4645,7 +4645,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/cities/{{id}}/deactivate",
+									"raw": "{{baseURL}}/api/admin/cities/{{governorate_id}}/deactivate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -4653,7 +4653,7 @@
 										"api",
 										"admin",
 										"cities",
-										"{{id}}",
+										"{{governorate_id}}",
 										"deactivate"
 									]
 								}
@@ -4688,7 +4688,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/cities/{{id}}/activate",
+									"raw": "{{baseURL}}/api/admin/cities/{{governorate_id}}/activate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -4696,7 +4696,7 @@
 										"api",
 										"admin",
 										"cities",
-										"{{id}}",
+										"{{governorate_id}}",
 										"activate"
 									]
 								}
@@ -4722,7 +4722,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseURL}}/api/admin/cities/{{id}}",
+									"raw": "{{baseURL}}/api/admin/cities/{{governorate_id}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -4730,7 +4730,7 @@
 										"api",
 										"admin",
 										"cities",
-										"{{id}}"
+										"{{governorate_id}}"
 									]
 								}
 							},
@@ -5035,7 +5035,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseURL}}/api/admin/promotions/{{id}}",
+									"raw": "{{baseURL}}/api/admin/promotions/{{promotion_id}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -5043,7 +5043,7 @@
 										"api",
 										"admin",
 										"promotions",
-										"{{id}}"
+										"{{promotion_id}}"
 									]
 								}
 							},
@@ -5077,7 +5077,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/promotions/{{id}}",
+									"raw": "{{baseURL}}/api/admin/promotions/{{promotion_id}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -5085,7 +5085,7 @@
 										"api",
 										"admin",
 										"promotions",
-										"{{id}}"
+										"{{promotion_id}}"
 									]
 								}
 							},
@@ -5119,7 +5119,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/promotions/{{id}}/activate",
+									"raw": "{{baseURL}}/api/admin/promotions/{{promotion_id}}/activate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -5127,7 +5127,7 @@
 										"api",
 										"admin",
 										"promotions",
-										"{{id}}",
+										"{{promotion_id}}",
 										"activate"
 									]
 								}
@@ -5162,7 +5162,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/promotions/{{id}}/deactivate",
+									"raw": "{{baseURL}}/api/admin/promotions/{{promotion_id}}/deactivate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -5170,7 +5170,7 @@
 										"api",
 										"admin",
 										"promotions",
-										"{{id}}",
+										"{{promotion_id}}",
 										"deactivate"
 									]
 								}
@@ -5248,7 +5248,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseURL}}/api/admin/promos/{{id}}",
+									"raw": "{{baseURL}}/api/admin/promos/{{promo_id}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -5256,7 +5256,7 @@
 										"api",
 										"admin",
 										"promos",
-										"{{id}}"
+										"{{promo_id}}"
 									]
 								}
 							},
@@ -5332,7 +5332,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/promos/{{id}}",
+									"raw": "{{baseURL}}/api/admin/promos/{{promo_id}}",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -5340,7 +5340,7 @@
 										"api",
 										"admin",
 										"promos",
-										"{{id}}"
+										"{{promo_id}}"
 									]
 								},
 								"description": "Types = \\[\n\n'Amount' => 1,\n\n'Percent' => 2,\n\n'Free Delivery' => 3,\n\n'Exclusive' => 4,\n\n\\];\n\nWORK_WITH_PROMOTION = \\[\n\n'yes' => 1, // work with\n\n'cant' => 2, // doesn't work , raise error\n\n'removePromotion' => 3, // remove promotion, override discount\n\n'originalPrice' => 4, // remove promotion, override discount\n\n\\];\n\nFlags : 1 or 0\n\n\\[\"first_order\": 0, \"free_delivery\": 0, \"show_in_product\": 0, \"check_all_conditions\": 0\\]\n\nMust send all the keys as in the request"
@@ -5375,7 +5375,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/promos/{{id}}/deactivate",
+									"raw": "{{baseURL}}/api/admin/promos/{{promo_id}}/deactivate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -5383,7 +5383,7 @@
 										"api",
 										"admin",
 										"promos",
-										"{{id}}",
+										"{{promo_id}}",
 										"deactivate"
 									]
 								}
@@ -5418,7 +5418,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/promos/{{id}}/activate",
+									"raw": "{{baseURL}}/api/admin/promos/{{promo_id}}/activate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -5426,7 +5426,7 @@
 										"api",
 										"admin",
 										"promos",
-										"{{id}}",
+										"{{promo_id}}",
 										"activate"
 									]
 								}
@@ -5595,7 +5595,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/rewards/{{id}}/activate",
+									"raw": "{{baseURL}}/api/admin/rewards/{{reward_id}}/activate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -5603,7 +5603,7 @@
 										"api",
 										"admin",
 										"rewards",
-										"{{id}}",
+										"{{reward_id}}",
 										"activate"
 									]
 								}
@@ -5638,7 +5638,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseURL}}/api/admin/rewards/12/deactivate",
+									"raw": "{{baseURL}}/api/admin/rewards/{{reward_id}}/deactivate",
 									"host": [
 										"{{baseURL}}"
 									],
@@ -5646,7 +5646,7 @@
 										"api",
 										"admin",
 										"rewards",
-										"12",
+										"{{reward_id}}",
 										"deactivate"
 									]
 								}
@@ -6208,6 +6208,38 @@
 								"api",
 								"admin",
 								"branches-type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Api Key",
+					"id": "48096048-1d39bfad-075a-4c71-8ea3-65597c673b99",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/tenant/api_tokens",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"tenant",
+								"api_tokens"
 							]
 						}
 					},

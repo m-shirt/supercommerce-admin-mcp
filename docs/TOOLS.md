@@ -2,9 +2,11 @@
 
 ## Overview
 
-This document provides comprehensive documentation for all 193 MCP tools available in the SuperCommerce Admin API integration.
 
-Last Updated: 2025-09-25T21:09:25.152Z
+This document provides comprehensive documentation for all 194 MCP tools available in the SuperCommerce Admin API integration.
+
+Last Updated: 2025-09-28T09:46:52.336Z
+
 
 ## Business Model Categories
 
@@ -266,8 +268,9 @@ Last Updated: 2025-09-25T21:09:25.152Z
 - `list_payment_methods` - List Payment Methods
 - `upload_image` - Upload Image
 
-### Other (7 tools)
+### Other (8 tools)
 
+- `api_key` - Api Key
 - `apply_changes` - Apply Changes
 - `change_status` - Change Status
 - `generate_from_categories` - Generate From Categories
@@ -278,5 +281,42 @@ Last Updated: 2025-09-25T21:09:25.152Z
 
 ## 🆕 Recently Added Tools
 
+- `apiKey` - Api Key
+
+## 🔄 Recently Updated Tools
+
+- `deleteSlider` - Delete Slider
+- `updateSlider` - Update Slider
+- `activateSlider` - Activate Slider
+- `deactivateSlider` - Deactivate Slider
+- `deleteBranches` - Delete Branches
+- `deactivateBranch` - Deactivate Branch
+- `activateBranch` - Activate Branch
+- `deleteStaticPage` - Delete Static Page
+- `deleteCampaign` - Delete Campaign
+- `viewCampaign` - View Campaign
+- `viewOrder` - View Order
+- `editOrder` - Edit Order
+- `viewCustomer` - View Customer
+- `editCustomer` - Edit Customer
+- `deactivateCustomer` - Deactivate Customer
+- `activateCustomer` - Activate Customer
+- `createAddress` - Create Address
+- `activeDeliveryManager` - active Delivery Manager
+- `deactivateDeliveryManager` - Deactivate Delivery Manager
+- `deactivateGovernorate` - Deactivate Governorate
+- `activateGovernorate` - Activate Governorate
+- `deleteGovernorate` - Delete Governorate
+- `deletePromotion` - Delete Promotion
+- `editePromotion` - Edite Promotion
+- `activatePromotion` - Activate Promotion
+- `deactivatePromotion` - Deactivate Promotion
+- `viewPromoCode` - View Promo Code
+- `editPromoCode` - Edit Promo Code
+- `deactivatePromoCode` - Deactivate Promo Code
+- `activatePromoCode` - Activate Promo Code
+- `activateReward` - activate Reward
+- `deactivateRewards` - Deactivate Rewards
 - `listDeliveredOrders` - List delivered Orders
+
 

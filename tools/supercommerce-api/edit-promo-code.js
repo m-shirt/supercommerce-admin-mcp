@@ -2,7 +2,7 @@
  * Function to edit promo code.
  *
  * @param {Object} params - The parameters for edit promo code.
- * @param {string} params.id - The id.
+ * @param {string} params.promo_id - The promo id.
 
  * @param {string} [params.name] - The name.
  * @param {string} [params.description] - The description.
@@ -35,7 +35,7 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      promo_id,
       name,
       description,
       type,
@@ -61,7 +61,7 @@ const executeFunction = async (params) => {
       customer_ids,
     } = params;
 
-    let url = `${baseURL}/api/admin/promos/${id}`;
+    let url = `${baseURL}/api/admin/promos/${promo_id}`;
     
 
     const headers = {
@@ -128,9 +128,9 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          promo_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The promo id'
           },
           name: {
             type: 'string',
@@ -225,7 +225,7 @@ const apiTool = {
             description: 'The customer ids'
           }
         },
-        required: ['id']
+        required: ['promo_id']
       }
     }
   }

@@ -2,7 +2,7 @@
  * Function to activate promotion.
  *
  * @param {Object} params - The parameters for activate promotion.
- * @param {string} params.id - The id.
+ * @param {string} params.promotion_id - The promotion id.
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      promotion_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/promotions/${id}/activate`;
+    let url = `${baseURL}/api/admin/promotions/${promotion_id}/activate`;
     
 
     const headers = {
@@ -58,12 +58,12 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          promotion_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The promotion id'
           }
         },
-        required: ['id']
+        required: ['promotion_id']
       }
     }
   }
