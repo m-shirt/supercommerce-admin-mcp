@@ -2,9 +2,11 @@
 
 ## Overview
 
+
 This document provides comprehensive documentation for all 194 MCP tools available in the SuperCommerce Admin API integration.
 
 Last Updated: 2025-09-28T09:46:52.336Z
+
 
 ## Business Model Categories
 
@@ -315,4 +317,6 @@ Last Updated: 2025-09-28T09:46:52.336Z
 - `activatePromoCode` - Activate Promo Code
 - `activateReward` - activate Reward
 - `deactivateRewards` - Deactivate Rewards
+- `listDeliveredOrders` - List delivered Orders
+
 

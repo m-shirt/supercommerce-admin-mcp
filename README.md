@@ -4,6 +4,7 @@ A comprehensive Model Context Protocol (MCP) server providing **194+ tools** for
 
 [![MCP Version](https://img.shields.io/badge/MCP-1.0-blue)](https://modelcontextprotocol.io/)
 [![Tools](https://img.shields.io/badge/Tools-194+-green)]()
+
 [![API Coverage](https://img.shields.io/badge/API%20Coverage-100%25-success)]()
 [![Auto Sync](https://img.shields.io/badge/Auto%20Sync-Enabled-brightgreen)]()
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
@@ -19,6 +20,7 @@ A comprehensive Model Context Protocol (MCP) server providing **194+ tools** for
 - [Changelog](#-changelog)
 
 ## ✨ Features
+
 
 - **194+ MCP Tools**: Complete coverage of SuperCommerce Admin API
 - **100% API Coverage**: Every endpoint is accessible through MCP
@@ -323,3 +325,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 *Generated and maintained by automated workflows • Last sync: 2025-09-28 09:46:52 UTC*
+
