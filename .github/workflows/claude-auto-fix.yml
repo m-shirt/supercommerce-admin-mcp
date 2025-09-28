@@ -2,7 +2,7 @@ name: Claude Auto-Fix Issues
 
 on:
   issues:
-    types: [opened, labeled]
+    types: [opened]
 
 permissions:
   contents: write
@@ -13,11 +13,11 @@ permissions:
 jobs:
   analyze-and-fix:
     runs-on: ubuntu-latest
-    # Only run if issue has 'auto-fix' label or contains specific keywords
-    # Prevent duplicate runs by prioritizing 'opened' event when title contains keywords
+    # Only run if issue has 'auto-fix' label or contains specific keywords in title
     if: |
-      (github.event.action == 'opened' && (contains(github.event.issue.title, '[auto-fix]') || contains(github.event.issue.title, '[fix-me]'))) ||
-      (github.event.action == 'labeled' && contains(github.event.issue.labels.*.name, 'auto-fix') && !contains(github.event.issue.title, '[auto-fix]') && !contains(github.event.issue.title, '[fix-me]'))
+      contains(github.event.issue.labels.*.name, 'auto-fix') ||
+      contains(github.event.issue.title, '[auto-fix]') ||
+      contains(github.event.issue.title, '[fix-me]')
 
     steps:
       - name: Checkout repository
