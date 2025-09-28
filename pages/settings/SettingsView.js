@@ -5,7 +5,7 @@ import { AnthropicProvider } from '../../lib/llm/anthropic';
 import styles from './Settings.module.css';
 
 export default function SettingsView({
-  settings = { provider: 'openai', mcpServers: [] },
+  settings = { provider: 'openai', mcpServers: [], selectedTools: [], apiKey: '', model: '', customModel: '', baseURL: '', temperature: 0.7, maxTokens: 4000 },
   onSettingChange = () => {},
   onSave = () => {},
   onTestConnection = () => {},
@@ -20,17 +20,14 @@ export default function SettingsView({
   onRemoveServer = () => {},
   onLoadServerTools = () => {},
   onToolToggle = () => {},
-  loadingTools = false
+  loadingTools = {}
 }) {
-  // If being rendered as standalone page, redirect to main settings
-  if (typeof window !== 'undefined' && !settings.apiKey) {
-    window.location.href = '/settings';
-    return null;
-  }
+  // Remove the redirect logic that causes an infinite loop
+  // The settings page should work even without an API key configured
   const getDefaultModels = () => {
-    if (settings.provider === PROVIDER_TYPES.OPENAI) {
+    if (settings?.provider === PROVIDER_TYPES.OPENAI) {
       return OpenAIProvider.getDefaultModels();
-    } else if (settings.provider === PROVIDER_TYPES.ANTHROPIC) {
+    } else if (settings?.provider === PROVIDER_TYPES.ANTHROPIC) {
       return AnthropicProvider.getDefaultModels();
     }
     return [];
@@ -48,7 +45,7 @@ export default function SettingsView({
           </a>
           <button
             onClick={onTestConnection}
-            disabled={testingConnection || !settings.apiKey || (!settings.model && !settings.customModel)}
+            disabled={testingConnection || !settings?.apiKey || (!settings?.model && !settings?.customModel)}
             className={styles.testBtn}
           >
             {testingConnection ? 'Testing...' : 'Test Connection'}
@@ -79,7 +76,7 @@ export default function SettingsView({
           <div className={styles.field}>
             <label>Provider</label>
             <select
-              value={settings.provider}
+              value={settings?.provider || 'openai'}
               onChange={(e) => onSettingChange('provider', e.target.value)}
             >
               <option value={PROVIDER_TYPES.OPENAI}>OpenAI</option>
@@ -90,7 +87,7 @@ export default function SettingsView({
           <div className={styles.field}>
             <label>Model</label>
             <select
-              value={settings.model}
+              value={settings?.model || ''}
               onChange={(e) => onSettingChange('model', e.target.value)}
             >
               <option value="">Select a model</option>
@@ -104,7 +101,7 @@ export default function SettingsView({
             <label>Custom Model Name (optional)</label>
             <input
               type="text"
-              value={settings.customModel}
+              value={settings?.customModel || ''}
               onChange={(e) => onSettingChange('customModel', e.target.value)}
               placeholder="Enter custom model name"
             />
@@ -117,7 +114,7 @@ export default function SettingsView({
             <label>API Key *</label>
             <input
               type="password"
-              value={settings.apiKey}
+              value={settings?.apiKey || ''}
               onChange={(e) => onSettingChange('apiKey', e.target.value)}
               placeholder="Enter your API key"
             />
@@ -130,7 +127,7 @@ export default function SettingsView({
             <label>Base URL (optional)</label>
             <input
               type="url"
-              value={settings.baseURL}
+              value={settings?.baseURL || ''}
               onChange={(e) => onSettingChange('baseURL', e.target.value)}
               placeholder="https://api.openai.com/v1"
             />
@@ -147,10 +144,10 @@ export default function SettingsView({
                 min="0"
                 max="2"
                 step="0.1"
-                value={settings.temperature}
+                value={settings?.temperature ?? 0.7}
                 onChange={(e) => onSettingChange('temperature', parseFloat(e.target.value))}
               />
-              <span>{settings.temperature}</span>
+              <span>{settings?.temperature ?? 0.7}</span>
             </div>
 
             <div className={styles.field}>
@@ -159,7 +156,7 @@ export default function SettingsView({
                 type="number"
                 min="100"
                 max="32000"
-                value={settings.maxTokens}
+                value={settings?.maxTokens || 4000}
                 onChange={(e) => onSettingChange('maxTokens', parseInt(e.target.value))}
               />
             </div>
@@ -198,10 +195,10 @@ export default function SettingsView({
           </div>
 
           <div className={styles.serverList}>
-            {settings.mcpServers.length === 0 ? (
+            {(!settings?.mcpServers || settings.mcpServers.length === 0) ? (
               <div className={styles.empty}>No MCP servers configured</div>
             ) : (
-              settings.mcpServers.map(server => (
+              (settings?.mcpServers || []).map(server => (
                 <div key={server.id} className={styles.server}>
                   <div className={styles.serverHeader}>
                     <div className={styles.serverInfo}>
@@ -240,7 +237,7 @@ export default function SettingsView({
                               // Select all tools for this server
                               server.tools.forEach(tool => {
                                 const toolId = `${server.id}:${tool.name}`;
-                                const isSelected = settings.selectedTools.includes(toolId);
+                                const isSelected = settings?.selectedTools?.includes(toolId) || false;
                                 if (!isSelected) {
                                   onToolToggle(server.id, tool.name);
                                 }
@@ -255,7 +252,7 @@ export default function SettingsView({
                               // Deselect all tools for this server
                               server.tools.forEach(tool => {
                                 const toolId = `${server.id}:${tool.name}`;
-                                const isSelected = settings.selectedTools.includes(toolId);
+                                const isSelected = settings?.selectedTools?.includes(toolId) || false;
                                 if (isSelected) {
                                   onToolToggle(server.id, tool.name);
                                 }
@@ -270,7 +267,7 @@ export default function SettingsView({
                       <div className={styles.toolList}>
                         {server.tools.map(tool => {
                           const toolId = `${server.id}:${tool.name}`;
-                          const isSelected = settings.selectedTools.includes(toolId);
+                          const isSelected = settings?.selectedTools?.includes(toolId) || false;
                           return (
                             <div key={tool.name} className={styles.tool}>
                               <label className={styles.toolLabel}>
