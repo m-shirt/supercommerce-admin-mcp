@@ -2,7 +2,7 @@
  * Function to update slider.
  *
  * @param {Object} params - The parameters for update slider.
- * @param {string} params.id - The id.
+ * @param {string} params.slider_id - The slider-id.
 
  * @param {string} [params.id] - The id.
  * @param {string} [params.type] - The type.
@@ -37,6 +37,7 @@ const executeFunction = async (params) => {
 
   try {
     const {
+      slider_id,
       id,
       type,
       popup,
@@ -64,7 +65,7 @@ const executeFunction = async (params) => {
       expiration_time,
     } = params;
 
-    let url = `${baseURL}/api/admin/ads/${id}`;
+    let url = `${baseURL}/api/admin/ads/${slider-id}`;
     
 
     const headers = {
@@ -133,6 +134,10 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
+          slider_id: {
+            type: 'string',
+            description: 'The slider-id'
+          },
           id: {
             type: 'string',
             description: 'The id'
@@ -234,7 +239,7 @@ const apiTool = {
             description: 'The expiration time'
           }
         },
-        required: ['id']
+        required: ['slider_id']
       }
     }
   }

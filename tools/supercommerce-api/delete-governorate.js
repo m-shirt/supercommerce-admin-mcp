@@ -2,7 +2,7 @@
  * Function to delete governorate.
  *
  * @param {Object} params - The parameters for delete governorate.
- * @param {string} params.id - The id.
+ * @param {string} params.governorate_id - The governorate id.
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      governorate_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/cities/${id}`;
+    let url = `${baseURL}/api/admin/cities/${governorate_id}`;
     
 
     const headers = {
@@ -57,12 +57,12 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          governorate_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The governorate id'
           }
         },
-        required: ['id']
+        required: ['governorate_id']
       }
     }
   }

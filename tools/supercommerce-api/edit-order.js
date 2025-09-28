@@ -2,7 +2,7 @@
  * Function to edit order.
  *
  * @param {Object} params - The parameters for edit order.
- * @param {string} params.id - The id.
+ * @param {string} params.order_id - The order id.
 
  * @param {string} [params.user_id] - The user id.
  * @param {string} [params.address_id] - The address id.
@@ -23,7 +23,7 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      order_id,
       user_id,
       address_id,
       branch_id,
@@ -37,7 +37,7 @@ const executeFunction = async (params) => {
       deleted_items,
     } = params;
 
-    let url = `${baseURL}/api/admin/orders/${id}`;
+    let url = `${baseURL}/api/admin/orders/${order_id}`;
     
 
     const headers = {
@@ -92,9 +92,9 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          order_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The order id'
           },
           user_id: {
             type: 'string',
@@ -141,7 +141,7 @@ const apiTool = {
             description: 'The deleted items'
           }
         },
-        required: ['id']
+        required: ['order_id']
       }
     }
   }

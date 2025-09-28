@@ -2,7 +2,7 @@
  * Function to delete campaign.
  *
  * @param {Object} params - The parameters for delete campaign.
- * @param {string} params.id - The id.
+ * @param {string} params.campaign_id - The campaign id.
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      campaign_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/campaigns/${id}/delete/`;
+    let url = `${baseURL}/api/admin/campaigns/${campaign_id}/delete/`;
     
 
     const headers = {
@@ -58,12 +58,12 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          campaign_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The campaign id'
           }
         },
-        required: ['id']
+        required: ['campaign_id']
       }
     }
   }

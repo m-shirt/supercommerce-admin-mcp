@@ -2,7 +2,7 @@
  * Function to edite promotion.
  *
  * @param {Object} params - The parameters for edite promotion.
- * @param {string} params.id - The id.
+ * @param {string} params.promotion_id - The promotion id.
 
  * @param {string} [params.title] - The title.
  * @param {string} [params.name] - The name.
@@ -37,7 +37,7 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      promotion_id,
       title,
       name,
       name_ar,
@@ -65,7 +65,7 @@ const executeFunction = async (params) => {
       check_all_conditions,
     } = params;
 
-    let url = `${baseURL}/api/admin/promotions/${id}`;
+    let url = `${baseURL}/api/admin/promotions/${promotion_id}`;
     
 
     const headers = {
@@ -134,9 +134,9 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          promotion_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The promotion id'
           },
           title: {
             type: 'string',
@@ -239,7 +239,7 @@ const apiTool = {
             description: 'The check all conditions'
           }
         },
-        required: ['id']
+        required: ['promotion_id']
       }
     }
   }

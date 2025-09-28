@@ -1,9 +1,9 @@
 # 🚀 SuperCommerce MCP Tools Server
 
-A comprehensive Model Context Protocol (MCP) server providing **193+ tools** for complete control over the SuperCommerce Admin API. This server enables AI assistants like Claude to manage e-commerce operations including products, orders, customers, inventory, and more.
+A comprehensive Model Context Protocol (MCP) server providing **194+ tools** for complete control over the SuperCommerce Admin API. This server enables AI assistants like Claude to manage e-commerce operations including products, orders, customers, inventory, and more.
 
 [![MCP Version](https://img.shields.io/badge/MCP-1.0-blue)](https://modelcontextprotocol.io/)
-[![Tools](https://img.shields.io/badge/Tools-193+-green)]()
+[![Tools](https://img.shields.io/badge/Tools-194+-green)]()
 [![API Coverage](https://img.shields.io/badge/API%20Coverage-100%25-success)]()
 [![Auto Sync](https://img.shields.io/badge/Auto%20Sync-Enabled-brightgreen)]()
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
@@ -20,7 +20,7 @@ A comprehensive Model Context Protocol (MCP) server providing **193+ tools** for
 
 ## ✨ Features
 
-- **193+ MCP Tools**: Complete coverage of SuperCommerce Admin API
+- **194+ MCP Tools**: Complete coverage of SuperCommerce Admin API
 - **100% API Coverage**: Every endpoint is accessible through MCP
 - **Automatic Synchronization**: Tools auto-update with Postman collection changes
 - **Type-Safe Parameters**: Full JSON Schema validation
@@ -322,4 +322,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-*Generated and maintained by automated workflows • Last sync: 2025-09-25 21:09:25 UTC*
+*Generated and maintained by automated workflows • Last sync: 2025-09-28 09:46:52 UTC*

@@ -2,7 +2,7 @@
  * Function to activate reward.
  *
  * @param {Object} params - The parameters for activate reward.
- * @param {string} params.id - The id.
+ * @param {string} params.reward_id - The reward id.
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      reward_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/rewards/${id}/activate`;
+    let url = `${baseURL}/api/admin/rewards/${reward_id}/activate`;
     
 
     const headers = {
@@ -58,12 +58,12 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          reward_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The reward id'
           }
         },
-        required: ['id']
+        required: ['reward_id']
       }
     }
   }

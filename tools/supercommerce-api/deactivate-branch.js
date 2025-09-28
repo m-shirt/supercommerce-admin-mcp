@@ -2,7 +2,7 @@
  * Function to deactivate branch.
  *
  * @param {Object} params - The parameters for deactivate branch.
- * @param {string} params.id - The id.
+ * @param {string} params.branch_id - The branch id.
 
  * @param {string} [params.deactivation_notes] - The deactivation notes.
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,11 +13,11 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      branch_id,
       deactivation_notes,
     } = params;
 
-    let url = `${baseURL}/api/admin/branches/${id}/deactivate`;
+    let url = `${baseURL}/api/admin/branches/${branch_id}/deactivate`;
     
 
     const headers = {
@@ -62,16 +62,16 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          branch_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The branch id'
           },
           deactivation_notes: {
             type: 'string',
             description: 'The deactivation notes'
           }
         },
-        required: ['id']
+        required: ['branch_id']
       }
     }
   }

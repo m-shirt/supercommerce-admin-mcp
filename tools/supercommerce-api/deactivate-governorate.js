@@ -2,7 +2,7 @@
  * Function to deactivate governorate.
  *
  * @param {Object} params - The parameters for deactivate governorate.
- * @param {string} params.id - The id.
+ * @param {string} params.governorate_id - The governorate id.
 
  * @param {string} [params.deactivation_notes] - The deactivation notes.
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,11 +13,11 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      governorate_id,
       deactivation_notes,
     } = params;
 
-    let url = `${baseURL}/api/admin/cities/${id}/deactivate`;
+    let url = `${baseURL}/api/admin/cities/${governorate_id}/deactivate`;
     
 
     const headers = {
@@ -62,16 +62,16 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          governorate_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The governorate id'
           },
           deactivation_notes: {
             type: 'string',
             description: 'The deactivation notes'
           }
         },
-        required: ['id']
+        required: ['governorate_id']
       }
     }
   }

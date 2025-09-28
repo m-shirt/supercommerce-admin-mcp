@@ -2,7 +2,7 @@
  * Function to delete branches.
  *
  * @param {Object} params - The parameters for delete branches.
- * @param {string} params.id - The id.
+ * @param {string} params.branch_id - The branch id.
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      branch_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/branches/${id}/delete`;
+    let url = `${baseURL}/api/admin/branches/${branch_id}/delete`;
     
 
     const headers = {
@@ -58,12 +58,12 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          branch_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The branch id'
           }
         },
-        required: ['id']
+        required: ['branch_id']
       }
     }
   }

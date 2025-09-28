@@ -2,7 +2,7 @@
  * Function to deactivate delivery manager.
  *
  * @param {Object} params - The parameters for deactivate delivery manager.
- * @param {string} params.id - The id.
+ * @param {string} params.delivery_id - The delivery id.
 
  * @param {string} [params.deactivation_notes] - The deactivation notes.
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,11 +13,11 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      id,
+      delivery_id,
       deactivation_notes,
     } = params;
 
-    let url = `${baseURL}/api/admin/deliverers/${id}/deactivate`;
+    let url = `${baseURL}/api/admin/deliverers/${delivery_id}/deactivate`;
     
 
     const headers = {
@@ -62,16 +62,16 @@ const apiTool = {
       parameters: {
         type: 'object',
         properties: {
-          id: {
+          delivery_id: {
             type: 'string',
-            description: 'The id'
+            description: 'The delivery id'
           },
           deactivation_notes: {
             type: 'string',
             description: 'The deactivation notes'
           }
         },
-        required: ['id']
+        required: ['delivery_id']
       }
     }
   }
