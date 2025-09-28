@@ -1,5 +1,6 @@
 /**
  * Function to create promo code.
+ * Enhanced for better MCP client compatibility with sensible defaults.
  *
  * @param {Object} params - The parameters for create promo code.
  * @param {string} params.name - Unique name/code of the promo (required)
@@ -10,19 +11,19 @@
  * @param {string} params.expiration_date - End date (required)
  * @param {string} params.start_date - Start date (required)
  * @param {string} [params.random_count] - Number of random codes to generate
- * @param {string} [params.minimum_amount] - Minimum order amount
- * @param {string} [params.uses_per_user] - Uses per user
- * @param {string} [params.usage_limit] - Total usage limit
+ * @param {string} [params.minimum_amount] - Minimum order amount (defaults to '0')
+ * @param {string} [params.uses_per_user] - Uses per user (defaults to '1')
+ * @param {string} [params.usage_limit] - Total usage limit (defaults to '1000')
  * @param {string} [params.customer_phones] - Customer phones
- * @param {string} [params.target_type] - Target type
- * @param {string} [params.work_with_promotion] - Work with promotion
- * @param {string} [params.first_order] - First order only
- * @param {string} [params.free_delivery] - Include free delivery
- * @param {string} params.show_in_product - Show in product (required)
- * @param {string} [params.check_all_conditions] - Check all conditions
+ * @param {string} [params.target_type] - Target type (defaults to 'all')
+ * @param {string} [params.work_with_promotion] - Work with promotion (defaults to '1')
+ * @param {string} [params.first_order] - First order only (defaults to '0')
+ * @param {string} [params.free_delivery] - Include free delivery (defaults to '0')
+ * @param {string} [params.show_in_product] - Show in product (defaults to '1')
+ * @param {string} [params.check_all_conditions] - Check all conditions (defaults to '0')
  * @param {string} [params.conditions] - Custom conditions
  * @param {string} [params.vendor_id] - Vendor ID
- * @param {string} [params.mobile_only] - Mobile only
+ * @param {string} [params.mobile_only] - Mobile only (defaults to '0')
  * @param {string} [params.payment_methods] - Payment methods
  * @param {string} [params.customer_ids] - Customer IDs
  * @param {string} [params.area_ids] - Area IDs
@@ -61,8 +62,8 @@ const executeFunction = async (params) => {
     } = params;
 
     // Basic validation
-    if (!name || !description || !type || !amount || !start_date || !expiration_date || !show_in_product) {
-      throw new Error('Missing required fields: name, description, type, amount, start_date, expiration_date, and show_in_product are required');
+    if (!name || !description || !type || !amount || !start_date || !expiration_date) {
+      throw new Error('Missing required fields: name, description, type, amount, start_date, and expiration_date are required');
     }
 
     // Validate name format
@@ -110,30 +111,29 @@ const executeFunction = async (params) => {
     requestData.amount = amount;
     requestData.start_date = start_date;
     requestData.expiration_date = expiration_date;
-    requestData.show_in_product = show_in_product;
+
+    // Apply default values for fields that have sensible defaults for MCP clients
+    requestData.show_in_product = show_in_product !== undefined ? show_in_product : '1';
+    requestData.free_delivery = free_delivery !== undefined ? free_delivery : '0';
+    requestData.work_with_promotion = work_with_promotion !== undefined ? work_with_promotion : '1';
+    requestData.minimum_amount = minimum_amount !== undefined ? minimum_amount : '0';
+    requestData.uses_per_user = uses_per_user !== undefined ? uses_per_user : '1';
+    requestData.usage_limit = usage_limit !== undefined ? usage_limit : '1000';
+    requestData.first_order = first_order !== undefined ? first_order : '0';
+    requestData.mobile_only = mobile_only !== undefined ? mobile_only : '0';
+    requestData.check_all_conditions = check_all_conditions !== undefined ? check_all_conditions : '0';
+    requestData.target_type = target_type !== undefined ? target_type : 'all';
 
     // Optional fields - only include if provided
     if (max_amount !== undefined) requestData.max_amount = max_amount;
     if (random_count !== undefined) requestData.random_count = random_count;
-    if (minimum_amount !== undefined) requestData.minimum_amount = minimum_amount;
-    if (uses_per_user !== undefined) requestData.uses_per_user = uses_per_user;
-    if (usage_limit !== undefined) requestData.usage_limit = usage_limit;
     if (customer_phones !== undefined) requestData.customer_phones = customer_phones;
-    if (target_type !== undefined) requestData.target_type = target_type;
-    if (first_order !== undefined) requestData.first_order = first_order;
-    if (free_delivery !== undefined) requestData.free_delivery = free_delivery;
-    if (check_all_conditions !== undefined) requestData.check_all_conditions = check_all_conditions;
     if (conditions !== undefined) requestData.conditions = conditions;
     if (vendor_id !== undefined) requestData.vendor_id = vendor_id;
-    if (mobile_only !== undefined) requestData.mobile_only = mobile_only;
     if (payment_methods !== undefined) requestData.payment_methods = payment_methods;
     if (customer_ids !== undefined) requestData.customer_ids = customer_ids;
     if (area_ids !== undefined) requestData.area_ids = area_ids;
 
-    // Special handling for work_with_promotion - omit if causing issues
-    if (work_with_promotion !== undefined && work_with_promotion !== null) {
-      requestData.work_with_promotion = work_with_promotion;
-    }
 
     const response = await fetch(url, {
       method: 'POST',
@@ -146,10 +146,6 @@ const executeFunction = async (params) => {
 
       // Provide helpful error messages
       let errorMessage = errorData.message || JSON.stringify(errorData);
-
-      if (errorMessage.includes('work_with_promotion')) {
-        errorMessage += ' - Try omitting work_with_promotion field or set it to "0"';
-      }
       if (errorMessage.includes('type is invalid')) {
         errorMessage += ' - Use 1 (percentage), 2 (fixed), 3 (free shipping), or 4 (buy X get Y)';
       }
@@ -237,8 +233,8 @@ const apiTool = {
           work_with_promotion: {
             type: 'string',
             enum: ['0', '1'],
-            description: 'Allow stacking with other promotions (1=yes, 0=no). Default: "0". If error occurs, omit this field',
-            default: '0'
+            description: 'Allow stacking with other promotions (1=yes, 0=no). Default: "1"',
+            default: '1'
           },
           free_delivery: {
             type: 'string',
@@ -299,7 +295,7 @@ const apiTool = {
             description: 'Number of random promo codes to generate (if not set, one code is created)'
           }
         },
-        required: ['name', 'description', 'type', 'amount', 'start_date', 'expiration_date', 'show_in_product']
+        required: ['name', 'description', 'type', 'amount', 'start_date', 'expiration_date']
       }
     }
   }
