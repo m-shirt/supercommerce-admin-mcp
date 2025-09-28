@@ -6232,14 +6232,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL}}/api/admin/branches-type",
+							"raw": "{{baseURL}}/api/tenant/api_tokens",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"api",
-								"admin",
-								"branches-type"
+								"tenant",
+								"api_tokens"
 							]
 						}
 					},
