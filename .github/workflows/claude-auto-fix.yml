@@ -96,6 +96,24 @@ jobs:
             echo "changes_made=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Run build test
+        if: steps.check-changes.outputs.changes_made == 'true'
+        id: build-test
+        run: |
+          echo "Testing build..."
+          npm run build
+          echo "build_passed=true" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Validate tools
+        if: steps.check-changes.outputs.changes_made == 'true'
+        id: validate-tools
+        run: |
+          echo "Validating tools..."
+          node validateTools.js
+          echo "validation_passed=true" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
       - name: Create Pull Request
         if: steps.check-changes.outputs.changes_made == 'true'
         env:
@@ -111,8 +129,13 @@ jobs:
             **Title:** ${{ github.event.issue.title }}
             **Issue:** #${{ github.event.issue.number }}
 
+            ### ✅ Validation Results
+            - Build Status: ${{ steps.build-test.outputs.build_passed == 'true' && '✅ Passing' || '❌ Failed - NEEDS FIX' }}
+            - Tool Validation: ${{ steps.validate-tools.outputs.validation_passed == 'true' && '✅ Passing' || '❌ Failed - NEEDS FIX' }}
+
             ### 🔍 Review Needed
             Please review the changes carefully before merging. This is an AI-generated fix.
+            ${{ steps.build-test.outputs.build_passed != 'true' && '⚠️ **WARNING: Build failed! This PR should not be merged until the build is fixed.**' || '' }}
 
             ### 📝 Notes
             - Generated using Claude Code GitHub Action
@@ -123,7 +146,8 @@ jobs:
             --head ${{ steps.branch.outputs.branch_name }} \
             --base master \
             --label "auto-generated" \
-            --label "needs-review" || true
+            --label "needs-review" \
+            ${{ steps.build-test.outputs.build_passed != 'true' && '--label "build-failed"' || '' }} || true
 
       - name: Comment on issue
         env:
