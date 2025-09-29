@@ -6294,6 +6294,994 @@
 				}
 			],
 			"id": "48096048-d65d9e4e-dac7-457e-bad3-e547b4efa965"
+		},
+		{
+			"name": "Reports",
+			"item": [],
+			"id": "48096048-a7f81f7e-1fe6-4d80-ac37-252d500b8ca5"
+		},
+		{
+			"name": "Payment Methods",
+			"item": [
+				{
+					"name": "Get Payment Methods",
+					"id": "48096048-2f94901c-88ed-4ef3-9850-5ee412e7b588",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/admin/payment_methods/providers",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"payment_methods",
+								"providers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate Payment Method",
+					"id": "48096048-2727a8c5-626d-4bfd-b88e-c578dd104c2f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/admin/payment_methods/{{payment_id}}/deactivate",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"payment_methods",
+								"{{payment_id}}",
+								"deactivate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate Payment Method",
+					"id": "48096048-17cafca7-602c-46e4-8eec-e9232b1a6f61",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/admin/payment_methods/{{payment_id}}/activate",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"payment_methods",
+								"{{payment_id}}",
+								"activate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "48096048-7cafcf24-106c-412f-955d-de84910616a0"
+		},
+		{
+			"name": "Admins",
+			"item": [
+				{
+					"name": "Roles",
+					"item": [
+						{
+							"name": "Get Roles",
+							"id": "48096048-78d52c0a-098b-478d-beb8-f203de74749a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/admin/roles",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Role",
+							"id": "48096048-fe42e14e-3a69-481e-b828-b5610ef17416",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\":\"Meow\",\"order_states\":[1,2,6],\"permissions\":[5,3,1,46,80,null]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/admin/roles",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Role",
+							"id": "48096048-d7fc27d2-b55a-4928-a990-650d320ac609",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"id\":37,\"name\":\"Meow\",\"permissions\":[1,3,5,46,80],\"order_states\":[1,2,6,4]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/admin/roles/{{role_id}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"roles",
+										"{{role_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deactivate Role",
+							"id": "48096048-8210468e-707e-452a-a8d2-25fa376aa788",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"deactivation_notes\":\"me\\n\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/admin/roles/{{role_id}}/deactivate",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"roles",
+										"{{role_id}}",
+										"deactivate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Activate Role",
+							"id": "48096048-670ed0c7-99ed-4986-94af-78a683e779c4",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/admin/roles/{{role_id}}/activate",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"roles",
+										"{{role_id}}",
+										"activate"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"id": "48096048-af705265-1687-4866-a6d8-314220f288cd"
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Get Admins (Users)",
+							"id": "48096048-7bbb3723-3be8-4ec8-b266-fe4d929e7d22",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/admin/admins",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Admin",
+							"id": "48096048-21c8f297-dd77-4374-ac86-597b4163867d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\":\"Meow\",\"email\":\"Meow^@gmail.com\",\"role_id\":1,\"password\":\"0115069829^@Ahmed\",\"phone\":null}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/admin/admins",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deactivate Admin",
+							"id": "48096048-69da63e8-ba97-454c-81db-7dcd58dccb4c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"deactivation_notes\":\"alo\\n\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/admin/admins/1176877/deactivate",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"admins",
+										"1176877",
+										"deactivate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Activate Admin",
+							"id": "48096048-9dc7630b-8c12-4e85-8cc1-66c9be6576fa",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/admin/admins/1176807/activate",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"admins",
+										"1176807",
+										"activate"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"id": "48096048-001d1483-cfbc-4888-8303-b70cd67d2868"
+				}
+			],
+			"id": "48096048-97b0187a-8fdd-408b-b338-cebaf15c651a"
+		},
+		{
+			"name": "Linked Domains",
+			"item": [
+				{
+					"name": "Get Linked Domains",
+					"id": "48096048-8e6c9352-2247-4208-a50b-a62dd6794b01",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/admin/domains",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"domains"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Domains",
+					"id": "48096048-95bf7c31-6605-44bf-b9cb-2d86f3df3f15",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"domain\": \"yourwebsite.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/admin/domains",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"domains"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "48096048-9906fe07-75a3-4231-aa80-1e76bc0fc01c"
+		},
+		{
+			"name": "Configuration",
+			"item": [
+				{
+					"name": "Edit Profile",
+					"item": [
+						{
+							"name": "Get Edit Profile",
+							"id": "48096048-c4b84b0e-ca3a-4151-b1c5-770249e7fcc1",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-TOKEN",
+										"value": ""
+									},
+									{
+										"key": "sec-ch-ua-platform",
+										"value": "\"Windows\""
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3phaHJhbi1zdGFnaW5nYXBpLndpdGhlbGRva2FuLmNvbS9hcGkvYWRtaW4vYXV0aCIsImlhdCI6MTc1Nzg0OTYyNiwiZXhwIjozNzc1Nzg0OTYyNiwibmJmIjoxNzU3ODQ5NjI2LCJqdGkiOiJCWmFLR25hcEprcHBvd3c5Iiwic3ViIjoxMTc4Mjg4LCJwcnYiOiI0YWMwNWMwZjhhYzA4ZjM2NGNiNGQwM2ZiOGUxZjYzMWZlYzMyMmU4In0.Upg_vdk68az-nRrx2Zowk82VHi0bOcb4fLrmYj0AIcE"
+									},
+									{
+										"key": "lang",
+										"value": "1"
+									},
+									{
+										"key": "Referer",
+										"value": "https://zahran-stagingadmin.witheldokan.com/"
+									},
+									{
+										"key": "sec-ch-ua",
+										"value": "\"Chromium\";v=\"140\", \"Not=A?Brand\";v=\"24\", \"Google Chrome\";v=\"140\""
+									},
+									{
+										"key": "sec-ch-ua-mobile",
+										"value": "?0"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json, text/plain, */*"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/admin/profile",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Save Edit Profile",
+							"id": "48096048-b08a5977-aae1-44ac-ae0d-fd6da052211a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"image\":\"https://zahran-stagingapi.witheldokan.com/storage/uploads/twitter-1759134581.png\",\"name\":\"Ahmed Khaled\",\"email\":\"ahmedkhaled^@supercommerce.io\",\"phone\":\"\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/admin/profile",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"id": "48096048-0e5cbf98-6bba-492d-9ba6-19459d8c920c"
+				},
+				{
+					"name": "Uploads Gallery",
+					"item": [
+						{
+							"name": "Get Upload  Gallery",
+							"id": "48096048-385e4f4c-6f42-4fb2-a519-9258b186d23e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/admin/v2/uploads?page=1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"v2",
+										"uploads"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload Gallery",
+							"id": "48096048-fac47740-8e68-4d97-a6d4-aac14381182c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"uuid": "b9d24cf9-64e5-4950-ac11-3f2c42740452",
+											"src": "postman-cloud:///1f09d275-310c-4a20-9fbc-14bbdce2de06"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/admin/upload_files",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"upload_files"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"id": "48096048-6ea4eeec-b81c-4ad4-bf03-217452f21597"
+				},
+				{
+					"name": "Configurations",
+					"item": [
+						{
+							"name": "Get Configurations",
+							"id": "48096048-c96429fa-6cb5-4ff4-970b-b03a1d46cd1c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/admin/configurations",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"configurations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Save Configurations Update",
+							"id": "48096048-b2b56e93-8051-4c9b-8835-cd66f73cbb24",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"configs\":[{\"id\":856,\"value\":false},{\"id\":857,\"value\":false},{\"id\":858,\"value\":false},{\"id\":373,\"value\":null},{\"id\":715,\"value\":\"global\"}]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/admin/configurations/manager/update",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"configurations",
+										"manager",
+										"update"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"id": "48096048-42f6e942-594b-400a-830d-23094896d59e"
+				},
+				{
+					"name": "Order Status",
+					"item": [
+						{
+							"name": "Get  Order Status",
+							"id": "48096048-b8f742df-837b-4c7c-8773-b7468c40d785",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/admin/order_states",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"order_states"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set Order Status",
+							"id": "48096048-a7c3cf12-d777-4d6a-a4e2-5779cec347e6",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"order\":12}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/admin/order_states/15/set-order",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"order_states",
+										"15",
+										"set-order"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"id": "48096048-95ce4f79-cfc2-4b35-913b-a63b4311f20c"
+				},
+				{
+					"name": "API integration",
+					"item": [
+						{
+							"name": "Get API Integration",
+							"id": "48096048-822fffd9-7d8f-4bfe-9126-39a5084f6bf4",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/tenant/api_tokens",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"tenant",
+										"api_tokens"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"id": "48096048-3bc32cce-835e-441e-9240-bc194a6e9073"
+				}
+			],
+			"id": "48096048-db1729fb-aefc-478a-9ac8-dce84e7707d1"
 		}
 	],
 	"event": [
