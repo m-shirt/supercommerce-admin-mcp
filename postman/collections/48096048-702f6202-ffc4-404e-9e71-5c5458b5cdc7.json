@@ -6837,6 +6837,38 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Linked Domains Copy",
+					"id": "48096048-95bf7c31-6605-44bf-b9cb-2d86f3df3f15",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/admin/domains",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"domains"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "48096048-9906fe07-75a3-4231-aa80-1e76bc0fc01c"
