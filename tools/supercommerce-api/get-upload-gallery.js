@@ -1,9 +1,9 @@
 /**
- * Function to delete static page.
+ * Function to get upload  gallery.
  *
- * @param {Object} params - The parameters for delete static page.
- * @param {string} params.static_page_id - The static-page id.
+ * @param {Object} params - The parameters for get upload  gallery.
 
+ * @param {string} [params.page] - page.
 
  * @returns {Promise<Object>} - The result of the operation.
  */
@@ -13,22 +13,25 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      static_page_id,
+      page,
     } = params;
 
-    let url = `${baseURL}/api/admin/pages/${static-page_id}/delete`;
+    let url = `${baseURL}/api/admin/v2/uploads?page=1`;
     
+    const queryParams = new URLSearchParams();
+    if (page !== undefined) queryParams.append('page', page);
+    const queryString = queryParams.toString();
+    if (queryString) url += `?${queryString}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Accept': 'application/json'
     };
 
     
 
     const response = await fetch(url, {
-      method: 'POST',
+      method: 'GET',
       headers
     });
 
@@ -39,13 +42,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error in deleteStaticPage:', error);
+    console.error('Error in getUploadGallery:', error);
     return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for delete static page.
+ * Tool configuration for get upload  gallery.
  * @type {Object}
  */
 const apiTool = {
@@ -53,17 +56,17 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'delete_static_page',
-      description: 'Delete Static Page',
+      name: 'get_upload_gallery',
+      description: 'Get Upload  Gallery',
       parameters: {
         type: 'object',
         properties: {
-          static_page_id: {
+          page: {
             type: 'string',
-            description: 'The static-page id'
+            description: 'page'
           }
         },
-        required: ['static_page_id']
+        required: []
       }
     }
   }

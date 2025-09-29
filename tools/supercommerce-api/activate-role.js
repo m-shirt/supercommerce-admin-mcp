@@ -1,8 +1,8 @@
 /**
- * Function to delete static page.
+ * Function to activate role.
  *
- * @param {Object} params - The parameters for delete static page.
- * @param {string} params.static_page_id - The static-page id.
+ * @param {Object} params - The parameters for activate role.
+ * @param {string} params.role_id - The role id.
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      static_page_id,
+      role_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/pages/${static-page_id}/delete`;
+    let url = `${baseURL}/api/admin/roles/${role_id}/activate`;
     
 
     const headers = {
@@ -39,13 +39,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error in deleteStaticPage:', error);
+    console.error('Error in activateRole:', error);
     return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for delete static page.
+ * Tool configuration for activate role.
  * @type {Object}
  */
 const apiTool = {
@@ -53,17 +53,17 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'delete_static_page',
-      description: 'Delete Static Page',
+      name: 'activate_role',
+      description: 'Activate Role',
       parameters: {
         type: 'object',
         properties: {
-          static_page_id: {
+          role_id: {
             type: 'string',
-            description: 'The static-page id'
+            description: 'The role id'
           }
         },
-        required: ['static_page_id']
+        required: ['role_id']
       }
     }
   }

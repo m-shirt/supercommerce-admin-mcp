@@ -1,10 +1,10 @@
 /**
- * Function to delete static page.
+ * Function to deactivate role.
  *
- * @param {Object} params - The parameters for delete static page.
- * @param {string} params.static_page_id - The static-page id.
+ * @param {Object} params - The parameters for deactivate role.
+ * @param {string} params.role_id - The role id.
 
-
+ * @param {string} [params.deactivation_notes] - The deactivation notes.
  * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
@@ -13,10 +13,11 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      static_page_id,
+      role_id,
+      deactivation_notes,
     } = params;
 
-    let url = `${baseURL}/api/admin/pages/${static-page_id}/delete`;
+    let url = `${baseURL}/api/admin/roles/${role_id}/deactivate`;
     
 
     const headers = {
@@ -25,11 +26,14 @@ const executeFunction = async (params) => {
       'Content-Type': 'application/json'
     };
 
-    
+    const requestData = {
+      'deactivation_notes': deactivation_notes,
+    };
 
     const response = await fetch(url, {
       method: 'POST',
-      headers
+      headers,
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
@@ -39,13 +43,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error in deleteStaticPage:', error);
+    console.error('Error in deactivateRole:', error);
     return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for delete static page.
+ * Tool configuration for deactivate role.
  * @type {Object}
  */
 const apiTool = {
@@ -53,17 +57,21 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'delete_static_page',
-      description: 'Delete Static Page',
+      name: 'deactivate_role',
+      description: 'Deactivate Role',
       parameters: {
         type: 'object',
         properties: {
-          static_page_id: {
+          role_id: {
             type: 'string',
-            description: 'The static-page id'
+            description: 'The role id'
+          },
+          deactivation_notes: {
+            type: 'string',
+            description: 'The deactivation notes'
           }
         },
-        required: ['static_page_id']
+        required: ['role_id']
       }
     }
   }

@@ -1,8 +1,8 @@
 /**
- * Function to delete static page.
+ * Function to get roles.
  *
- * @param {Object} params - The parameters for delete static page.
- * @param {string} params.static_page_id - The static-page id.
+ * @param {Object} params - The parameters for get roles.
+
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,22 +13,21 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      static_page_id,
+
     } = params;
 
-    let url = `${baseURL}/api/admin/pages/${static-page_id}/delete`;
+    const url = `${baseURL}/api/admin/roles`;
     
 
     const headers = {
       'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Accept': 'application/json'
     };
 
     
 
     const response = await fetch(url, {
-      method: 'POST',
+      method: 'GET',
       headers
     });
 
@@ -39,13 +38,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error in deleteStaticPage:', error);
+    console.error('Error in getRoles:', error);
     return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for delete static page.
+ * Tool configuration for get roles.
  * @type {Object}
  */
 const apiTool = {
@@ -53,17 +52,14 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'delete_static_page',
-      description: 'Delete Static Page',
+      name: 'get_roles',
+      description: 'Get Roles',
       parameters: {
         type: 'object',
         properties: {
-          static_page_id: {
-            type: 'string',
-            description: 'The static-page id'
-          }
+
         },
-        required: ['static_page_id']
+        required: []
       }
     }
   }

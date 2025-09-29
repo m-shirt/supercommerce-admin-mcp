@@ -15,6 +15,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Automated Update] - 2025-09-29
+
+### ✨ Added
+- `getPaymentMethods` - Get Payment Methods
+- `deactivatePaymentMethod` - Deactivate Payment Method
+- `activatePaymentMethod` - Activate Payment Method
+- `getRoles` - Get Roles
+- `newRole` - New Role
+- `editRole` - Edit Role
+- `deactivateRole` - Deactivate Role
+- `activateRole` - Activate Role
+- `getAdminsUsers` - Get Admins (Users)
+- `newAdmin` - New Admin
+- `deactivateAdmin` - Deactivate Admin
+- `activateAdmin` - Activate Admin
+- `getLinkedDomains` - Get Linked Domains
+- `addDomains` - Add Domains
+- `getEditProfile` - Get Edit Profile
+- `saveEditProfile` - Save Edit Profile
+- `getUploadGallery` - Get Upload  Gallery
+- `uploadGallery` - Upload Gallery
+- `getConfigurations` - Get Configurations
+- `saveConfigurationsUpdate` - Save Configurations Update
+- `getOrderStatus` - Get  Order Status
+- `setOrderStatus` - Set Order Status
+- `getApiIntegration` - Get API Integration
+
+### 🔄 Updated
+- `deleteStaticPage` - Updated from Postman collection
+- `createPromoCode` - Updated from Postman collection
+
+### 📊 Summary
+- Total new tools: 23
+- Total updated tools: 2
+- Timestamp: 2025-09-29T11:58:55.895Z
+
+---
+
 ## [Automated Update] - 2025-09-28
 
 ### ✨ Added

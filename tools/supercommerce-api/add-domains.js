@@ -1,10 +1,10 @@
 /**
- * Function to delete static page.
+ * Function to add domains.
  *
- * @param {Object} params - The parameters for delete static page.
- * @param {string} params.static_page_id - The static-page id.
+ * @param {Object} params - The parameters for add domains.
 
 
+ * @param {string} [params.domain] - The domain.
  * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      static_page_id,
+      domain,
     } = params;
 
-    let url = `${baseURL}/api/admin/pages/${static-page_id}/delete`;
+    const url = `${baseURL}/api/admin/domains`;
     
 
     const headers = {
@@ -25,11 +25,14 @@ const executeFunction = async (params) => {
       'Content-Type': 'application/json'
     };
 
-    
+    const requestData = {
+      'domain': domain,
+    };
 
     const response = await fetch(url, {
       method: 'POST',
-      headers
+      headers,
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
@@ -39,13 +42,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error in deleteStaticPage:', error);
+    console.error('Error in addDomains:', error);
     return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for delete static page.
+ * Tool configuration for add domains.
  * @type {Object}
  */
 const apiTool = {
@@ -53,17 +56,17 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'delete_static_page',
-      description: 'Delete Static Page',
+      name: 'add_domains',
+      description: 'Add Domains',
       parameters: {
         type: 'object',
         properties: {
-          static_page_id: {
+          domain: {
             type: 'string',
-            description: 'The static-page id'
+            description: 'The domain'
           }
         },
-        required: ['static_page_id']
+        required: []
       }
     }
   }

@@ -1,8 +1,8 @@
 /**
- * Function to delete static page.
+ * Function to get api integration.
  *
- * @param {Object} params - The parameters for delete static page.
- * @param {string} params.static_page_id - The static-page id.
+ * @param {Object} params - The parameters for get api integration.
+
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,22 +13,21 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      static_page_id,
+
     } = params;
 
-    let url = `${baseURL}/api/admin/pages/${static-page_id}/delete`;
+    const url = `${baseURL}/api/tenant/api_tokens`;
     
 
     const headers = {
       'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Accept': 'application/json'
     };
 
     
 
     const response = await fetch(url, {
-      method: 'POST',
+      method: 'GET',
       headers
     });
 
@@ -39,13 +38,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error in deleteStaticPage:', error);
+    console.error('Error in getApiIntegration:', error);
     return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for delete static page.
+ * Tool configuration for get api integration.
  * @type {Object}
  */
 const apiTool = {
@@ -53,17 +52,14 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'delete_static_page',
-      description: 'Delete Static Page',
+      name: 'get_api_integration',
+      description: 'Get API Integration',
       parameters: {
         type: 'object',
         properties: {
-          static_page_id: {
-            type: 'string',
-            description: 'The static-page id'
-          }
+
         },
-        required: ['static_page_id']
+        required: []
       }
     }
   }

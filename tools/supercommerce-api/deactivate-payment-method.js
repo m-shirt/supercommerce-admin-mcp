@@ -1,8 +1,8 @@
 /**
- * Function to delete static page.
+ * Function to deactivate payment method.
  *
- * @param {Object} params - The parameters for delete static page.
- * @param {string} params.static_page_id - The static-page id.
+ * @param {Object} params - The parameters for deactivate payment method.
+ * @param {string} params.payment_id - The payment id.
 
 
  * @returns {Promise<Object>} - The result of the operation.
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      static_page_id,
+      payment_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/pages/${static-page_id}/delete`;
+    let url = `${baseURL}/api/admin/payment_methods/${payment_id}/deactivate`;
     
 
     const headers = {
@@ -39,13 +39,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error in deleteStaticPage:', error);
+    console.error('Error in deactivatePaymentMethod:', error);
     return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for delete static page.
+ * Tool configuration for deactivate payment method.
  * @type {Object}
  */
 const apiTool = {
@@ -53,17 +53,17 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'delete_static_page',
-      description: 'Delete Static Page',
+      name: 'deactivate_payment_method',
+      description: 'Deactivate Payment Method',
       parameters: {
         type: 'object',
         properties: {
-          static_page_id: {
+          payment_id: {
             type: 'string',
-            description: 'The static-page id'
+            description: 'The payment id'
           }
         },
-        required: ['static_page_id']
+        required: ['payment_id']
       }
     }
   }

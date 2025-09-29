@@ -192,5 +192,31 @@ export const toolPaths = [
   'supercommerce-api/list-cancelled-orders.js',
   'supercommerce-api/list-placed-orders.js',
   'supercommerce-api/list-delivered-orders.js',
-  'supercommerce-api/api-key.js'
+  'supercommerce-api/api-key.js',
+
+  // Auto-generated tools - 2025-09-29T11:58:55.891Z
+  'supercommerce-api/get-payment-methods.js',
+  'supercommerce-api/deactivate-payment-method.js',
+  'supercommerce-api/activate-payment-method.js',
+  'supercommerce-api/get-roles.js',
+  'supercommerce-api/new-role.js',
+  'supercommerce-api/edit-role.js',
+  'supercommerce-api/deactivate-role.js',
+  'supercommerce-api/activate-role.js',
+  'supercommerce-api/get-admins-users.js',
+  'supercommerce-api/new-admin.js',
+  'supercommerce-api/deactivate-admin.js',
+  'supercommerce-api/activate-admin.js',
+  'supercommerce-api/get-linked-domains.js',
+  'supercommerce-api/add-domains.js',
+  'supercommerce-api/get-edit-profile.js',
+  'supercommerce-api/save-edit-profile.js',
+  'supercommerce-api/get-upload-gallery.js',
+  'supercommerce-api/upload-gallery.js',
+  'supercommerce-api/get-configurations.js',
+  'supercommerce-api/save-configurations-update.js',
+  'supercommerce-api/get-order-status.js',
+  'supercommerce-api/set-order-status.js',
+  'supercommerce-api/get-api-integration.js',
+
 ];

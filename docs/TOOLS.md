@@ -2,11 +2,9 @@
 
 ## Overview
 
+This document provides comprehensive documentation for all 217 MCP tools available in the SuperCommerce Admin API integration.
 
-This document provides comprehensive documentation for all 194 MCP tools available in the SuperCommerce Admin API integration.
-
-Last Updated: 2025-09-28T09:46:52.336Z
-
+Last Updated: 2025-09-29T11:58:55.892Z
 
 ## Business Model Categories
 
@@ -49,16 +47,18 @@ Last Updated: 2025-09-28T09:46:52.336Z
 - `get_all_options_list_dropdown` - Get All Options List Dropdown
 - `get_options_list_paginated` - Get Options List Paginated
 
-### Orders (9 tools)
+### Orders (11 tools)
 
 - `create_order` - Create Order
 - `edit_order` - Edit Order
 - `edit_order_status` - Edit Order Status
+- `get_order_status` - Get Order Status
 - `list_cancelled_orders` - List Cancelled Orders
 - `list_delivered_orders` - List Delivered Orders
 - `list_order_status` - List Order Status
 - `list_orders` - List Orders
 - `list_placed_orders` - List Placed Orders
+- `set_order_status` - Set Order Status
 - `view_order` - View Order
 
 ### Customers (8 tools)
@@ -262,61 +262,72 @@ Last Updated: 2025-09-28T09:46:52.336Z
 - `get_prescription` - Get Prescription
 - `get_prescription_reasons` - Get Prescription Reasons
 
-### Utilities (3 tools)
+### Utilities (6 tools)
 
+- `activate_payment_method` - Activate Payment Method
+- `deactivate_payment_method` - Deactivate Payment Method
+- `get_payment_methods` - Get Payment Methods
 - `list_cancellation_reasons` - List Cancellation Reasons
 - `list_payment_methods` - List Payment Methods
 - `upload_image` - Upload Image
 
-### Other (8 tools)
+### Other (26 tools)
 
+- `activate_admin` - Activate Admin
+- `activate_role` - Activate Role
+- `add_domains` - Add Domains
 - `api_key` - Api Key
 - `apply_changes` - Apply Changes
 - `change_status` - Change Status
+- `deactivate_admin` - Deactivate Admin
+- `deactivate_role` - Deactivate Role
+- `edit_role` - Edit Role
 - `generate_from_categories` - Generate From Categories
+- `get_admins_users` - Get Admins Users
+- `get_api_integration` - Get Api Integration
+- `get_configurations` - Get Configurations
+- `get_edit_profile` - Get Edit Profile
 - `get_gift_requests` - Get Gift Requests
+- `get_linked_domains` - Get Linked Domains
+- `get_roles` - Get Roles
+- `get_upload_gallery` - Get Upload Gallery
+- `new_admin` - New Admin
 - `new_request` - New Request
+- `new_role` - New Role
 - `reset_password` - Reset Password
+- `save_configurations_update` - Save Configurations Update
+- `save_edit_profile` - Save Edit Profile
 - `show_edit` - Show Edit
+- `upload_gallery` - Upload Gallery
 
 ## 🆕 Recently Added Tools
 
-- `apiKey` - Api Key
+- `getPaymentMethods` - Get Payment Methods
+- `deactivatePaymentMethod` - Deactivate Payment Method
+- `activatePaymentMethod` - Activate Payment Method
+- `getRoles` - Get Roles
+- `newRole` - New Role
+- `editRole` - Edit Role
+- `deactivateRole` - Deactivate Role
+- `activateRole` - Activate Role
+- `getAdminsUsers` - Get Admins (Users)
+- `newAdmin` - New Admin
+- `deactivateAdmin` - Deactivate Admin
+- `activateAdmin` - Activate Admin
+- `getLinkedDomains` - Get Linked Domains
+- `addDomains` - Add Domains
+- `getEditProfile` - Get Edit Profile
+- `saveEditProfile` - Save Edit Profile
+- `getUploadGallery` - Get Upload  Gallery
+- `uploadGallery` - Upload Gallery
+- `getConfigurations` - Get Configurations
+- `saveConfigurationsUpdate` - Save Configurations Update
+- `getOrderStatus` - Get  Order Status
+- `setOrderStatus` - Set Order Status
+- `getApiIntegration` - Get API Integration
 
 ## 🔄 Recently Updated Tools
 
-- `deleteSlider` - Delete Slider
-- `updateSlider` - Update Slider
-- `activateSlider` - Activate Slider
-- `deactivateSlider` - Deactivate Slider
-- `deleteBranches` - Delete Branches
-- `deactivateBranch` - Deactivate Branch
-- `activateBranch` - Activate Branch
 - `deleteStaticPage` - Delete Static Page
-- `deleteCampaign` - Delete Campaign
-- `viewCampaign` - View Campaign
-- `viewOrder` - View Order
-- `editOrder` - Edit Order
-- `viewCustomer` - View Customer
-- `editCustomer` - Edit Customer
-- `deactivateCustomer` - Deactivate Customer
-- `activateCustomer` - Activate Customer
-- `createAddress` - Create Address
-- `activeDeliveryManager` - active Delivery Manager
-- `deactivateDeliveryManager` - Deactivate Delivery Manager
-- `deactivateGovernorate` - Deactivate Governorate
-- `activateGovernorate` - Activate Governorate
-- `deleteGovernorate` - Delete Governorate
-- `deletePromotion` - Delete Promotion
-- `editePromotion` - Edite Promotion
-- `activatePromotion` - Activate Promotion
-- `deactivatePromotion` - Deactivate Promotion
-- `viewPromoCode` - View Promo Code
-- `editPromoCode` - Edit Promo Code
-- `deactivatePromoCode` - Deactivate Promo Code
-- `activatePromoCode` - Activate Promo Code
-- `activateReward` - activate Reward
-- `deactivateRewards` - Deactivate Rewards
-- `listDeliveredOrders` - List delivered Orders
-
+- `createPromoCode` - Create Promo Code
 

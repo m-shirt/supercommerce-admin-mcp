@@ -1,10 +1,10 @@
 /**
- * Function to delete static page.
+ * Function to set order status.
  *
- * @param {Object} params - The parameters for delete static page.
- * @param {string} params.static_page_id - The static-page id.
+ * @param {Object} params - The parameters for set order status.
 
 
+ * @param {string} [params.order] - The order.
  * @returns {Promise<Object>} - The result of the operation.
  */
 const executeFunction = async (params) => {
@@ -13,10 +13,10 @@ const executeFunction = async (params) => {
 
   try {
     const {
-      static_page_id,
+      order,
     } = params;
 
-    let url = `${baseURL}/api/admin/pages/${static-page_id}/delete`;
+    const url = `${baseURL}/api/admin/order_states/15/set-order`;
     
 
     const headers = {
@@ -25,11 +25,14 @@ const executeFunction = async (params) => {
       'Content-Type': 'application/json'
     };
 
-    
+    const requestData = {
+      'order': order,
+    };
 
     const response = await fetch(url, {
       method: 'POST',
-      headers
+      headers,
+      body: JSON.stringify(requestData)
     });
 
     if (!response.ok) {
@@ -39,13 +42,13 @@ const executeFunction = async (params) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error in deleteStaticPage:', error);
+    console.error('Error in setOrderStatus:', error);
     return { error: error.message || 'An error occurred during the operation.' };
   }
 };
 
 /**
- * Tool configuration for delete static page.
+ * Tool configuration for set order status.
  * @type {Object}
  */
 const apiTool = {
@@ -53,17 +56,17 @@ const apiTool = {
   definition: {
     type: 'function',
     function: {
-      name: 'delete_static_page',
-      description: 'Delete Static Page',
+      name: 'set_order_status',
+      description: 'Set Order Status',
       parameters: {
         type: 'object',
         properties: {
-          static_page_id: {
+          order: {
             type: 'string',
-            description: 'The static-page id'
+            description: 'The order'
           }
         },
-        required: ['static_page_id']
+        required: []
       }
     }
   }
