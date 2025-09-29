@@ -1,5 +1,7 @@
 # Ignore backup files
 tools/backups/
+*.backup
+*.backup.*
 
 # Ignore development files
 .env.local
