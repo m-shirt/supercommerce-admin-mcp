@@ -38,6 +38,19 @@ jobs:
         SUPERCOMMERCE_BASE_URL: ${{ secrets.SUPERCOMMERCE_BASE_URL }}
         SUPERCOMMERCE_API_API_KEY: ${{ secrets.SUPERCOMMERCE_API_API_KEY }}
 
+    - name: Auto-fix tool issues
+      run: |
+        echo "Running auto-fix for common tool issues..."
+        node scripts/auto-fix-tools.js
+
+        # Check if auto-fix made changes
+        if git diff --name-only | grep -q "tools/paths.js"; then
+          echo "Auto-fix applied changes to tools/paths.js"
+          git add tools/paths.js
+        else
+          echo "No auto-fix changes needed"
+        fi
+
     - name: Validate tools after generation
       id: validate
       run: |
