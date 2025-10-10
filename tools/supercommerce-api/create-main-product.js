@@ -85,6 +85,13 @@ const apiTool = {
     function: {
       name: 'create_main_product',
       description: 'Create Main Product',
+      _meta: {
+        'openai/outputTemplate': 'ui://widget/product-creation.html',
+        'openai/toolInvocation/invoking': 'Creating product...',
+        'openai/toolInvocation/invoked': 'Product created successfully',
+        'openai/widgetAccessible': true,
+        'openai/resultCanProduceWidget': true
+      },
       parameters: {
         type: 'object',
         properties: {

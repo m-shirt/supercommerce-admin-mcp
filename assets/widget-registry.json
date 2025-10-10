@@ -1,0 +1,19 @@
+{
+  "widgets": [
+    {
+      "name": "order-list",
+      "templateUri": "ui://widget/order-list.html",
+      "html": "<div id=\"order-list-root\"></div>\n<link rel=\"stylesheet\" href=\"https://your-cdn.com/assets/order-list-OU6n0-qb.css\">\n<script type=\"module\" src=\"https://your-cdn.com/assets/order-list-DiT6_QJ-.js\"></script>",
+      "js": "order-list-DiT6_QJ-.js",
+      "css": "order-list-OU6n0-qb.css"
+    },
+    {
+      "name": "product-creation",
+      "templateUri": "ui://widget/product-creation.html",
+      "html": "<div id=\"product-creation-root\"></div>\n<link rel=\"stylesheet\" href=\"https://your-cdn.com/assets/product-creation-OU6n0-qb.css\">\n<script type=\"module\" src=\"https://your-cdn.com/assets/product-creation-B7w9Cyhk.js\"></script>",
+      "js": "product-creation-B7w9Cyhk.js",
+      "css": "product-creation-OU6n0-qb.css"
+    }
+  ],
+  "buildTime": "2025-10-10T21:48:17.533Z"
+}

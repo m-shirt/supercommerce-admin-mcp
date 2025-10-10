@@ -148,6 +148,13 @@ const apiTool = {
     function: {
       name: 'list_orders',
       description: 'List Orders',
+      _meta: {
+        'openai/outputTemplate': 'ui://widget/order-list.html',
+        'openai/toolInvocation/invoking': 'Fetching orders...',
+        'openai/toolInvocation/invoked': 'Orders loaded successfully',
+        'openai/widgetAccessible': true,
+        'openai/resultCanProduceWidget': true
+      },
       parameters: {
         type: 'object',
         properties: {

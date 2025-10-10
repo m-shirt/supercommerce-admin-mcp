@@ -7,12 +7,15 @@ import {
   ErrorCode,
   GetPromptRequestSchema,
   ListPromptsRequestSchema,
+  ListResourcesRequestSchema,
   ListToolsRequestSchema,
+  ReadResourceRequestSchema,
   McpError,
 } from "@modelcontextprotocol/sdk/types.js";
 
 import { discoverTools } from "./lib/tools.js";
 import { discoverPrompts } from "./lib/prompts.js";
+import { getWidgetResources, getResourceContent } from "./lib/widgets.js";
 
 const SERVER_NAME = "supercommerce";
 
@@ -52,6 +55,26 @@ export async function setupServerHandlers(server, tools, prompts) {
   server.setRequestHandler(ListPromptsRequestSchema, async () => ({
     prompts: transformedPrompts,
   }));
+
+  // Widget resources
+  const widgetResources = getWidgetResources();
+  server.setRequestHandler(ListResourcesRequestSchema, async () => ({
+    resources: widgetResources,
+  }));
+
+  server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
+    try {
+      const content = getResourceContent(request.params.uri);
+      return {
+        contents: [content],
+      };
+    } catch (error) {
+      throw new McpError(
+        ErrorCode.InvalidRequest,
+        `Resource not found: ${request.params.uri}`
+      );
+    }
+  });
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const toolName = request.params.name;
@@ -127,7 +150,7 @@ export async function mcpHandler(req, res) {
   const prompts = await discoverPrompts();
   const server = new Server(
     { name: SERVER_NAME, version: "0.1.0" },
-    { capabilities: { tools: {}, prompts: {} } }
+    { capabilities: { tools: {}, prompts: {}, resources: {} } }
   );
 
   await setupServerHandlers(server, tools, prompts);
@@ -154,7 +177,7 @@ export async function sseHandler(req, res) {
   const prompts = await discoverPrompts();
   const server = new Server(
     { name: SERVER_NAME, version: "0.1.0" },
-    { capabilities: { tools: {}, prompts: {} } }
+    { capabilities: { tools: {}, prompts: {}, resources: {} } }
   );
 
   await setupServerHandlers(server, tools, prompts);
@@ -207,7 +230,7 @@ export async function run() {
     expressApp.post("/mcp", async (req, res) => {
       const server = new Server(
         { name: SERVER_NAME, version: "0.1.0" },
-        { capabilities: { tools: {}, prompts: {} } }
+        { capabilities: { tools: {}, prompts: {}, resources: {} } }
       );
       await setupServerHandlers(server, tools, prompts);
       const transport = new StreamableHTTPServerTransport({
@@ -231,7 +254,7 @@ export async function run() {
     expressApp.get("/sse", async (req, res) => {
       const server = new Server(
         { name: SERVER_NAME, version: "0.1.0" },
-        { capabilities: { tools: {}, prompts: {} } }
+        { capabilities: { tools: {}, prompts: {}, resources: {} } }
       );
       await setupServerHandlers(server, tools, prompts);
       const transport = new SSEServerTransport("/messages", res);
@@ -258,7 +281,7 @@ export async function run() {
   } else {
     const server = new Server(
       { name: SERVER_NAME, version: "0.1.0" },
-      { capabilities: { tools: {}, prompts: {} } }
+      { capabilities: { tools: {}, prompts: {}, resources: {} } }
     );
     await setupServerHandlers(server, tools, prompts);
     process.on("SIGINT", async () => {
