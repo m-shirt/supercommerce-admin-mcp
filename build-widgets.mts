@@ -128,10 +128,18 @@ async function buildAllWidgets() {
     buildTime: new Date().toISOString(),
   };
 
-  const registryPath = resolve(assetsDir, "widget-registry.json");
-  writeFileSync(registryPath, JSON.stringify(registry, null, 2));
+  // Save registry to multiple locations for different environments
+  const registryContent = JSON.stringify(registry, null, 2);
 
-  // Copy to public directory for Next.js
+  // 1. Save to assets/ directory (for git and local dev)
+  const assetsRegistry = resolve(assetsDir, "widget-registry.json");
+  writeFileSync(assetsRegistry, registryContent);
+
+  // 2. Save to project root (for Vercel serverless access)
+  const rootRegistry = resolve(process.cwd(), "widget-registry.json");
+  writeFileSync(rootRegistry, registryContent);
+
+  // 3. Copy to public directory for Next.js static serving
   const publicAssetsDir = resolve(process.cwd(), "public/assets");
   try {
     mkdirSync(publicAssetsDir, { recursive: true });
@@ -139,13 +147,13 @@ async function buildAllWidgets() {
     // Copy all asset files
     const { cpSync } = await import("fs");
     cpSync(assetsDir, publicAssetsDir, { recursive: true });
-    console.log(`📁 Copied assets to public/assets/ for Next.js serving`);
+    console.log(`📁 Copied assets to public/assets/ for static serving`);
   } catch (error) {
     console.warn("Warning: Could not copy to public/assets/:", error);
   }
 
   console.log(`\n✅ Built ${buildResults.length} widgets`);
-  console.log(`📋 Widget registry saved to: ${registryPath}\n`);
+  console.log(`📋 Widget registry saved to: ${assetsRegistry}\n`);
 
   buildResults.forEach((result) => {
     console.log(`  - ${result.name}: ${result.js}`);
