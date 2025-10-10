@@ -10,8 +10,14 @@ const widgetResource = {
   description: "Interactive product creation widget with status indicators",
   mimeType: "text/html+skybridge",
   html: `<div id="product-creation-root"></div>
-<link rel="stylesheet" href="https://supercommerce-admin-mcp.vercel.app/assets/product-creation-DdcgGox_.css">
-<script type="module" src="https://supercommerce-admin-mcp.vercel.app/assets/product-creation-Cll7c-S-.js"></script>`,
+<script>
+  (function() {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = window.location.origin + '/assets/product-creation-aQD6Mqyv.js';
+    document.head.appendChild(script);
+  })();
+</script>`,
   _meta: {
     "openai/outputTemplate": "ui://widget/product-creation.html",
     "openai/toolInvocation/invoking": "Creating product...",

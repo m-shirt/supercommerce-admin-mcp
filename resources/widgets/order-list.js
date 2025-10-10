@@ -10,8 +10,14 @@ const widgetResource = {
   description: "Interactive order list widget with status badges",
   mimeType: "text/html+skybridge",
   html: `<div id="order-list-root"></div>
-<link rel="stylesheet" href="https://supercommerce-admin-mcp.vercel.app/assets/order-list-DdcgGox_.css">
-<script type="module" src="https://supercommerce-admin-mcp.vercel.app/assets/order-list-DwxYm-Sh.js"></script>`,
+<script>
+  (function() {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = window.location.origin + '/assets/order-list-BGLz2zYA.js';
+    document.head.appendChild(script);
+  })();
+</script>`,
   _meta: {
     "openai/outputTemplate": "ui://widget/order-list.html",
     "openai/toolInvocation/invoking": "Loading orders...",

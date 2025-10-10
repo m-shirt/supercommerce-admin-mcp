@@ -4,7 +4,14 @@ const widgetResource = {
   description: "Multi-step checkout process with contact, shipping, and payment",
   mimeType: "text/html+skybridge",
   html: `<div id="checkout-form-root"></div>
-<script type="module" src="https://supercommerce-admin-mcp.vercel.app/assets/checkout-form-BVmsQOnt.js"></script>`,
+<script>
+  (function() {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = window.location.origin + '/assets/checkout-form-BVmsQOnt.js';
+    document.head.appendChild(script);
+  })();
+</script>`,
   _meta: {
     "openai/outputTemplate": "ui://widget/checkout-form.html",
     "openai/toolInvocation/invoking": "Creating checkout form...",

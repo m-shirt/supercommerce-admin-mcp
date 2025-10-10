@@ -4,7 +4,14 @@ const widgetResource = {
   description: "Interactive shopping cart with quantity controls and real-time totals",
   mimeType: "text/html+skybridge",
   html: `<div id="shopping-cart-root"></div>
-<script type="module" src="https://supercommerce-admin-mcp.vercel.app/assets/shopping-cart-iTNOTV85.js"></script>`,
+<script>
+  (function() {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = window.location.origin + '/assets/shopping-cart-iTNOTV85.js';
+    document.head.appendChild(script);
+  })();
+</script>`,
   _meta: {
     "openai/outputTemplate": "ui://widget/shopping-cart.html",
     "openai/toolInvocation/invoking": "Creating shopping cart...",
