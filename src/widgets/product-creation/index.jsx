@@ -1,10 +1,6 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
-import { Package, CheckCircle, XCircle, AlertCircle } from "lucide-react";
-import "../shared/index.css";
 
 function ProductCreationWidget() {
-  // This will receive data from the MCP tool response
   const data = window.__WIDGET_DATA__ || {
     status: "success",
     product: {
@@ -14,6 +10,7 @@ function ProductCreationWidget() {
       price: 99.99,
       inventory: 100,
       category: "Electronics",
+      brand: ""
     },
   };
 
@@ -22,53 +19,233 @@ function ProductCreationWidget() {
   const getStatusIcon = () => {
     switch (status) {
       case "success":
-        return <CheckCircle className="h-6 w-6 text-green-600" />;
+        return "✓";
       case "error":
-        return <XCircle className="h-6 w-6 text-red-600" />;
+        return "✕";
       case "pending":
-        return <AlertCircle className="h-6 w-6 text-yellow-600" />;
+        return "⚠";
       default:
-        return <Package className="h-6 w-6 text-blue-600" />;
+        return "📦";
     }
   };
 
   const getStatusColor = () => {
     switch (status) {
       case "success":
-        return "border-green-200 bg-green-50";
+        return { bg: "#f0fdf4", border: "#86efac", text: "#166534" };
       case "error":
-        return "border-red-200 bg-red-50";
+        return { bg: "#fef2f2", border: "#fca5a5", text: "#991b1b" };
       case "pending":
-        return "border-yellow-200 bg-yellow-50";
+        return { bg: "#fefce8", border: "#fde047", text: "#854d0e" };
       default:
-        return "border-blue-200 bg-blue-50";
+        return { bg: "#eff6ff", border: "#93c5fd", text: "#1e40af" };
     }
   };
 
-  return (
-    <div className="antialiased w-full text-black px-4 pb-4 border border-black/10 rounded-2xl sm:rounded-3xl overflow-hidden bg-white">
-      <div className="max-w-full">
-        {/* Header */}
-        <div className="flex flex-row items-center gap-4 border-b border-black/5 py-4">
-          <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-blue-600">
-            <Package className="h-6 w-6 text-white" />
-          </div>
-          <div className="flex-1">
-            <div className="text-base sm:text-xl font-medium">
-              Product {status === "success" ? "Created" : "Creation"}
-            </div>
-            <div className="text-sm text-black/60">
-              Supercommerce E-Commerce Platform
-            </div>
-          </div>
-        </div>
+  const statusColor = getStatusColor();
 
-        {/* Status Badge */}
-        <div className={`mt-4 p-4 rounded-xl border ${getStatusColor()}`}>
-          <div className="flex items-center gap-3">
-            {getStatusIcon()}
-            <div className="flex-1">
-              <div className="font-medium">
+  return (
+    <>
+      <style>{`
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        .product-creation-container {
+          min-height: 100vh;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 2rem;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        .product-card {
+          max-width: 600px;
+          margin: 0 auto;
+          background: white;
+          border-radius: 16px;
+          padding: 2rem;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding-bottom: 1.5rem;
+          border-bottom: 2px solid #f3f4f6;
+          margin-bottom: 1.5rem;
+        }
+
+        .header-icon {
+          width: 56px;
+          height: 56px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.75rem;
+        }
+
+        .header-text {
+          flex: 1;
+        }
+
+        .header-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #1f2937;
+          margin-bottom: 0.25rem;
+        }
+
+        .header-subtitle {
+          font-size: 0.875rem;
+          color: #6b7280;
+        }
+
+        .status-badge {
+          padding: 1rem 1.25rem;
+          border-radius: 12px;
+          border: 2px solid;
+          margin-bottom: 1.5rem;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .status-icon {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.125rem;
+          background: white;
+          flex-shrink: 0;
+        }
+
+        .status-content {
+          flex: 1;
+        }
+
+        .status-title {
+          font-weight: 600;
+          font-size: 1rem;
+          margin-bottom: 0.25rem;
+        }
+
+        .status-error {
+          font-size: 0.875rem;
+          margin-top: 0.25rem;
+        }
+
+        .section-title {
+          font-size: 1.125rem;
+          font-weight: 700;
+          color: #1f2937;
+          margin-bottom: 1rem;
+        }
+
+        .details-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+          padding: 1rem;
+          background: #f9fafb;
+          border-radius: 8px;
+          border: 1px solid #e5e7eb;
+        }
+
+        .detail-item.full {
+          grid-column: 1 / -1;
+        }
+
+        .detail-label {
+          font-size: 0.75rem;
+          color: #6b7280;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-bottom: 0.5rem;
+        }
+
+        .detail-value {
+          font-size: 1rem;
+          font-weight: 600;
+          color: #1f2937;
+        }
+
+        .detail-value.mono {
+          font-family: 'Monaco', 'Courier New', monospace;
+          color: #667eea;
+        }
+
+        .action-button {
+          width: 100%;
+          padding: 1rem;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border: none;
+          border-radius: 10px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: transform 0.2s;
+          margin-top: 1.5rem;
+          padding-top: 1.5rem;
+          border-top: 2px solid #f3f4f6;
+        }
+
+        .action-button:hover {
+          transform: scale(1.02);
+        }
+
+        @media (max-width: 640px) {
+          .details-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .detail-item.full {
+            grid-column: 1;
+          }
+        }
+      `}</style>
+
+      <div className="product-creation-container">
+        <div className="product-card">
+          {/* Header */}
+          <div className="header">
+            <div className="header-icon">📦</div>
+            <div className="header-text">
+              <div className="header-title">
+                Product {status === "success" ? "Created" : "Creation"}
+              </div>
+              <div className="header-subtitle">
+                Supercommerce E-Commerce Platform
+              </div>
+            </div>
+          </div>
+
+          {/* Status Badge */}
+          <div
+            className="status-badge"
+            style={{
+              backgroundColor: statusColor.bg,
+              borderColor: statusColor.border,
+              color: statusColor.text,
+            }}
+          >
+            <div className="status-icon" style={{ color: statusColor.text }}>
+              {getStatusIcon()}
+            </div>
+            <div className="status-content">
+              <div className="status-title">
                 {status === "success"
                   ? "Product successfully created"
                   : status === "error"
@@ -76,80 +253,73 @@ function ProductCreationWidget() {
                   : "Creating product..."}
               </div>
               {error && (
-                <div className="text-sm text-red-700 mt-1">{error}</div>
+                <div className="status-error">{error}</div>
               )}
             </div>
           </div>
-        </div>
 
-        {/* Product Details */}
-        {product && status === "success" && (
-          <div className="mt-4 space-y-3">
-            <div className="text-base font-medium text-black/80">
-              Product Details
-            </div>
+          {/* Product Details */}
+          {product && status === "success" && (
+            <>
+              <div className="section-title">Product Details</div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 bg-black/5 rounded-lg">
-                <div className="text-xs text-black/60 mb-1">Product Name</div>
-                <div className="font-medium text-sm">{product.name}</div>
-              </div>
-
-              <div className="p-3 bg-black/5 rounded-lg">
-                <div className="text-xs text-black/60 mb-1">SKU</div>
-                <div className="font-medium text-sm font-mono">
-                  {product.sku}
+              <div className="details-grid">
+                <div className="detail-item">
+                  <div className="detail-label">Product Name</div>
+                  <div className="detail-value">{product.name}</div>
                 </div>
-              </div>
 
-              <div className="p-3 bg-black/5 rounded-lg">
-                <div className="text-xs text-black/60 mb-1">Price</div>
-                <div className="font-medium text-sm">
-                  ${product.price?.toFixed(2) || "0.00"}
+                <div className="detail-item">
+                  <div className="detail-label">SKU</div>
+                  <div className="detail-value mono">{product.sku}</div>
                 </div>
-              </div>
 
-              <div className="p-3 bg-black/5 rounded-lg">
-                <div className="text-xs text-black/60 mb-1">Inventory</div>
-                <div className="font-medium text-sm">{product.inventory}</div>
-              </div>
-
-              {product.category && (
-                <div className="p-3 bg-black/5 rounded-lg col-span-2">
-                  <div className="text-xs text-black/60 mb-1">Category</div>
-                  <div className="font-medium text-sm">{product.category}</div>
-                </div>
-              )}
-
-              {product.id && (
-                <div className="p-3 bg-black/5 rounded-lg col-span-2">
-                  <div className="text-xs text-black/60 mb-1">Product ID</div>
-                  <div className="font-medium text-sm font-mono">
-                    {product.id}
+                <div className="detail-item">
+                  <div className="detail-label">Price</div>
+                  <div className="detail-value">
+                    ${product.price?.toFixed(2) || "0.00"}
                   </div>
                 </div>
-              )}
-            </div>
-          </div>
-        )}
 
-        {/* Actions */}
-        {status === "success" && (
-          <div className="mt-4 pt-4 border-t border-black/5">
-            <button
-              type="button"
-              className="w-full cursor-pointer inline-flex items-center justify-center rounded-full bg-blue-600 text-white px-4 py-2.5 font-medium hover:bg-blue-700 active:bg-blue-800 transition-colors"
-            >
+                <div className="detail-item">
+                  <div className="detail-label">Inventory</div>
+                  <div className="detail-value">{product.inventory}</div>
+                </div>
+
+                {product.category && (
+                  <div className="detail-item full">
+                    <div className="detail-label">Category</div>
+                    <div className="detail-value">{product.category}</div>
+                  </div>
+                )}
+
+                {product.brand && (
+                  <div className="detail-item full">
+                    <div className="detail-label">Brand</div>
+                    <div className="detail-value">{product.brand}</div>
+                  </div>
+                )}
+
+                {product.id && (
+                  <div className="detail-item full">
+                    <div className="detail-label">Product ID</div>
+                    <div className="detail-value mono">{product.id}</div>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* Actions */}
+          {status === "success" && (
+            <button className="action-button">
               View Product Details
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
-const rootElement = document.getElementById("product-creation-root");
-if (rootElement) {
-  createRoot(rootElement).render(<ProductCreationWidget />);
-}
+export default ProductCreationWidget;

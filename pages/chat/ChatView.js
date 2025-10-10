@@ -217,6 +217,9 @@ export default function ChatView({
             <a href="/settings" className={styles.settingsBtn}>
                Settings
             </a>
+            <a href="/widgets" className={styles.widgetsBtn}>
+               Widgets
+            </a>
             <a href="/inspector" className={styles.inspectorBtn}>
                Inspector
             </a>

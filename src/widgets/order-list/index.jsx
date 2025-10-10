@@ -1,38 +1,9 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
-import { ShoppingCart, Package, Truck, CheckCircle, Clock } from "lucide-react";
-import "../shared/index.css";
 
 function OrderListWidget() {
-  // This will receive data from the MCP tool response
   const data = window.__WIDGET_DATA__ || {
-    orders: [
-      {
-        id: "ORD-001",
-        customer: "John Doe",
-        date: "2025-10-10",
-        total: 299.99,
-        status: "delivered",
-        items: 3,
-      },
-      {
-        id: "ORD-002",
-        customer: "Jane Smith",
-        date: "2025-10-09",
-        total: 149.99,
-        status: "pending",
-        items: 2,
-      },
-      {
-        id: "ORD-003",
-        customer: "Bob Johnson",
-        date: "2025-10-08",
-        total: 499.99,
-        status: "shipped",
-        items: 5,
-      },
-    ],
-    total: 3,
+    orders: [],
+    total: 0,
   };
 
   const { orders = [], total = 0 } = data;
@@ -40,130 +11,309 @@ function OrderListWidget() {
   const getStatusIcon = (status) => {
     switch (status.toLowerCase()) {
       case "delivered":
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
+        return "✓";
       case "shipped":
-        return <Truck className="h-4 w-4 text-blue-600" />;
+        return "🚚";
       case "pending":
-        return <Clock className="h-4 w-4 text-yellow-600" />;
+        return "⏱";
+      case "cancelled":
+        return "✕";
       default:
-        return <Package className="h-4 w-4 text-gray-600" />;
+        return "📦";
     }
   };
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
       case "delivered":
-        return "bg-green-100 text-green-800";
+        return { bg: "#d1fae5", text: "#065f46" };
       case "shipped":
-        return "bg-blue-100 text-blue-800";
+        return { bg: "#dbeafe", text: "#1e40af" };
       case "pending":
-        return "bg-yellow-100 text-yellow-800";
+        return { bg: "#fef3c7", text: "#92400e" };
       case "cancelled":
-        return "bg-red-100 text-red-800";
+        return { bg: "#fee2e2", text: "#991b1b" };
       default:
-        return "bg-gray-100 text-gray-800";
+        return { bg: "#f3f4f6", text: "#374151" };
     }
   };
 
   return (
-    <div className="antialiased w-full text-black px-4 pb-2 border border-black/10 rounded-2xl sm:rounded-3xl overflow-hidden bg-white">
-      <div className="max-w-full">
-        {/* Header */}
-        <div className="flex flex-row items-center gap-4 sm:gap-4 border-b border-black/5 py-4">
-          <div className="w-16 sm:w-18 aspect-square rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center">
-            <ShoppingCart className="h-8 w-8 text-white" />
-          </div>
-          <div>
-            <div className="text-base sm:text-xl font-medium">
-              Recent Orders
-            </div>
-            <div className="text-sm text-black/60">
-              {total} {total === 1 ? "order" : "orders"} found
-            </div>
-          </div>
-        </div>
+    <>
+      <style>{`
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
 
-        {/* Orders List */}
-        <div className="min-w-full text-sm flex flex-col">
-          {orders.map((order, index) => (
-            <div
-              key={order.id}
-              className="px-3 -mx-2 rounded-2xl hover:bg-black/5 transition-colors"
-            >
-              <div
-                style={{
-                  borderBottom:
-                    index === orders.length - 1
-                      ? "none"
-                      : "1px solid rgba(0, 0, 0, 0.05)",
-                }}
-                className="flex w-full items-center gap-3 py-3"
-              >
-                {/* Order Icon */}
-                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-                  <Package className="h-5 w-5 text-blue-600" />
-                </div>
+        .order-list-container {
+          min-height: 100vh;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 2rem;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
 
-                {/* Order Details */}
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="font-medium text-sm sm:text-base truncate">
-                      {order.id}
-                    </div>
-                    <div
-                      className={`px-2 py-0.5 rounded-full text-xs font-medium inline-flex items-center gap-1 ${getStatusColor(
-                        order.status
-                      )}`}
-                    >
-                      {getStatusIcon(order.status)}
-                      <span className="capitalize">{order.status}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 text-xs sm:text-sm text-black/60">
-                    <span>{order.customer}</span>
-                    <span className="hidden sm:inline">•</span>
-                    <span className="hidden sm:inline">{order.date}</span>
-                  </div>
-                </div>
+        .order-card {
+          max-width: 800px;
+          margin: 0 auto;
+          background: white;
+          border-radius: 16px;
+          padding: 2rem;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
 
-                {/* Order Amount and Items */}
-                <div className="text-right">
-                  <div className="font-semibold text-sm sm:text-base">
-                    ${order.total.toFixed(2)}
-                  </div>
-                  <div className="text-xs text-black/60">
-                    {order.items} {order.items === 1 ? "item" : "items"}
-                  </div>
-                </div>
+        .header {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding-bottom: 1.5rem;
+          border-bottom: 2px solid #f3f4f6;
+          margin-bottom: 1.5rem;
+        }
+
+        .header-icon {
+          width: 56px;
+          height: 56px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.75rem;
+        }
+
+        .header-text {
+          flex: 1;
+        }
+
+        .header-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #1f2937;
+          margin-bottom: 0.25rem;
+        }
+
+        .header-subtitle {
+          font-size: 0.875rem;
+          color: #6b7280;
+        }
+
+        .orders-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .order-item {
+          padding: 1rem;
+          border-bottom: 1px solid #f3f4f6;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          transition: background 0.2s;
+          margin: 0 -1rem;
+          padding: 1rem;
+          border-radius: 8px;
+        }
+
+        .order-item:last-child {
+          border-bottom: none;
+        }
+
+        .order-item:hover {
+          background: #f9fafb;
+        }
+
+        .order-icon {
+          width: 48px;
+          height: 48px;
+          background: #eff6ff;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.25rem;
+          flex-shrink: 0;
+        }
+
+        .order-details {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .order-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-bottom: 0.5rem;
+          flex-wrap: wrap;
+        }
+
+        .order-id {
+          font-weight: 600;
+          color: #1f2937;
+          font-size: 1rem;
+        }
+
+        .status-badge {
+          padding: 0.375rem 0.75rem;
+          border-radius: 12px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.375rem;
+        }
+
+        .order-meta {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          font-size: 0.875rem;
+          color: #6b7280;
+        }
+
+        .meta-separator {
+          color: #d1d5db;
+        }
+
+        .order-amount {
+          text-align: right;
+          flex-shrink: 0;
+        }
+
+        .amount-value {
+          font-size: 1.125rem;
+          font-weight: 700;
+          color: #667eea;
+          margin-bottom: 0.25rem;
+        }
+
+        .amount-items {
+          font-size: 0.75rem;
+          color: #6b7280;
+        }
+
+        .empty-state {
+          text-align: center;
+          padding: 4rem 2rem;
+          color: #6b7280;
+        }
+
+        .empty-icon {
+          font-size: 4rem;
+          margin-bottom: 1rem;
+          opacity: 0.3;
+        }
+
+        .empty-text {
+          font-size: 1rem;
+        }
+
+        .view-all-btn {
+          width: 100%;
+          padding: 1rem;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border: none;
+          border-radius: 10px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: transform 0.2s;
+          margin-top: 1.5rem;
+          padding-top: 1.5rem;
+          border-top: 2px solid #f3f4f6;
+        }
+
+        .view-all-btn:hover {
+          transform: scale(1.02);
+        }
+
+        @media (max-width: 640px) {
+          .order-meta span:not(:first-child) {
+            display: none;
+          }
+
+          .meta-separator {
+            display: none;
+          }
+        }
+      `}</style>
+
+      <div className="order-list-container">
+        <div className="order-card">
+          {/* Header */}
+          <div className="header">
+            <div className="header-icon">🛒</div>
+            <div className="header-text">
+              <div className="header-title">Recent Orders</div>
+              <div className="header-subtitle">
+                {total} {total === 1 ? "order" : "orders"} found
               </div>
             </div>
-          ))}
+          </div>
 
-          {orders.length === 0 && (
-            <div className="py-8 text-center">
-              <Package className="h-12 w-12 text-black/20 mx-auto mb-3" />
-              <div className="text-black/60">No orders found</div>
+          {/* Orders List */}
+          {orders.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">📦</div>
+              <div className="empty-text">No orders found</div>
+            </div>
+          ) : (
+            <div className="orders-list">
+              {orders.map((order) => {
+                const statusColor = getStatusColor(order.status);
+                return (
+                  <div key={order.id} className="order-item">
+                    <div className="order-icon">📦</div>
+                    <div className="order-details">
+                      <div className="order-header">
+                        <div className="order-id">{order.id}</div>
+                        <span
+                          className="status-badge"
+                          style={{
+                            backgroundColor: statusColor.bg,
+                            color: statusColor.text,
+                          }}
+                        >
+                          <span>{getStatusIcon(order.status)}</span>
+                          <span style={{ textTransform: 'capitalize' }}>
+                            {order.status}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="order-meta">
+                        <span>{order.customer}</span>
+                        <span className="meta-separator">•</span>
+                        <span>{order.date}</span>
+                      </div>
+                    </div>
+                    <div className="order-amount">
+                      <div className="amount-value">
+                        ${order.total.toFixed(2)}
+                      </div>
+                      <div className="amount-items">
+                        {order.items} {order.items === 1 ? "item" : "items"}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
-        </div>
 
-        {/* View All Button */}
-        {orders.length > 0 && (
-          <div className="px-0 pt-3 pb-2">
-            <button
-              type="button"
-              className="w-full cursor-pointer inline-flex items-center justify-center rounded-full bg-blue-600 text-white px-4 py-2.5 font-medium hover:bg-blue-700 active:bg-blue-800 transition-colors"
-            >
+          {/* View All Button */}
+          {orders.length > 0 && (
+            <button className="view-all-btn">
               View All Orders
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
-const rootElement = document.getElementById("order-list-root");
-if (rootElement) {
-  createRoot(rootElement).render(<OrderListWidget />);
-}
+export default OrderListWidget;

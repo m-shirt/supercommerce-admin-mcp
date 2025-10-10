@@ -230,6 +230,7 @@
 }
 
 .settingsBtn,
+.widgetsBtn,
 .inspectorBtn {
   background: #f8f9fa;
   border: 1px solid #e1e5e9;
@@ -247,6 +248,7 @@
 }
 
 .settingsBtn:hover,
+.widgetsBtn:hover,
 .inspectorBtn:hover {
   background: #e9ecef;
   border-color: #adb5bd;

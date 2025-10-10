@@ -6,4 +6,9 @@
 export const resourcePaths = [
   'widgets/product-creation.js',
   'widgets/order-list.js',
+  'widgets/product-grid.js',
+  'widgets/shopping-cart.js',
+  'widgets/order-status.js',
+  'widgets/product-card.js',
+  'widgets/checkout-form.js',
 ];

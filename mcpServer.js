@@ -15,7 +15,7 @@ import {
 
 import { discoverTools } from "./lib/tools.js";
 import { discoverPrompts } from "./lib/prompts.js";
-import { getWidgetResources, getResourceContent } from "./lib/widgets.js";
+import { discoverResources, getResourceByUri } from "./lib/resources.js";
 
 const SERVER_NAME = "supercommerce";
 
@@ -46,7 +46,7 @@ export async function transformPrompts(prompts) {
   }));
 }
 
-export async function setupServerHandlers(server, tools, prompts) {
+export async function setupServerHandlers(server, tools, prompts, resources) {
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
     tools: await transformTools(tools),
   }));
@@ -57,14 +57,13 @@ export async function setupServerHandlers(server, tools, prompts) {
   }));
 
   // Widget resources
-  const widgetResources = getWidgetResources();
   server.setRequestHandler(ListResourcesRequestSchema, async () => ({
-    resources: widgetResources,
+    resources: resources,
   }));
 
   server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
     try {
-      const content = getResourceContent(request.params.uri);
+      const content = getResourceByUri(request.params.uri, resources);
       return {
         contents: [content],
       };
@@ -148,12 +147,13 @@ export async function mcpHandler(req, res) {
 
   const tools = await discoverTools();
   const prompts = await discoverPrompts();
+  const resources = await discoverResources();
   const server = new Server(
     { name: SERVER_NAME, version: "0.1.0" },
     { capabilities: { tools: {}, prompts: {}, resources: {} } }
   );
 
-  await setupServerHandlers(server, tools, prompts);
+  await setupServerHandlers(server, tools, prompts, resources);
 
   const transport = new StreamableHTTPServerTransport({
     sessionIdGenerator: undefined,
@@ -175,12 +175,13 @@ export async function sseHandler(req, res) {
   }
   const tools = await discoverTools();
   const prompts = await discoverPrompts();
+  const resources = await discoverResources();
   const server = new Server(
     { name: SERVER_NAME, version: "0.1.0" },
     { capabilities: { tools: {}, prompts: {}, resources: {} } }
   );
 
-  await setupServerHandlers(server, tools, prompts);
+  await setupServerHandlers(server, tools, prompts, resources);
 
   const transport = new SSEServerTransport("/api/messages", res);
   transports[transport.sessionId] = transport;
@@ -222,6 +223,7 @@ export async function run() {
   const args = process.argv.slice(2);
   const tools = await discoverTools();
   const prompts = await discoverPrompts();
+  const resources = await discoverResources();
 
   if (args.includes("--streamable-http")) {
     const { default: express } = await import("express");
@@ -232,7 +234,7 @@ export async function run() {
         { name: SERVER_NAME, version: "0.1.0" },
         { capabilities: { tools: {}, prompts: {}, resources: {} } }
       );
-      await setupServerHandlers(server, tools, prompts);
+      await setupServerHandlers(server, tools, prompts, resources);
       const transport = new StreamableHTTPServerTransport({
         sessionIdGenerator: undefined,
       });
@@ -256,7 +258,7 @@ export async function run() {
         { name: SERVER_NAME, version: "0.1.0" },
         { capabilities: { tools: {}, prompts: {}, resources: {} } }
       );
-      await setupServerHandlers(server, tools, prompts);
+      await setupServerHandlers(server, tools, prompts, resources);
       const transport = new SSEServerTransport("/messages", res);
       localTransports[transport.sessionId] = transport;
       localServers[transport.sessionId] = server;
@@ -283,7 +285,7 @@ export async function run() {
       { name: SERVER_NAME, version: "0.1.0" },
       { capabilities: { tools: {}, prompts: {}, resources: {} } }
     );
-    await setupServerHandlers(server, tools, prompts);
+    await setupServerHandlers(server, tools, prompts, resources);
     process.on("SIGINT", async () => {
       await server.close();
       process.exit(0);
