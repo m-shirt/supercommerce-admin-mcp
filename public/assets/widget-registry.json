@@ -3,17 +3,17 @@
     {
       "name": "order-list",
       "templateUri": "ui://widget/order-list.html",
-      "html": "<div id=\"order-list-root\"></div>\n<link rel=\"stylesheet\" href=\"https://supercommerce-admin-mcp.vercel.app/assets/order-list-OU6n0-qb.css\">\n<script type=\"module\" src=\"https://supercommerce-admin-mcp.vercel.app/assets/order-list-DiT6_QJ-.js\"></script>",
-      "js": "order-list-DiT6_QJ-.js",
-      "css": "order-list-OU6n0-qb.css"
+      "html": "<div id=\"order-list-root\"></div>\n<link rel=\"stylesheet\" href=\"https://supercommerce-admin-mcp.vercel.app/assets/order-list-DdcgGox_.css\">\n<script type=\"module\" src=\"https://supercommerce-admin-mcp.vercel.app/assets/order-list-DwxYm-Sh.js\"></script>",
+      "js": "order-list-DwxYm-Sh.js",
+      "css": "order-list-DdcgGox_.css"
     },
     {
       "name": "product-creation",
       "templateUri": "ui://widget/product-creation.html",
-      "html": "<div id=\"product-creation-root\"></div>\n<link rel=\"stylesheet\" href=\"https://supercommerce-admin-mcp.vercel.app/assets/product-creation-OU6n0-qb.css\">\n<script type=\"module\" src=\"https://supercommerce-admin-mcp.vercel.app/assets/product-creation-B7w9Cyhk.js\"></script>",
-      "js": "product-creation-B7w9Cyhk.js",
-      "css": "product-creation-OU6n0-qb.css"
+      "html": "<div id=\"product-creation-root\"></div>\n<link rel=\"stylesheet\" href=\"https://supercommerce-admin-mcp.vercel.app/assets/product-creation-DdcgGox_.css\">\n<script type=\"module\" src=\"https://supercommerce-admin-mcp.vercel.app/assets/product-creation-Cll7c-S-.js\"></script>",
+      "js": "product-creation-Cll7c-S-.js",
+      "css": "product-creation-DdcgGox_.css"
     }
   ],
-  "buildTime": "2025-10-10T22:01:36.937Z"
+  "buildTime": "2025-10-10T22:33:43.831Z"
 }

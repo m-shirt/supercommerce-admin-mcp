@@ -96,17 +96,29 @@
     // Check widget assets availability
     async function checkAssets() {
       try {
-        const response = await fetch('https://supercommerce-admin-mcp.vercel.app/assets/widget-registry.json');
+        // Try local first, then Vercel
+        let response = await fetch('/assets/widget-registry.json');
+        if (response.ok) {
+          document.getElementById('status').innerHTML = '✅ Using local assets (recommended for testing)';
+          document.getElementById('status').style.color = 'green';
+          window.ASSETS_URL = '/assets';
+          return;
+        }
+
+        response = await fetch('https://supercommerce-admin-mcp.vercel.app/assets/widget-registry.json');
         if (response.ok) {
           document.getElementById('status').innerHTML = '✅ Connected to Vercel';
           document.getElementById('status').style.color = 'green';
+          window.ASSETS_URL = 'https://supercommerce-admin-mcp.vercel.app/assets';
         } else {
-          document.getElementById('status').innerHTML = '❌ Cannot connect to Vercel';
+          document.getElementById('status').innerHTML = '❌ Cannot connect to assets';
           document.getElementById('status').style.color = 'red';
+          window.ASSETS_URL = '/assets';
         }
       } catch (error) {
-        document.getElementById('status').innerHTML = '❌ Error: ' + error.message;
-        document.getElementById('status').style.color = 'red';
+        document.getElementById('status').innerHTML = '⚠️  Using local assets';
+        document.getElementById('status').style.color = 'orange';
+        window.ASSETS_URL = '/assets';
       }
     }
 
@@ -212,8 +224,9 @@
 
     async function loadWidget(widgetName) {
       try {
+        const assetsUrl = window.ASSETS_URL || '/assets';
         // Fetch widget registry to get the correct file names
-        const response = await fetch('https://supercommerce-admin-mcp.vercel.app/assets/widget-registry.json');
+        const response = await fetch(`${assetsUrl}/widget-registry.json`);
         const registry = await response.json();
 
         const widget = registry.widgets.find(w => w.name === widgetName);
@@ -225,13 +238,13 @@
         // Load CSS
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = `https://supercommerce-admin-mcp.vercel.app/assets/${widget.css}`;
+        link.href = `${assetsUrl}/${widget.css}`;
         document.head.appendChild(link);
 
         // Load JS
         const script = document.createElement('script');
         script.type = 'module';
-        script.src = `https://supercommerce-admin-mcp.vercel.app/assets/${widget.js}`;
+        script.src = `${assetsUrl}/${widget.js}`;
         document.body.appendChild(script);
       } catch (error) {
         alert('Error loading widget: ' + error.message);

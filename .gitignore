@@ -12,3 +12,12 @@ tools/backups/
 
 # Claude session logs
 output.txt
+# Widget build outputs (built during deployment)
+public/assets/*.js
+public/assets/*.css
+public/assets/widget-registry.json
+!public/assets/.gitkeep
+!public/assets/favicon.*
+!public/assets/logo.*
+!public/assets/apple-touch-icon.*
+!public/assets/supercommerce-logo.*
