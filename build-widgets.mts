@@ -60,9 +60,9 @@ async function buildWidget(widgetName: string, entryPath: string): Promise<Widge
 
       let html = `<div id="${rootElementId}"></div>\n`;
       if (cssFile) {
-        html += `<link rel="stylesheet" href="https://your-cdn.com/assets/${cssFile.fileName}">\n`;
+        html += `<link rel="stylesheet" href="https://supercommerce-admin-mcp.vercel.app/assets/${cssFile.fileName}">\n`;
       }
-      html += `<script type="module" src="https://your-cdn.com/assets/${jsFile.fileName}"></script>`;
+      html += `<script type="module" src="https://supercommerce-admin-mcp.vercel.app/assets/${jsFile.fileName}"></script>`;
 
       return {
         name: widgetName,
