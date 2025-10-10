@@ -131,6 +131,19 @@ async function buildAllWidgets() {
   const registryPath = resolve(assetsDir, "widget-registry.json");
   writeFileSync(registryPath, JSON.stringify(registry, null, 2));
 
+  // Copy to public directory for Next.js
+  const publicAssetsDir = resolve(process.cwd(), "public/assets");
+  try {
+    mkdirSync(publicAssetsDir, { recursive: true });
+
+    // Copy all asset files
+    const { cpSync } = await import("fs");
+    cpSync(assetsDir, publicAssetsDir, { recursive: true });
+    console.log(`📁 Copied assets to public/assets/ for Next.js serving`);
+  } catch (error) {
+    console.warn("Warning: Could not copy to public/assets/:", error);
+  }
+
   console.log(`\n✅ Built ${buildResults.length} widgets`);
   console.log(`📋 Widget registry saved to: ${registryPath}\n`);
 
