@@ -169,12 +169,19 @@ function ProductGrid() {
 
     updateWidgetState({ cart: newCart });
 
-    // Notify ChatGPT
-    (window as any).openai?.sendFollowUpMessage?.(`Added ${product.name} to cart (Price TBD)`);
+    // Notify ChatGPT (only if function exists and is callable)
+    const sendMessage = (window as any).openai?.sendFollowUpMessage;
+    if (typeof sendMessage === 'function') {
+      sendMessage(`Added ${product.name} to cart`);
+    }
   };
 
   const handleViewCart = () => {
-    (window as any).openai?.sendFollowUpMessage?.('Show my cart');
+    // Notify ChatGPT (only if function exists and is callable)
+    const sendMessage = (window as any).openai?.sendFollowUpMessage;
+    if (typeof sendMessage === 'function') {
+      sendMessage('Show my cart');
+    }
   };
 
   const getStockBadge = (stock: string | null) => {
