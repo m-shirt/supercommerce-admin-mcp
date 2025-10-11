@@ -34,6 +34,10 @@ const widgetResource = {
   _meta: {
     "openai/outputTemplate": "ui://widget/order-status.html",
     "openai/widgetDescription": "Order tracking with visual timeline showing delivery progress",
+    "openai/widgetCSP": {
+      "connect_domains": [],
+      "resource_domains": ["https://esm.sh", "https://supercommerce-admin-mcp.vercel.app"]
+    },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating order status tracker...",
     "openai/toolInvocation/invoked": "order status tracker created successfully",

@@ -37,6 +37,10 @@ const widgetResource = {
   _meta: {
     "openai/outputTemplate": "ui://widget/product-grid.html",
     "openai/widgetDescription": "Interactive product grid with search, cart management, and stock tracking",
+    "openai/widgetCSP": {
+      "connect_domains": [],
+      "resource_domains": ["https://esm.sh", "https://supercommerce-admin-mcp.vercel.app"]
+    },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "🔍 Loading products...",
     "openai/toolInvocation/invoked": "✅ Products loaded successfully",

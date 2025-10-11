@@ -34,6 +34,10 @@ const widgetResource = {
   _meta: {
     "openai/outputTemplate": "ui://widget/checkout-form.html",
     "openai/widgetDescription": "Multi-step checkout process with contact, shipping, and payment",
+    "openai/widgetCSP": {
+      "connect_domains": [],
+      "resource_domains": ["https://esm.sh", "https://supercommerce-admin-mcp.vercel.app"]
+    },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating checkout form...",
     "openai/toolInvocation/invoked": "checkout form created successfully",
