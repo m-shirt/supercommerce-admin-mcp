@@ -145,9 +145,20 @@ function ProductGrid() {
 
   const cartItemCount = widgetState.cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Show loading state if no toolOutput yet (widget rendered before tool execution)
+  // Debug: Log the entire openai object
+  useEffect(() => {
+    console.log('window.openai:', (window as any).openai);
+    console.log('toolOutput:', (window as any).openai?.toolOutput);
+  }, [(window as any).openai?.toolOutput]);
+
+  // Show loading state if no data available yet
   const toolOutput = (window as any).openai?.toolOutput;
-  if (!toolOutput) {
+  const hasData = toolOutput?.result?.content?.[0]?.text ||
+                  toolOutput?.content?.[0]?.text ||
+                  typeof toolOutput === 'string' ||
+                  toolOutput?.data?.products;
+
+  if (!hasData) {
     return (
       <div className="product-grid-container loading">
         <style>{`
