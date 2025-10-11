@@ -27,24 +27,22 @@ const executeFunction = async (params) => {
       active,
       category_id,
       sub_category_id,
-      q,
       inventory_id,
       parent_id,
     } = params;
 
-    let url = `${baseURL}/api/admin/v2/products?page=${page}&q=${keyword_or_sku}`;
-    
+    // Build query parameters
     const queryParams = new URLSearchParams();
+    if (page !== undefined) queryParams.append('page', page);
+    if (keyword_or_sku !== undefined) queryParams.append('q', keyword_or_sku);
     if (in_stock !== undefined) queryParams.append('in_stock', in_stock);
     if (active !== undefined) queryParams.append('active', active);
     if (category_id !== undefined) queryParams.append('category_id', category_id);
-    if (page !== undefined) queryParams.append('page', page);
     if (sub_category_id !== undefined) queryParams.append('sub_category_id', sub_category_id);
-    if (q !== undefined) queryParams.append('q', q);
     if (inventory_id !== undefined) queryParams.append('inventory_id', inventory_id);
     if (parent_id !== undefined) queryParams.append('parent_id', parent_id);
-    const queryString = queryParams.toString();
-    if (queryString) url += `?${queryString}`;
+
+    let url = `${baseURL}/api/admin/v2/products?${queryParams.toString()}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
