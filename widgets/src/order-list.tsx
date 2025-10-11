@@ -3,12 +3,28 @@ import ReactDOM from 'react-dom/client';
 import { useOpenAiGlobal } from '../hooks';
 
 interface Order {
-  id: string;
-  customer: string;
-  total: number;
-  items: number;
-  status: string;
-  date: string;
+  id: number;
+  reference_order: string;
+  created_at: string;
+  grand_total: number;
+  customer: {
+    full_name: string;
+    phone: string;
+    email: string;
+  };
+  state: {
+    id: number;
+    name_en: string;
+    name_ar: string;
+  };
+  payment_method: {
+    name: string;
+    name_en: string;
+    name_ar: string;
+  };
+  address: {
+    formatted_address: string;
+  };
 }
 
 function OrderList() {
@@ -30,7 +46,7 @@ function OrderList() {
     if (toolOutput?.result?.content?.[0]?.text) {
       try {
         const apiResponse = JSON.parse(toolOutput.result.content[0].text);
-        return apiResponse?.data?.orders || apiResponse?.orders || [];
+        return apiResponse?.data?.items || apiResponse?.items || [];
       } catch (e) {
         console.error('Failed to parse orders:', e);
       }
@@ -38,7 +54,7 @@ function OrderList() {
     if (toolOutput?.content?.[0]?.text) {
       try {
         const apiResponse = JSON.parse(toolOutput.content[0].text);
-        return apiResponse?.data?.orders || apiResponse?.orders || [];
+        return apiResponse?.data?.items || apiResponse?.items || [];
       } catch (e) {
         console.error('Failed to parse orders:', e);
       }
@@ -52,20 +68,26 @@ function OrderList() {
   const [statusFilter, setStatusFilter] = useState('all');
 
   const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         order.customer.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+    const matchesSearch = order.reference_order.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         order.customer.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         order.customer.phone.includes(searchQuery);
+    const statusName = order.state.name_en.toLowerCase();
+    const matchesStatus = statusFilter === 'all' || statusName === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  const handleViewOrder = (orderId: string) => {
-    (window as any).openai?.sendFollowUpMessage?.(`View order ${orderId}`);
+  const handleViewOrder = (orderId: number) => {
+    const sendMessage = (window as any).openai?.sendFollowUpMessage;
+    if (typeof sendMessage === 'function') {
+      sendMessage({ prompt: `View order ${orderId}` });
+    }
   };
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, { bg: string; text: string }> = {
-      pending: { bg: '#fef3c7', text: '#92400e' },
-      processing: { bg: '#dbeafe', text: '#1e40af' },
+      placed: { bg: '#dbeafe', text: '#1e40af' },
+      confirmed: { bg: '#e0e7ff', text: '#4338ca' },
+      processing: { bg: '#fef3c7', text: '#92400e' },
       shipped: { bg: '#e0e7ff', text: '#4338ca' },
       delivered: { bg: '#d1fae5', text: '#065f46' },
       cancelled: { bg: '#fee2e2', text: '#991b1b' }
@@ -75,11 +97,12 @@ function OrderList() {
 
   const statusCounts = {
     all: orders.length,
-    pending: orders.filter(o => o.status === 'pending').length,
-    processing: orders.filter(o => o.status === 'processing').length,
-    shipped: orders.filter(o => o.status === 'shipped').length,
-    delivered: orders.filter(o => o.status === 'delivered').length,
-    cancelled: orders.filter(o => o.status === 'cancelled').length
+    placed: orders.filter(o => o.state.name_en.toLowerCase() === 'placed').length,
+    confirmed: orders.filter(o => o.state.name_en.toLowerCase() === 'confirmed').length,
+    processing: orders.filter(o => o.state.name_en.toLowerCase() === 'processing').length,
+    shipped: orders.filter(o => o.state.name_en.toLowerCase() === 'shipped').length,
+    delivered: orders.filter(o => o.state.name_en.toLowerCase() === 'delivered').length,
+    cancelled: orders.filter(o => o.state.name_en.toLowerCase() === 'cancelled').length
   };
 
   // Show loading state
@@ -350,11 +373,18 @@ function OrderList() {
             <span className="filter-count">{statusCounts.all}</span>
           </button>
           <button
-            className={`filter-btn ${statusFilter === 'pending' ? 'active' : ''}`}
-            onClick={() => setStatusFilter('pending')}
+            className={`filter-btn ${statusFilter === 'placed' ? 'active' : ''}`}
+            onClick={() => setStatusFilter('placed')}
           >
-            Pending
-            <span className="filter-count">{statusCounts.pending}</span>
+            Placed
+            <span className="filter-count">{statusCounts.placed}</span>
+          </button>
+          <button
+            className={`filter-btn ${statusFilter === 'confirmed' ? 'active' : ''}`}
+            onClick={() => setStatusFilter('confirmed')}
+          >
+            Confirmed
+            <span className="filter-count">{statusCounts.confirmed}</span>
           </button>
           <button
             className={`filter-btn ${statusFilter === 'processing' ? 'active' : ''}`}
@@ -396,34 +426,44 @@ function OrderList() {
       ) : (
         <div className="orders-grid">
           {filteredOrders.map((order) => {
-            const statusColor = getStatusColor(order.status);
+            const statusName = order.state.name_en.toLowerCase();
+            const statusColor = getStatusColor(statusName);
+            const orderDate = new Date(order.created_at).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            });
             return (
               <div key={order.id} className="order-card" onClick={() => handleViewOrder(order.id)}>
                 <div className="order-card-header">
-                  <h3 className="order-id">{order.id}</h3>
+                  <h3 className="order-id">#{order.reference_order}</h3>
                   <span
                     className="order-status"
                     style={{ backgroundColor: statusColor.bg, color: statusColor.text }}
                   >
-                    {order.status}
+                    {order.state.name_en}
                   </span>
                 </div>
                 <div className="order-info">
                   <div className="info-row">
                     <span className="info-label">Customer</span>
-                    <span className="info-value">{order.customer}</span>
+                    <span className="info-value">{order.customer.full_name}</span>
                   </div>
                   <div className="info-row">
-                    <span className="info-label">Items</span>
-                    <span className="info-value">{order.items}</span>
+                    <span className="info-label">Phone</span>
+                    <span className="info-value">{order.customer.phone}</span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Date</span>
-                    <span className="info-value">{order.date}</span>
+                    <span className="info-value">{orderDate}</span>
+                  </div>
+                  <div className="info-row">
+                    <span className="info-label">Payment</span>
+                    <span className="info-value">{order.payment_method.name_en}</span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Total</span>
-                    <span className="order-total">${order.total.toFixed(2)}</span>
+                    <span className="order-total">{order.grand_total.toFixed(2)} SAR</span>
                   </div>
                 </div>
                 <button className="view-btn">View Details</button>
