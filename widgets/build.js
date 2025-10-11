@@ -38,7 +38,7 @@ async function buildWidget(widget) {
       external: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime'],
       jsx: 'automatic',
       minify: !watch,
-      sourcemap: true,
+      sourcemap: false, // Disabled to avoid CSP warnings in ChatGPT
       define: {
         'process.env.NODE_ENV': watch ? '"development"' : '"production"'
       },
