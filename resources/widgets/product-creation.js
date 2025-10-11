@@ -14,20 +14,26 @@ const widgetResource = {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime"
+      }
+    }
+  </script>
 </head>
 <body>
   <div id="product-creation-root"></div>
-  <script>
-    (function() {
-      const origin = window.location.ancestorOrigins?.[0] || window.location.origin;
-      const script = document.createElement('script');
-      script.type = 'text/babel';
-      script.src = origin + '/api/widgets/product-creation.jsx';
-      document.body.appendChild(script);
-    })();
+  <script type="module">
+    const origin = window.location.ancestorOrigins?.[0] || window.location.origin;
+    import(origin + '/widgets/product-creation.js')
+      .catch(err => {
+        console.error('Failed to load product-creation widget:', err);
+        document.getElementById('product-creation-root').innerHTML =
+          '<div style="padding: 2rem; text-align: center; color: #ef4444;">Failed to load widget</div>';
+      });
   </script>
 </body>
 </html>`,
@@ -36,7 +42,7 @@ const widgetResource = {
     "openai/widgetDescription": "Interactive product creation widget with status indicators",
     "openai/widgetCSP": {
       "connect_domains": [],
-      "resource_domains": ["unpkg.com"]
+      "resource_domains": ["esm.sh"]
     },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating product...",
