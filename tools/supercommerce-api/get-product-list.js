@@ -34,6 +34,7 @@ const executeFunction = async (params) => {
     // Build query parameters
     const queryParams = new URLSearchParams();
     queryParams.append('variant', '1'); // Always add variant=1
+    queryParams.append('page', 10);
     if (page !== undefined) queryParams.append('page', page);
     if (keyword_or_sku !== undefined) queryParams.append('q', keyword_or_sku);
     if (in_stock !== undefined) queryParams.append('in_stock', in_stock);

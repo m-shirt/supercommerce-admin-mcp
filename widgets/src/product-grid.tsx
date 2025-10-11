@@ -4,15 +4,20 @@ import { useWidgetState } from '../hooks';
 
 interface Product {
   id: number;
-  product_name: string;
-  slug?: string;
+  name: string;
+  name_ar: string;
+  name_en: string;
   sku: string;
   price: number | null;
-  stock: number | null;
-  category?: string;
-  is_active: number;
-  product_variants_count?: number;
-  parent_id?: number | null;
+  stock: string | null;
+  image: string | null;
+  options: any[];
+  cart_step: any | null;
+  enable_step_package: number;
+  step_package_label_ar: string | null;
+  step_package_label_en: string | null;
+  step_unit_label_ar: string | null;
+  step_unit_label_en: string | null;
 }
 
 interface CartItem {
@@ -62,7 +67,7 @@ function ProductGrid() {
       try {
         const apiResponse = JSON.parse(toolOutput.result.content[0].text);
         console.log('Parsed API response:', apiResponse);
-        return apiResponse?.data?.products || apiResponse?.products || [];
+        return apiResponse?.data?.data || apiResponse?.data?.products || apiResponse?.products || [];
       } catch (e) {
         console.error('Failed to parse toolOutput.result.content[0].text:', e);
       }
@@ -73,7 +78,7 @@ function ProductGrid() {
       try {
         const apiResponse = JSON.parse(toolOutput.content[0].text);
         console.log('Parsed API response (direct):', apiResponse);
-        return apiResponse?.data?.products || apiResponse?.products || [];
+        return apiResponse?.data?.data || apiResponse?.data?.products || apiResponse?.products || [];
       } catch (e) {
         console.error('Failed to parse toolOutput.content[0].text:', e);
       }
@@ -83,13 +88,16 @@ function ProductGrid() {
     if (typeof toolOutput === 'string') {
       try {
         const apiResponse = JSON.parse(toolOutput);
-        return apiResponse?.data?.products || apiResponse?.products || [];
+        return apiResponse?.data?.data || apiResponse?.data?.products || apiResponse?.products || [];
       } catch (e) {
         console.error('Failed to parse toolOutput string:', e);
       }
     }
 
     // Fallback: Already parsed
+    if (toolOutput?.data?.data) {
+      return toolOutput.data.data;
+    }
     if (toolOutput?.data?.products) {
       return toolOutput.data.products;
     }
@@ -107,7 +115,9 @@ function ProductGrid() {
       return products;
     }
     return products.filter((p: Product) =>
-      p.product_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.name_ar?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.name_en?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.sku?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [products, searchQuery]);
@@ -133,10 +143,10 @@ function ProductGrid() {
       newCart = {
         items: [...widgetState.cart.items, {
           id: product.id,
-          name: product.product_name,
+          name: product.name,
           price: productPrice,
           quantity: 1,
-          image: cartImage
+          image: product.image || cartImage
         }],
         total: widgetState.cart.total + productPrice
       };
@@ -145,17 +155,18 @@ function ProductGrid() {
     updateWidgetState({ cart: newCart });
 
     // Notify ChatGPT
-    (window as any).openai?.sendFollowUpMessage?.(`Added ${product.product_name} to cart (Price TBD)`);
+    (window as any).openai?.sendFollowUpMessage?.(`Added ${product.name} to cart (Price TBD)`);
   };
 
   const handleViewCart = () => {
     (window as any).openai?.sendFollowUpMessage?.('Show my cart');
   };
 
-  const getStockBadge = (stock: number | null) => {
-    if (!stock || stock === 0) return { label: 'Out of Stock', className: 'stock-out' };
-    if (stock <= 5) return { label: `Low (${stock})`, className: 'stock-low' };
-    return { label: `In Stock (${stock})`, className: 'stock-in' };
+  const getStockBadge = (stock: string | null) => {
+    const stockNum = parseFloat(stock || '0');
+    if (!stock || stockNum === 0) return { label: 'Out of Stock', className: 'stock-out' };
+    if (stockNum <= 5) return { label: `Low (${stockNum})`, className: 'stock-low' };
+    return { label: `In Stock (${stockNum})`, className: 'stock-in' };
   };
 
   const cartItemCount = widgetState.cart.items.reduce((sum, item) => sum + item.quantity, 0);
@@ -434,20 +445,25 @@ function ProductGrid() {
         <div className="product-grid">
           {filteredProducts.map((product) => {
             const stockBadge = getStockBadge(product.stock);
-            // Use data URI for placeholder to avoid CSP issues with via.placeholder.com
-            const placeholderImage = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='14' fill='%239ca3af'%3E${encodeURIComponent(product.product_name.substring(0, 30))}%3C/text%3E%3C/svg%3E`;
+            const stockNum = parseFloat(product.stock || '0');
+            // Use data URI for placeholder to avoid CSP issues
+            const placeholderImage = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='14' fill='%239ca3af'%3E${encodeURIComponent(product.name.substring(0, 30))}%3C/text%3E%3C/svg%3E`;
+            const productImage = product.image || placeholderImage;
+
             return (
               <div key={product.id} className="product-card">
                 <img
-                  src={placeholderImage}
-                  alt={product.product_name}
+                  src={productImage}
+                  alt={product.name}
                   className="product-image"
+                  onError={(e) => {
+                    // Fallback to placeholder if image fails to load
+                    (e.target as HTMLImageElement).src = placeholderImage;
+                  }}
                 />
                 <div className="product-info">
-                  <h3 className="product-name">{product.product_name}</h3>
-                  {product.category && (
-                    <p className="product-description">{product.category}</p>
-                  )}
+                  <h3 className="product-name">{product.name}</h3>
+                  <p className="product-description">SKU: {product.sku}</p>
                   <div className="product-price">
                     {product.price ? `$${product.price.toFixed(2)}` : 'Price TBD'}
                   </div>
@@ -457,9 +473,9 @@ function ProductGrid() {
                   <button
                     className="add-to-cart-btn"
                     onClick={() => handleAddToCart(product)}
-                    disabled={!product.stock || product.stock === 0}
+                    disabled={!product.stock || stockNum === 0}
                   >
-                    {product.stock && product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+                    {product.stock && stockNum > 0 ? 'Add to Cart' : 'Out of Stock'}
                   </button>
                 </div>
               </div>
