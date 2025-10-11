@@ -1,4 +1,29 @@
-import{useState as P,useEffect as T,useMemo as x}from"react";import I from"react-dom/client";import{useEffect as S,useState as N}from"react";function w(){let[a,r]=N(null);return S(()=>{typeof window<"u"&&window.openai&&r(window.openai)},[]),a}import{useState as O,useEffect as C}from"react";function h(a){let r=w(),[m,s]=O(a);return C(()=>{if(r?.widgetState){let n=r.widgetState.get();n&&Object.keys(n).length>0&&s({...a,...n})}},[r]),[m,n=>{s(p=>{let g=typeof n=="function"?n(p):n,l={...p,...g};return r?.widgetState&&r.widgetState.set(l),l})}]}import{jsx as o,jsxs as i}from"react/jsx-runtime";function _(){let[a,r]=h({cart:{items:[],total:0}}),m=window.openai?.displayMode||"inline",s=x(()=>{let t=window.openai?.toolOutput;if(t?.result?.content?.[0]?.text)try{let e=JSON.parse(t.result.content[0].text);return console.log("Parsed API response:",e),e?.data?.products||e?.products||[]}catch(e){console.error("Failed to parse toolOutput.result.content[0].text:",e)}if(t?.content?.[0]?.text)try{let e=JSON.parse(t.content[0].text);return console.log("Parsed API response (direct):",e),e?.data?.products||e?.products||[]}catch(e){console.error("Failed to parse toolOutput.content[0].text:",e)}if(typeof t=="string")try{let e=JSON.parse(t);return e?.data?.products||e?.products||[]}catch(e){console.error("Failed to parse toolOutput string:",e)}return t?.data?.products?t.data.products:(console.log("No products found. toolOutput:",t),[])},[window.openai?.toolOutput]),[d,n]=P(""),p=x(()=>d.trim()===""?s:s.filter(t=>t.product_name.toLowerCase().includes(d.toLowerCase())||t.sku?.toLowerCase().includes(d.toLowerCase())),[s,d]),g=t=>{let e=a.cart.items.find(c=>c.id===t.id),f=t.price||0,b;e?b={items:a.cart.items.map(c=>c.id===t.id?{...c,quantity:c.quantity+1}:c),total:a.cart.total+f}:b={items:[...a.cart.items,{id:t.id,name:t.product_name,price:f,quantity:1,image:"https://via.placeholder.com/100"}],total:a.cart.total+f},r({cart:b}),window.openai?.sendMessage(`Added ${t.product_name} to cart (Price TBD)`)},l=()=>{window.openai?.sendMessage("Show my cart")},k=t=>!t||t===0?{label:"Out of Stock",className:"stock-out"}:t<=5?{label:`Low (${t})`,className:"stock-low"}:{label:`In Stock (${t})`,className:"stock-in"},y=a.cart.items.reduce((t,e)=>t+e.quantity,0);T(()=>{console.log("window.openai:",window.openai),console.log("toolOutput:",window.openai?.toolOutput)},[window.openai?.toolOutput]);let u=window.openai?.toolOutput;return u?.result?.content?.[0]?.text||u?.content?.[0]?.text||typeof u=="string"||u?.data?.products?i("div",{className:`product-grid-container ${m}`,children:[o("style",{children:`
+import{useState as C,useEffect as P,useMemo as y}from"react";import T from"react-dom/client";import{useEffect as k,useState as S}from"react";function b(){let[r,a]=S(null);return k(()=>{typeof window<"u"&&window.openai&&a(window.openai)},[]),r}import{useState as N,useEffect as O}from"react";function h(r){let a=b(),[u,i]=N(r);return O(()=>{if(a?.widgetState){let n=a.widgetState.get();n&&Object.keys(n).length>0&&i({...r,...n})}},[a]),[u,n=>{i(l=>{let m=typeof n=="function"?n(l):n,p={...l,...m};return a?.widgetState&&a.widgetState.set(p),p})}]}import{jsx as o,jsxs as s}from"react/jsx-runtime";function I(){let[r,a]=h({cart:{items:[],total:0}}),u=window.openai?.displayMode||"inline",i=y(()=>{let t=window.openai?.toolOutput;if(t?.result?.content?.[0]?.text)try{let e=JSON.parse(t.result.content[0].text);return console.log("Parsed API response:",e),e?.data?.products||e?.products||[]}catch(e){console.error("Failed to parse toolOutput.result.content[0].text:",e)}if(t?.content?.[0]?.text)try{let e=JSON.parse(t.content[0].text);return console.log("Parsed API response (direct):",e),e?.data?.products||e?.products||[]}catch(e){console.error("Failed to parse toolOutput.content[0].text:",e)}if(typeof t=="string")try{let e=JSON.parse(t);return e?.data?.products||e?.products||[]}catch(e){console.error("Failed to parse toolOutput string:",e)}return t?.data?.products?t.data.products:(console.log("No products found. toolOutput:",t),[])},[window.openai?.toolOutput]),[d,n]=C(""),l=y(()=>d.trim()===""?i:i.filter(t=>t.product_name.toLowerCase().includes(d.toLowerCase())||t.sku?.toLowerCase().includes(d.toLowerCase())),[i,d]),m=t=>{let e=r.cart.items.find(c=>c.id===t.id),g=t.price||0,f;e?f={items:r.cart.items.map(c=>c.id===t.id?{...c,quantity:c.quantity+1}:c),total:r.cart.total+g}:f={items:[...r.cart.items,{id:t.id,name:t.product_name,price:g,quantity:1,image:"https://via.placeholder.com/100"}],total:r.cart.total+g},a({cart:f}),window.openai?.sendMessage(`Added ${t.product_name} to cart (Price TBD)`)},p=()=>{window.openai?.sendMessage("Show my cart")},v=t=>!t||t===0?{label:"Out of Stock",className:"stock-out"}:t<=5?{label:`Low (${t})`,className:"stock-low"}:{label:`In Stock (${t})`,className:"stock-in"},w=r.cart.items.reduce((t,e)=>t+e.quantity,0);return P(()=>{console.log("window.openai:",window.openai),console.log("toolOutput:",window.openai?.toolOutput),console.log("products count:",i.length)},[window.openai?.toolOutput]),i.length===0?s("div",{className:"product-grid-container loading",children:[o("style",{children:`
+          .product-grid-container.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          }
+          .loading-content {
+            text-align: center;
+            color: white;
+          }
+          .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+          }
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}),s("div",{className:"loading-content",children:[o("div",{className:"loading-spinner"}),o("h2",{children:"Loading Products..."}),o("p",{children:"Waiting for data"})]})]}):s("div",{className:`product-grid-container ${u}`,children:[o("style",{children:`
         .product-grid-container {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           padding: 1rem;
@@ -194,29 +219,4 @@ import{useState as P,useEffect as T,useMemo as x}from"react";import I from"react
             font-size: 1.5rem;
           }
         }
-      `}),i("div",{className:"product-grid-header",children:[o("h1",{className:"product-grid-title",children:"Products"}),y>0&&i("div",{className:"cart-badge",onClick:l,children:["\u{1F6D2} Cart",o("span",{className:"cart-count",children:y})]})]}),o("div",{className:"search-bar",children:o("input",{type:"text",className:"search-input",placeholder:"Search products by name or SKU...",value:d,onChange:t=>n(t.target.value)})}),p.length===0?i("div",{className:"empty-state",children:[o("div",{className:"empty-icon",children:"\u{1F4E6}"}),o("h2",{children:"No products found"}),o("p",{children:"Try adjusting your search or filters"})]}):o("div",{className:"product-grid",children:p.map(t=>{let e=k(t.stock);return i("div",{className:"product-card",children:[o("img",{src:"https://via.placeholder.com/300x200?text="+encodeURIComponent(t.product_name),alt:t.product_name,className:"product-image"}),i("div",{className:"product-info",children:[o("h3",{className:"product-name",children:t.product_name}),t.category&&o("p",{className:"product-description",children:t.category}),o("div",{className:"product-price",children:t.price?`$${t.price.toFixed(2)}`:"Price TBD"}),o("span",{className:`stock-badge ${e.className}`,children:e.label}),o("button",{className:"add-to-cart-btn",onClick:()=>g(t),disabled:!t.stock||t.stock===0,children:t.stock&&t.stock>0?"Add to Cart":"Out of Stock"})]})]},t.id)})})]}):i("div",{className:"product-grid-container loading",children:[o("style",{children:`
-          .product-grid-container.loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 400px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          }
-          .loading-content {
-            text-align: center;
-            color: white;
-          }
-          .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-          }
-          @keyframes spin {
-            to { transform: rotate(360deg); }
-          }
-        `}),i("div",{className:"loading-content",children:[o("div",{className:"loading-spinner"}),o("h2",{children:"Loading Products..."}),o("p",{children:"Waiting for data"})]})]})}var v=document.getElementById("product-grid-root");v&&I.createRoot(v).render(o(_,{}));
+      `}),s("div",{className:"product-grid-header",children:[o("h1",{className:"product-grid-title",children:"Products"}),w>0&&s("div",{className:"cart-badge",onClick:p,children:["\u{1F6D2} Cart",o("span",{className:"cart-count",children:w})]})]}),o("div",{className:"search-bar",children:o("input",{type:"text",className:"search-input",placeholder:"Search products by name or SKU...",value:d,onChange:t=>n(t.target.value)})}),l.length===0?s("div",{className:"empty-state",children:[o("div",{className:"empty-icon",children:"\u{1F4E6}"}),o("h2",{children:"No products found"}),o("p",{children:"Try adjusting your search or filters"})]}):o("div",{className:"product-grid",children:l.map(t=>{let e=v(t.stock);return s("div",{className:"product-card",children:[o("img",{src:"https://via.placeholder.com/300x200?text="+encodeURIComponent(t.product_name),alt:t.product_name,className:"product-image"}),s("div",{className:"product-info",children:[o("h3",{className:"product-name",children:t.product_name}),t.category&&o("p",{className:"product-description",children:t.category}),o("div",{className:"product-price",children:t.price?`$${t.price.toFixed(2)}`:"Price TBD"}),o("span",{className:`stock-badge ${e.className}`,children:e.label}),o("button",{className:"add-to-cart-btn",onClick:()=>m(t),disabled:!t.stock||t.stock===0,children:t.stock&&t.stock>0?"Add to Cart":"Out of Stock"})]})]},t.id)})})]})}var x=document.getElementById("product-grid-root");x&&T.createRoot(x).render(o(I,{}));

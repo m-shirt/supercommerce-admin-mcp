@@ -149,16 +149,11 @@ function ProductGrid() {
   useEffect(() => {
     console.log('window.openai:', (window as any).openai);
     console.log('toolOutput:', (window as any).openai?.toolOutput);
+    console.log('products count:', products.length);
   }, [(window as any).openai?.toolOutput]);
 
-  // Show loading state if no data available yet
-  const toolOutput = (window as any).openai?.toolOutput;
-  const hasData = toolOutput?.result?.content?.[0]?.text ||
-                  toolOutput?.content?.[0]?.text ||
-                  typeof toolOutput === 'string' ||
-                  toolOutput?.data?.products;
-
-  if (!hasData) {
+  // Show loading state only if we have no products parsed
+  if (products.length === 0) {
     return (
       <div className="product-grid-container loading">
         <style>{`
