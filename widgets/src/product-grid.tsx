@@ -36,6 +36,13 @@ function ProductGrid() {
   const apiResponse = toolInput || {};
   const products: Product[] = apiResponse?.data?.products || apiResponse?.products || [];
 
+  // Debug logging
+  console.log('ProductGrid render:', {
+    hasToolInput: !!toolInput,
+    apiResponse,
+    productsCount: products.length
+  });
+
   // Widget state for cart
   const [widgetState, updateWidgetState] = useWidgetState<WidgetStateType>({
     cart: { items: [], total: 0 }
@@ -46,16 +53,22 @@ function ProductGrid() {
 
   // Local search state
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   // Loading state - show loading until we have toolInput
   const [isLoading, setIsLoading] = useState(true);
 
+  // Update loading state when toolInput arrives
   useEffect(() => {
     if (toolInput !== undefined) {
       setIsLoading(false);
     }
   }, [toolInput]);
+
+  // Update filtered products when products data changes
+  useEffect(() => {
+    setFilteredProducts(products);
+  }, [products.length]);
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
@@ -162,7 +175,9 @@ function ProductGrid() {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           padding: 1rem;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          min-height: 100vh;
+          min-height: 400px;
+          max-height: 600px;
+          overflow-y: auto;
         }
 
         .product-grid-header {
