@@ -33,6 +33,7 @@ const executeFunction = async (params) => {
 
     // Build query parameters
     const queryParams = new URLSearchParams();
+    queryParams.append('variant', '1'); // Always add variant=1
     if (page !== undefined) queryParams.append('page', page);
     if (keyword_or_sku !== undefined) queryParams.append('q', keyword_or_sku);
     if (in_stock !== undefined) queryParams.append('in_stock', in_stock);
@@ -42,7 +43,7 @@ const executeFunction = async (params) => {
     if (inventory_id !== undefined) queryParams.append('inventory_id', inventory_id);
     if (parent_id !== undefined) queryParams.append('parent_id', parent_id);
 
-    let url = `${baseURL}/api/admin/v2/products?${queryParams.toString()}`;
+    let url = `${baseURL}/api/admin/v2/dropdown/products?${queryParams.toString()}`;
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -61,7 +62,30 @@ const executeFunction = async (params) => {
       throw new Error(errorData.message || JSON.stringify(errorData));
     }
 
-    return await response.json();
+    const data = await response.json();
+
+    // Transform response to match expected structure
+    if (data && Array.isArray(data.data)) {
+      data.data = data.data.map(product => ({
+        cart_step: product.cart_step || null,
+        enable_step_package: product.enable_step_package || 0,
+        id: product.id,
+        name: product.name,
+        name_ar: product.name_ar,
+        name_en: product.name_en,
+        options: product.options || [],
+        price: product.price,
+        sku: product.sku,
+        step_package_label_ar: product.step_package_label_ar || null,
+        step_package_label_en: product.step_package_label_en || null,
+        step_unit_label_ar: product.step_unit_label_ar || null,
+        step_unit_label_en: product.step_unit_label_en || null,
+        stock: product.stock || "0",
+        image: product.image || product.thumbnail || null
+      }));
+    }
+
+    return data;
   } catch (error) {
     console.error('Error in getProductList:', error);
     return { error: error.message || 'An error occurred during the operation.' };
