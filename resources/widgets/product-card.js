@@ -3,7 +3,7 @@ const widgetResource = {
   name: "product-card",
   description: "Detailed product view with image gallery and add to cart",
   mimeType: "text/html+skybridge",
-  html: `<!DOCTYPE html>
+  text: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -27,6 +27,12 @@ const widgetResource = {
 </html>`,
   _meta: {
     "openai/outputTemplate": "ui://widget/product-card.html",
+    "openai/widgetDescription": "Detailed product view with image gallery and add to cart",
+    "openai/widgetCSP": {
+      "connect_domains": [],
+      "resource_domains": ["unpkg.com"]
+    },
+    "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating product card...",
     "openai/toolInvocation/invoked": "product card created successfully",
     "openai/widgetAccessible": true,

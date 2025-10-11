@@ -3,7 +3,7 @@ const widgetResource = {
   name: "shopping-cart",
   description: "Interactive shopping cart with quantity controls and real-time totals",
   mimeType: "text/html+skybridge",
-  html: `<!DOCTYPE html>
+  text: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -27,6 +27,12 @@ const widgetResource = {
 </html>`,
   _meta: {
     "openai/outputTemplate": "ui://widget/shopping-cart.html",
+    "openai/widgetDescription": "Interactive shopping cart with quantity controls and real-time totals",
+    "openai/widgetCSP": {
+      "connect_domains": [],
+      "resource_domains": ["unpkg.com"]
+    },
+    "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating shopping cart...",
     "openai/toolInvocation/invoked": "shopping cart created successfully",
     "openai/widgetAccessible": true,

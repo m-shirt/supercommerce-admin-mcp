@@ -9,7 +9,7 @@ const widgetResource = {
   name: "product-creation",
   description: "Interactive product creation widget with status indicators",
   mimeType: "text/html+skybridge",
-  html: `<!DOCTYPE html>
+  text: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -33,6 +33,12 @@ const widgetResource = {
 </html>`,
   _meta: {
     "openai/outputTemplate": "ui://widget/product-creation.html",
+    "openai/widgetDescription": "Interactive product creation widget with status indicators",
+    "openai/widgetCSP": {
+      "connect_domains": [],
+      "resource_domains": ["unpkg.com"]
+    },
+    "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating product...",
     "openai/toolInvocation/invoked": "Product created successfully",
     "openai/widgetAccessible": true,

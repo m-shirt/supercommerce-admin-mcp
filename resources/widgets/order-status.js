@@ -3,7 +3,7 @@ const widgetResource = {
   name: "order-status",
   description: "Order tracking with visual timeline showing delivery progress",
   mimeType: "text/html+skybridge",
-  html: `<!DOCTYPE html>
+  text: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -27,6 +27,12 @@ const widgetResource = {
 </html>`,
   _meta: {
     "openai/outputTemplate": "ui://widget/order-status.html",
+    "openai/widgetDescription": "Order tracking with visual timeline showing delivery progress",
+    "openai/widgetCSP": {
+      "connect_domains": [],
+      "resource_domains": ["unpkg.com"]
+    },
+    "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating order status tracker...",
     "openai/toolInvocation/invoked": "order status tracker created successfully",
     "openai/widgetAccessible": true,

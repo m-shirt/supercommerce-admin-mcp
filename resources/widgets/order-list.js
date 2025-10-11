@@ -9,7 +9,7 @@ const widgetResource = {
   name: "order-list",
   description: "Interactive order list widget with status badges",
   mimeType: "text/html+skybridge",
-  html: `<!DOCTYPE html>
+  text: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -33,6 +33,12 @@ const widgetResource = {
 </html>`,
   _meta: {
     "openai/outputTemplate": "ui://widget/order-list.html",
+    "openai/widgetDescription": "Interactive order list widget with status badges",
+    "openai/widgetCSP": {
+      "connect_domains": [],
+      "resource_domains": ["unpkg.com"]
+    },
+    "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Loading orders...",
     "openai/toolInvocation/invoked": "Orders loaded successfully",
     "openai/widgetAccessible": true,

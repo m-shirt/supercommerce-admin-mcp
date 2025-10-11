@@ -3,7 +3,7 @@ const widgetResource = {
   name: "product-grid",
   description: "Interactive product grid with search and filtering",
   mimeType: "text/html+skybridge",
-  html: `<!DOCTYPE html>
+  text: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -27,6 +27,12 @@ const widgetResource = {
 </html>`,
   _meta: {
     "openai/outputTemplate": "ui://widget/product-grid.html",
+    "openai/widgetDescription": "Interactive product grid with search and filtering",
+    "openai/widgetCSP": {
+      "connect_domains": [],
+      "resource_domains": ["unpkg.com"]
+    },
+    "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating product grid...",
     "openai/toolInvocation/invoked": "product grid created successfully",
     "openai/widgetAccessible": true,

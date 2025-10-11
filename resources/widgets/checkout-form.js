@@ -3,7 +3,7 @@ const widgetResource = {
   name: "checkout-form",
   description: "Multi-step checkout process with contact, shipping, and payment",
   mimeType: "text/html+skybridge",
-  html: `<!DOCTYPE html>
+  text: `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -27,6 +27,12 @@ const widgetResource = {
 </html>`,
   _meta: {
     "openai/outputTemplate": "ui://widget/checkout-form.html",
+    "openai/widgetDescription": "Multi-step checkout process with contact, shipping, and payment",
+    "openai/widgetCSP": {
+      "connect_domains": [],
+      "resource_domains": ["unpkg.com"]
+    },
+    "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating checkout form...",
     "openai/toolInvocation/invoked": "checkout form created successfully",
     "openai/widgetAccessible": true,
