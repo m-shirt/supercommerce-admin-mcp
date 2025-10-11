@@ -6,7 +6,7 @@ export default function WidgetsPage() {
   const [widgets, setWidgets] = useState([]);
   const [selectedWidget, setSelectedWidget] = useState(null);
   const [widgetContent, setWidgetContent] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [sampleData, setSampleData] = useState('{}');
   const [previewMode, setPreviewMode] = useState('preview');
@@ -117,9 +117,10 @@ export default function WidgetsPage() {
     }
   }
 
-  useEffect(() => {
-    loadWidgets();
-  }, []);
+  // Removed auto-connect on mount - users must manually click Connect button
+  // useEffect(() => {
+  //   loadWidgets();
+  // }, []);
 
   useEffect(() => {
     if (selectedWidget) {
@@ -134,6 +135,7 @@ export default function WidgetsPage() {
             name: 'Premium Wireless Headphones',
             sku: 'PROD-WH-001',
             price: 199.99,
+            inventory: 50,
             category: 'Electronics',
             brand: 'AudioTech'
           }
@@ -145,6 +147,7 @@ export default function WidgetsPage() {
               id: 'ORD-001',
               customer: 'John Doe',
               total: 299.99,
+              items: 3,
               status: 'delivered',
               date: '2025-10-10'
             },
@@ -152,6 +155,7 @@ export default function WidgetsPage() {
               id: 'ORD-002',
               customer: 'Jane Smith',
               total: 149.50,
+              items: 2,
               status: 'shipped',
               date: '2025-10-11'
             },
@@ -159,11 +163,78 @@ export default function WidgetsPage() {
               id: 'ORD-003',
               customer: 'Bob Johnson',
               total: 89.99,
+              items: 1,
               status: 'pending',
               date: '2025-10-11'
             }
           ],
           total: 3
+        }, null, 2));
+      } else if (selectedWidget.name === 'product-grid') {
+        setSampleData(JSON.stringify({
+          products: [
+            { id: 1, name: 'Wireless Headphones', price: 199.99, stock: 50, image: 'https://placehold.co/200' },
+            { id: 2, name: 'Smart Watch', price: 299.99, stock: 30, image: 'https://placehold.co/200' },
+            { id: 3, name: 'Laptop', price: 999.99, stock: 15, image: 'https://placehold.co/200' },
+            { id: 4, name: 'Phone Case', price: 29.99, stock: 100, image: 'https://placehold.co/200' }
+          ],
+          searchQuery: ''
+        }, null, 2));
+      } else if (selectedWidget.name === 'product-card') {
+        setSampleData(JSON.stringify({
+          product: {
+            id: 1,
+            name: 'Premium Wireless Headphones',
+            description: 'High-quality wireless headphones with active noise cancellation',
+            price: 199.99,
+            stock: 50,
+            images: ['https://placehold.co/500x400'],
+            category: 'Electronics',
+            sku: 'PROD-WH-001',
+            brand: 'AudioTech',
+            reviews: []
+          }
+        }, null, 2));
+      } else if (selectedWidget.name === 'shopping-cart') {
+        setSampleData(JSON.stringify({
+          items: [
+            { id: 1, name: 'Wireless Headphones', price: 199.99, quantity: 1, image: 'https://placehold.co/100' },
+            { id: 2, name: 'Smart Watch', price: 299.99, quantity: 2, image: 'https://placehold.co/100' }
+          ],
+          subtotal: 799.97,
+          tax: 79.99,
+          shipping: 15.00,
+          total: 894.96,
+          currency: 'USD'
+        }, null, 2));
+      } else if (selectedWidget.name === 'checkout-form') {
+        setSampleData(JSON.stringify({
+          cartItems: [
+            { name: 'Wireless Headphones', price: 199.99, quantity: 1 },
+            { name: 'Smart Watch', price: 299.99, quantity: 2 }
+          ],
+          subtotal: 799.97
+        }, null, 2));
+      } else if (selectedWidget.name === 'order-status') {
+        setSampleData(JSON.stringify({
+          orderId: 'ORD-123456',
+          status: 'shipped',
+          orderDate: '2025-10-10',
+          estimatedDelivery: '2025-10-15',
+          trackingNumber: 'TRK-789012',
+          items: [
+            { id: 1, name: 'Wireless Headphones', quantity: 1, price: 199.99, image: 'https://placehold.co/60' }
+          ],
+          shippingAddress: {
+            name: 'John Doe',
+            street: '123 Main St',
+            city: 'San Francisco',
+            state: 'CA',
+            zip: '94102',
+            country: 'USA'
+          },
+          subtotal: 199.99,
+          total: 214.99
         }, null, 2));
       }
     }
@@ -199,9 +270,21 @@ export default function WidgetsPage() {
       background: #f5f5f5;
     }
   </style>
+  <script>
+    console.log('[Widget Debug] Starting widget load...');
+    window.addEventListener('error', (e) => {
+      console.error('[Widget Error]', e.message, e.filename, e.lineno);
+    });
+  </script>
 </head>
 <body>
   ${htmlWithData}
+  <script>
+    console.log('[Widget Debug] Body loaded, checking root element...');
+    console.log('[Widget Debug] Root elements:', document.querySelectorAll('[id$="-root"]'));
+    console.log('[Widget Debug] All script tags:', document.querySelectorAll('script'));
+    console.log('[Widget Debug] Body HTML:', document.body.innerHTML.substring(0, 500));
+  </script>
 </body>
 </html>
       `;
@@ -211,7 +294,6 @@ export default function WidgetsPage() {
           className={styles.widgetIframe}
           srcDoc={fullHtml}
           title="Widget Preview"
-          sandbox="allow-scripts"
         />
       );
     }

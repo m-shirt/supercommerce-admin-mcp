@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run build:widgets && next build",
+    "build": "next build",
     "start": "next start",
     "list-tools": "node cli.js tools",
     "start:http": "node mcpServer.js --streamable-http",
@@ -16,9 +16,7 @@
     "generate-tools:skip-updates": "node scripts/generate-tools-from-postman.js --skip-updates",
     "webhook-test": "node scripts/postman-webhook-handler.js",
     "validate": "node validateTools.js",
-    "auto-fix": "node scripts/auto-fix-tools.js",
-    "build:widgets": "tsx build-widgets.mts",
-    "serve:widgets": "npx serve -s ./assets -p 4444 --cors"
+    "auto-fix": "node scripts/auto-fix-tools.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.63.1",
@@ -42,12 +40,9 @@
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^15.6.6",
     "react18-json-view": "^0.2.9",
-    "@tailwindcss/vite": "^4.1.14",
-    "@vitejs/plugin-react": "^4.7.0",
     "tailwindcss": "^4.1.11",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.3",
-    "vite": "^7.1.9"
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">=18"
