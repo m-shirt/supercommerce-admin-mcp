@@ -26,14 +26,22 @@ export const servers = {};
 /* --------------------- HELPERS --------------------- */
 export async function transformTools(tools) {
   return tools
-    .map(
-      (t) =>
-        t.definition?.function && {
-          name: t.definition.function.name,
-          description: t.definition.function.description,
-          inputSchema: t.definition.function.parameters,
-        }
-    )
+    .map((t) => {
+      if (!t.definition?.function) return null;
+
+      const transformed = {
+        name: t.definition.function.name,
+        description: t.definition.function.description,
+        inputSchema: t.definition.function.parameters,
+      };
+
+      // Include _meta if present (for OpenAI Apps SDK widgets)
+      if (t.definition.function._meta) {
+        transformed._meta = t.definition.function._meta;
+      }
+
+      return transformed;
+    })
     .filter(Boolean);
 }
 
@@ -92,9 +100,16 @@ export async function setupServerHandlers(server, tools, prompts, resources) {
 
     try {
       const result = await tool.function(args);
-      return {
+      const response = {
         content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
       };
+
+      // Include _meta from tool definition if present
+      if (tool.definition?.function?._meta) {
+        response._meta = tool.definition.function._meta;
+      }
+
+      return response;
     } catch (e) {
       throw new McpError(ErrorCode.InternalError, `API error: ${e.message}`);
     }
