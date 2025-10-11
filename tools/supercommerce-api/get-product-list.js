@@ -120,6 +120,11 @@ const apiTool = {
           }
         },
         required: ['page', 'keyword_or_sku']
+      },
+      _meta: {
+        'openai/outputTemplate': 'ui://widget/product-grid.html',
+        'openai/toolInvocation/invoking': '🔍 Loading products...',
+        'openai/toolInvocation/invoked': '✅ Products loaded successfully'
       }
     }
   }

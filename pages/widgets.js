@@ -231,11 +231,19 @@ export default function WidgetsPage() {
       );
     } else {
       // Live preview mode - inject the widget HTML into an iframe with sample data
+      let parsedData;
+      try {
+        parsedData = JSON.parse(sampleData);
+      } catch (e) {
+        parsedData = {};
+      }
+
       const htmlWithData = widgetContent.text.replace(
         '</head>',
         `<script>
           // Mock OpenAI SDK for preview
           window.openai = {
+            toolInput: ${JSON.stringify(parsedData)},
             widgetState: {
               get: () => ({}),
               set: (state) => console.log('[Preview] State updated:', state)
@@ -246,9 +254,9 @@ export default function WidgetsPage() {
             },
             sendMessage: async (msg) => {
               console.log('[Preview] Message:', msg);
-            }
+            },
+            displayMode: 'inline'
           };
-          window.__WIDGET_DATA__ = ${sampleData};
         </script></head>`
       );
 
