@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { useOpenAiGlobal, useWidgetState } from '../hooks';
 
@@ -19,10 +19,40 @@ interface WidgetStateType {
 }
 
 function ShoppingCart() {
-  // Get data from tool invocation
-  const toolInput = (window as any).openai?.toolInput;
-  const apiResponse = toolInput || {};
-  const initialItems: CartItem[] = apiResponse?.items || apiResponse?.cart?.items || [];
+  // Track toolOutput changes in React state to trigger re-renders
+  const [toolOutput, setToolOutput] = useState<any>((window as any).openai?.toolOutput);
+
+  // Poll for toolOutput changes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentOutput = (window as any).openai?.toolOutput;
+      if (currentOutput !== toolOutput) {
+        setToolOutput(currentOutput);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, [toolOutput]);
+
+  // Parse cart items from toolOutput
+  const initialItems: CartItem[] = useMemo(() => {
+    if (toolOutput?.result?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.result.content[0].text);
+        return apiResponse?.items || apiResponse?.cart?.items || [];
+      } catch (e) {
+        console.error('Failed to parse cart data:', e);
+      }
+    }
+    if (toolOutput?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.content[0].text);
+        return apiResponse?.items || apiResponse?.cart?.items || [];
+      } catch (e) {
+        console.error('Failed to parse cart data:', e);
+      }
+    }
+    return [];
+  }, [toolOutput]);
 
   // Widget state for cart
   const [widgetState, updateWidgetState] = useWidgetState<WidgetStateType>({
@@ -65,22 +95,61 @@ function ShoppingCart() {
     });
 
     if (itemToRemove) {
-      (window as any).openai?.sendMessage(`Removed ${itemToRemove.name} from cart`);
+      (window as any).openai?.sendFollowUpMessage?.(`Removed ${itemToRemove.name} from cart`);
     }
   };
 
   const handleCheckout = () => {
-    (window as any).openai?.sendMessage('Proceed to checkout');
+    (window as any).openai?.sendFollowUpMessage?.('Proceed to checkout');
   };
 
   const handleContinueShopping = () => {
-    (window as any).openai?.sendMessage('Show products');
+    (window as any).openai?.sendFollowUpMessage?.('Show products');
   };
 
   const subtotal = widgetState.cart.total;
   const tax = subtotal * 0.1; // 10% tax
   const shipping = subtotal > 0 ? 15 : 0;
   const total = subtotal + tax + shipping;
+
+  // Show loading state if no toolOutput yet
+  if (!toolOutput) {
+    return (
+      <div className="shopping-cart-container loading">
+        <style>{`
+          .shopping-cart-container.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          }
+          .loading-content {
+            text-align: center;
+            color: white;
+          }
+          .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+          }
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+        <div className="loading-content">
+          <div className="loading-spinner"></div>
+          <h2>Loading Cart...</h2>
+          <p>Waiting for data</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`shopping-cart-container ${displayMode}`}>
@@ -89,7 +158,9 @@ function ShoppingCart() {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           padding: 1.5rem;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          min-height: 100vh;
+          min-height: 400px;
+          max-height: 600px;
+          overflow-y: auto;
         }
 
         .cart-header {
@@ -390,7 +461,7 @@ function ShoppingCart() {
             {widgetState.cart.items.map((item) => (
               <div key={item.id} className="cart-item">
                 <img
-                  src={item.image || 'https://via.placeholder.com/100?text=No+Image'}
+                  src={item.image || `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='12' fill='%239ca3af'%3ENo Image%3C/text%3E%3C/svg%3E`}
                   alt={item.name}
                   className="item-image"
                 />

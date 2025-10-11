@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { useOpenAiGlobal } from '../hooks';
 
@@ -42,10 +42,42 @@ interface Order {
 }
 
 function OrderStatus() {
-  // Get data from tool invocation
-  const toolInput = (window as any).openai?.toolInput;
-  const apiResponse = toolInput || {};
-  const orderData: Order = apiResponse?.order || apiResponse || {
+  // Track toolOutput changes
+  const [toolOutput, setToolOutput] = useState<any>((window as any).openai?.toolOutput);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentOutput = (window as any).openai?.toolOutput;
+      if (currentOutput !== toolOutput) {
+        setToolOutput(currentOutput);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, [toolOutput]);
+
+  // Parse order data from toolOutput
+  const orderData: Order = useMemo(() => {
+    if (toolOutput?.result?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.result.content[0].text);
+        return apiResponse?.order || apiResponse || getDefaultOrder();
+      } catch (e) {
+        console.error('Failed to parse order:', e);
+      }
+    }
+    if (toolOutput?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.content[0].text);
+        return apiResponse?.order || apiResponse || getDefaultOrder();
+      } catch (e) {
+        console.error('Failed to parse order:', e);
+      }
+    }
+    return getDefaultOrder();
+  }, [toolOutput]);
+
+  function getDefaultOrder(): Order {
+    return {
     id: '12345',
     orderNumber: 'ORD-12345',
     status: 'processing',
@@ -57,7 +89,8 @@ function OrderStatus() {
     tax: 0,
     shipping: 0,
     total: 0
-  };
+    };
+  }
 
   // Display mode for responsive layout
   const displayMode = useOpenAiGlobal('displayMode');
@@ -78,7 +111,7 @@ function OrderStatus() {
     const nextIndex = Math.min(currentStepIndex + 1, statusOrder.length - 1);
     const nextStatus = statusOrder[nextIndex] as Order['status'];
     setCurrentStatus(nextStatus);
-    (window as any).openai?.sendMessage(`Updated order ${orderData.orderNumber || orderData.id} status to: ${nextStatus}`);
+    (window as any).openai?.sendFollowUpMessage?.(`Updated order ${orderData.orderNumber || orderData.id} status to: ${nextStatus}`);
   };
 
   const getStatusColor = (status: string) => {
@@ -99,7 +132,9 @@ function OrderStatus() {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           padding: 1.5rem;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          min-height: 100vh;
+          min-height: 400px;
+          max-height: 600px;
+          overflow-y: auto;
         }
 
         .status-header {
@@ -430,7 +465,7 @@ function OrderStatus() {
             {orderData.items.map((item) => (
               <div key={item.id} className="order-item">
                 <img
-                  src={item.image || 'https://via.placeholder.com/60?text=Item'}
+                  src={item.image || `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect width='60' height='60' fill='%23f3f4f6'/%3E%3C/svg%3E`}
                   alt={item.name}
                   className="item-image"
                 />

@@ -33,19 +33,54 @@ interface FormErrors {
 }
 
 function ProductCreation() {
-  // Get data from tool invocation
-  const toolInput = (window as any).openai?.toolInput;
-  const apiResponse = toolInput || {};
-  const categories: Category[] = apiResponse?.categories || [
-    { id: 1, name: 'Electronics' },
-    { id: 2, name: 'Clothing' },
-    { id: 3, name: 'Books' }
-  ];
-  const brands: Brand[] = apiResponse?.brands || [
-    { id: 1, name: 'Brand A' },
-    { id: 2, name: 'Brand B' },
-    { id: 3, name: 'Brand C' }
-  ];
+  // Track toolOutput changes
+  const [toolOutput, setToolOutput] = useState<any>((window as any).openai?.toolOutput);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentOutput = (window as any).openai?.toolOutput;
+      if (currentOutput !== toolOutput) {
+        setToolOutput(currentOutput);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, [toolOutput]);
+
+  // Parse categories and brands from toolOutput
+  const { categories, brands } = useMemo(() => {
+    let data = {
+      categories: [
+        { id: 1, name: 'Electronics' },
+        { id: 2, name: 'Clothing' },
+        { id: 3, name: 'Books' }
+      ],
+      brands: [
+        { id: 1, name: 'Brand A' },
+        { id: 2, name: 'Brand B' },
+        { id: 3, name: 'Brand C' }
+      ]
+    };
+
+    if (toolOutput?.result?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.result.content[0].text);
+        if (apiResponse?.categories) data.categories = apiResponse.categories;
+        if (apiResponse?.brands) data.brands = apiResponse.brands;
+      } catch (e) {
+        console.error('Failed to parse product creation data:', e);
+      }
+    } else if (toolOutput?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.content[0].text);
+        if (apiResponse?.categories) data.categories = apiResponse.categories;
+        if (apiResponse?.brands) data.brands = apiResponse.brands;
+      } catch (e) {
+        console.error('Failed to parse product creation data:', e);
+      }
+    }
+
+    return data;
+  }, [toolOutput]);
 
   // Display mode for responsive layout
   const displayMode = useOpenAiGlobal('displayMode');
@@ -154,7 +189,7 @@ function ProductCreation() {
       imageUrl: formData.imageUrl
     };
 
-    (window as any).openai?.sendMessage(`Create new product: ${JSON.stringify(productData, null, 2)}`);
+    (window as any).openai?.sendFollowUpMessage?.(`Create new product: ${JSON.stringify(productData, null, 2)}`);
 
     // Reset form after short delay
     setTimeout(() => {
@@ -184,7 +219,9 @@ function ProductCreation() {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           padding: 1.5rem;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          min-height: 100vh;
+          min-height: 400px;
+          max-height: 600px;
+          overflow-y: auto;
         }
 
         .creation-header {

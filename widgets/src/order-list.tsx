@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { useOpenAiGlobal } from '../hooks';
 
@@ -12,10 +12,39 @@ interface Order {
 }
 
 function OrderList() {
-  // Get data from tool invocation
-  const toolInput = (window as any).openai?.toolInput;
-  const apiResponse = toolInput || {};
-  const orders: Order[] = apiResponse?.data?.orders || apiResponse?.orders || [];
+  // Track toolOutput changes
+  const [toolOutput, setToolOutput] = useState<any>((window as any).openai?.toolOutput);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentOutput = (window as any).openai?.toolOutput;
+      if (currentOutput !== toolOutput) {
+        setToolOutput(currentOutput);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, [toolOutput]);
+
+  // Parse orders from toolOutput
+  const orders: Order[] = useMemo(() => {
+    if (toolOutput?.result?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.result.content[0].text);
+        return apiResponse?.data?.orders || apiResponse?.orders || [];
+      } catch (e) {
+        console.error('Failed to parse orders:', e);
+      }
+    }
+    if (toolOutput?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.content[0].text);
+        return apiResponse?.data?.orders || apiResponse?.orders || [];
+      } catch (e) {
+        console.error('Failed to parse orders:', e);
+      }
+    }
+    return [];
+  }, [toolOutput]);
 
   const displayMode = useOpenAiGlobal('displayMode');
 
@@ -30,7 +59,7 @@ function OrderList() {
   });
 
   const handleViewOrder = (orderId: string) => {
-    (window as any).openai?.sendMessage(`View order ${orderId}`);
+    (window as any).openai?.sendFollowUpMessage?.(`View order ${orderId}`);
   };
 
   const getStatusColor = (status: string) => {
@@ -53,6 +82,39 @@ function OrderList() {
     cancelled: orders.filter(o => o.status === 'cancelled').length
   };
 
+  // Show loading state
+  if (orders.length === 0 && !toolOutput) {
+    return (
+      <div className="order-list-container loading">
+        <style>{`
+          .order-list-container.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          }
+          .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+          }
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+        <div style={{ textAlign: 'center', color: 'white' }}>
+          <div className="loading-spinner"></div>
+          <h2>Loading Orders...</h2>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`order-list-container ${displayMode}`}>
       <style>{`
@@ -60,7 +122,9 @@ function OrderList() {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           padding: 1.5rem;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          min-height: 100vh;
+          min-height: 400px;
+          max-height: 600px;
+          overflow-y: auto;
         }
 
         .order-header {

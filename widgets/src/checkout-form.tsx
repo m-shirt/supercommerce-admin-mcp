@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { useOpenAiGlobal } from '../hooks';
 
@@ -27,15 +27,57 @@ interface City {
 }
 
 function CheckoutForm() {
-  // Get data from tool invocation
-  const toolInput = (window as any).openai?.toolInput;
-  const apiResponse = toolInput || {};
+  // Track toolOutput changes
+  const [toolOutput, setToolOutput] = useState<any>((window as any).openai?.toolOutput);
 
-  const cartItems: CartItem[] = apiResponse?.cartItems || [];
-  const customers: Customer[] = apiResponse?.customers || [];
-  const paymentMethods: PaymentMethod[] = apiResponse?.paymentMethods || [];
-  const cities: City[] = apiResponse?.cities || [];
-  const subtotal = apiResponse?.subtotal || cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentOutput = (window as any).openai?.toolOutput;
+      if (currentOutput !== toolOutput) {
+        setToolOutput(currentOutput);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, [toolOutput]);
+
+  // Parse data from toolOutput
+  const { cartItems, customers, paymentMethods, cities, subtotal } = useMemo(() => {
+    let data = { cartItems: [], customers: [], paymentMethods: [], cities: [], subtotal: 0 };
+
+    if (toolOutput?.result?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.result.content[0].text);
+        data = {
+          cartItems: apiResponse?.cartItems || [],
+          customers: apiResponse?.customers || [],
+          paymentMethods: apiResponse?.paymentMethods || [],
+          cities: apiResponse?.cities || [],
+          subtotal: apiResponse?.subtotal || 0
+        };
+      } catch (e) {
+        console.error('Failed to parse checkout data:', e);
+      }
+    } else if (toolOutput?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.content[0].text);
+        data = {
+          cartItems: apiResponse?.cartItems || [],
+          customers: apiResponse?.customers || [],
+          paymentMethods: apiResponse?.paymentMethods || [],
+          cities: apiResponse?.cities || [],
+          subtotal: apiResponse?.subtotal || 0
+        };
+      } catch (e) {
+        console.error('Failed to parse checkout data:', e);
+      }
+    }
+
+    if (!data.subtotal && data.cartItems.length > 0) {
+      data.subtotal = data.cartItems.reduce((sum: number, item: CartItem) => sum + (item.price * item.quantity), 0);
+    }
+
+    return data;
+  }, [toolOutput]);
 
   const displayMode = useOpenAiGlobal('displayMode');
 
@@ -93,7 +135,7 @@ function CheckoutForm() {
       total: (subtotal + tax + shipping).toFixed(2)
     };
 
-    (window as any).openai?.sendMessage(`Create order: ${JSON.stringify(orderDetails)}`);
+    (window as any).openai?.sendFollowUpMessage?.(`Create order: ${JSON.stringify(orderDetails)}`);
   };
 
   const tax = subtotal * 0.1;
@@ -107,7 +149,9 @@ function CheckoutForm() {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           padding: 1.5rem;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          min-height: 100vh;
+          min-height: 400px;
+          max-height: 600px;
+          overflow-y: auto;
         }
 
         .checkout-title {

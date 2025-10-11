@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { useOpenAiGlobal, useWidgetState } from '../hooks';
 
@@ -31,20 +31,53 @@ interface WidgetStateType {
 }
 
 function ProductCard() {
-  // Get data from tool invocation
-  const toolInput = (window as any).openai?.toolInput;
-  const apiResponse = toolInput || {};
-  const product: Product = apiResponse?.product || apiResponse || {
-    id: 0,
-    name: 'Sample Product',
-    description: 'Product description not available',
-    price: 0,
-    image: '',
-    stock: 0,
-    sku: 'N/A',
-    category: 'Uncategorized',
-    brand: 'Unknown'
-  };
+  // Track toolOutput changes
+  const [toolOutput, setToolOutput] = useState<any>((window as any).openai?.toolOutput);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentOutput = (window as any).openai?.toolOutput;
+      if (currentOutput !== toolOutput) {
+        setToolOutput(currentOutput);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, [toolOutput]);
+
+  // Parse product from toolOutput
+  const product: Product = useMemo(() => {
+    if (toolOutput?.result?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.result.content[0].text);
+        return apiResponse?.product || apiResponse || getDefaultProduct();
+      } catch (e) {
+        console.error('Failed to parse product:', e);
+      }
+    }
+    if (toolOutput?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.content[0].text);
+        return apiResponse?.product || apiResponse || getDefaultProduct();
+      } catch (e) {
+        console.error('Failed to parse product:', e);
+      }
+    }
+    return getDefaultProduct();
+  }, [toolOutput]);
+
+  function getDefaultProduct(): Product {
+    return {
+      id: 0,
+      name: 'Sample Product',
+      description: 'Product description not available',
+      price: 0,
+      image: '',
+      stock: 0,
+      sku: 'N/A',
+      category: 'Uncategorized',
+      brand: 'Unknown'
+    };
+  }
 
   // Widget state for cart
   const [widgetState, updateWidgetState] = useWidgetState<WidgetStateType>({
@@ -94,15 +127,15 @@ function ProductCard() {
 
     updateWidgetState({ cart: newCart });
 
-    // Notify Claude
-    (window as any).openai?.sendMessage(`Added ${quantity} x ${product.name} to cart ($${(product.price * quantity).toFixed(2)})`);
+    // Notify ChatGPT
+    (window as any).openai?.sendFollowUpMessage?.(`Added ${quantity} x ${product.name} to cart ($${(product.price * quantity).toFixed(2)})`);
 
     // Reset quantity
     setQuantity(1);
   };
 
   const handleViewAllProducts = () => {
-    (window as any).openai?.sendMessage('Show all products');
+    (window as any).openai?.sendFollowUpMessage?.('Show all products');
   };
 
   const getStockStatus = () => {
@@ -125,7 +158,9 @@ function ProductCard() {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           padding: 1.5rem;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          min-height: 100vh;
+          min-height: 400px;
+          max-height: 600px;
+          overflow-y: auto;
         }
 
         .card-header {
