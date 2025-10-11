@@ -128,14 +128,15 @@ function ProductGrid() {
         total: widgetState.cart.total + productPrice
       };
     } else {
-      // Add new item
+      // Add new item with data URI placeholder
+      const cartImage = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23f3f4f6'/%3E%3C/svg%3E`;
       newCart = {
         items: [...widgetState.cart.items, {
           id: product.id,
           name: product.product_name,
           price: productPrice,
           quantity: 1,
-          image: 'https://via.placeholder.com/100'
+          image: cartImage
         }],
         total: widgetState.cart.total + productPrice
       };
@@ -159,17 +160,10 @@ function ProductGrid() {
 
   const cartItemCount = widgetState.cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Debug: Log the entire openai object and all its properties
+  // Debug: Log products count only (removed detailed logging to avoid DataCloneError)
   useEffect(() => {
-    const openai = (window as any).openai;
-    console.log('window.openai:', openai);
-    console.log('All openai keys:', openai ? Object.keys(openai) : 'no openai');
-    console.log('toolOutput:', openai?.toolOutput);
-    console.log('toolInput:', openai?.toolInput);
-    console.log('result:', openai?.result);
-    console.log('data:', openai?.data);
-    console.log('products count:', products.length);
-  }, [toolOutput, products.length]);
+    console.log('Products loaded:', products.length);
+  }, [products.length]);
 
   // Show loading state only if we have no products parsed
   if (products.length === 0) {
@@ -440,10 +434,12 @@ function ProductGrid() {
         <div className="product-grid">
           {filteredProducts.map((product) => {
             const stockBadge = getStockBadge(product.stock);
+            // Use data URI for placeholder to avoid CSP issues with via.placeholder.com
+            const placeholderImage = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='14' fill='%239ca3af'%3E${encodeURIComponent(product.product_name.substring(0, 30))}%3C/text%3E%3C/svg%3E`;
             return (
               <div key={product.id} className="product-card">
                 <img
-                  src={'https://via.placeholder.com/300x200?text=' + encodeURIComponent(product.product_name)}
+                  src={placeholderImage}
                   alt={product.product_name}
                   className="product-image"
                 />
