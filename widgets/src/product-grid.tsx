@@ -342,6 +342,8 @@ function ProductGrid() {
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+          height: 2.7rem;
+          line-height: 1.35rem;
         }
 
         .product-description {
@@ -465,6 +467,11 @@ function ProductGrid() {
             const placeholderImage = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='14' fill='%239ca3af'%3E${encodeURIComponent(product.name.substring(0, 30))}%3C/text%3E%3C/svg%3E`;
             const productImage = product.image || placeholderImage;
 
+            // Debug: Log image URL for first few products
+            if (filteredProducts.indexOf(product) < 3) {
+              console.log(`Product: ${product.name}, Image URL:`, product.image);
+            }
+
             return (
               <div key={product.id} className="product-card">
                 <img
@@ -472,6 +479,7 @@ function ProductGrid() {
                   alt={product.name}
                   className="product-image"
                   onError={(e) => {
+                    console.error(`Failed to load image for ${product.name}:`, productImage);
                     // Fallback to placeholder if image fails to load
                     (e.target as HTMLImageElement).src = placeholderImage;
                   }}
@@ -480,7 +488,7 @@ function ProductGrid() {
                   <h3 className="product-name">{product.name}</h3>
                   <p className="product-description">SKU: {product.sku}</p>
                   <div className="product-price">
-                    {product.price ? `$${product.price.toFixed(2)}` : 'Price TBD'}
+                    {product.price ? `${product.price.toFixed(2)} EGP` : 'Price TBD'}
                   </div>
                   <span className={`stock-badge ${stockBadge.className}`}>
                     {stockBadge.label}

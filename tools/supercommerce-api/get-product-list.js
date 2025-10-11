@@ -65,11 +65,22 @@ const executeFunction = async (params) => {
 
     const data = await response.json();
 
+    // Log first product to see structure
+    if (data && Array.isArray(data.data) && data.data.length > 0) {
+      console.log('First product from API:', JSON.stringify(data.data[0], null, 2));
+    }
+
     // Transform response to match expected structure
     if (data && Array.isArray(data.data)) {
-      data.data = data.data.map(product => {
+      data.data = data.data.map((product, index) => {
         // Get image URL and ensure it's absolute
         let imageUrl = product.image || product.thumbnail || null;
+
+        // Log first few products
+        if (index < 3) {
+          console.log(`Product ${index}: ${product.name}, image field:`, product.image, 'thumbnail:', product.thumbnail);
+        }
+
         if (imageUrl && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
           // Remove leading slash if present
           imageUrl = imageUrl.startsWith('/') ? imageUrl.substring(1) : imageUrl;
