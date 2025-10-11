@@ -41,7 +41,7 @@ const widgetResource = {
     "openai/outputTemplate": "ui://widget/order-list.html",
     "openai/widgetDescription": "Interactive order list widget with status badges",
     "openai/widgetCSP": {
-      "connect_domains": [],
+      "connect_domains": ["https://esm.sh", "https://supercommerce-admin-mcp.vercel.app"],
       "resource_domains": ["https://esm.sh", "https://supercommerce-admin-mcp.vercel.app"]
     },
     "openai/widgetPrefersBorder": true,

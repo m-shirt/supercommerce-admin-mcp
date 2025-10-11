@@ -38,7 +38,7 @@ const widgetResource = {
     "openai/outputTemplate": "ui://widget/shopping-cart.html",
     "openai/widgetDescription": "Interactive shopping cart with quantity controls, item management, and order summary",
     "openai/widgetCSP": {
-      "connect_domains": [],
+      "connect_domains": ["https://esm.sh", "https://supercommerce-admin-mcp.vercel.app"],
       "resource_domains": ["https://esm.sh", "https://supercommerce-admin-mcp.vercel.app"]
     },
     "openai/widgetPrefersBorder": true,
