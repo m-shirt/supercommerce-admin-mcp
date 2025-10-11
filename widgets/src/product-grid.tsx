@@ -473,22 +473,12 @@ function ProductGrid() {
             // Use data URI for placeholder to avoid CSP issues
             const placeholderImage = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='14' fill='%239ca3af'%3E${encodeURIComponent(product.name.substring(0, 30))}%3C/text%3E%3C/svg%3E`;
 
-            // For CSP compatibility, convert external images to data URIs via placeholder
-            let productImage = product.image || placeholderImage;
-
-            // If it's an external HTTP image, we can't load it in ChatGPT due to CSP
-            // So we'll just use the placeholder for now
-            if (productImage && productImage.startsWith('http')) {
-              // In a real implementation, images would need to be:
-              // 1. Pre-fetched and converted to data URIs server-side, or
-              // 2. Served from an allowed CDN domain
-              // For now, use placeholder to avoid CSP errors
-              productImage = placeholderImage;
-            }
+            // Use product image directly - ChatGPT allows external images
+            const productImage = product.image || placeholderImage;
 
             // Debug: Log image URL for first few products
             if (filteredProducts.indexOf(product) < 3) {
-              console.log(`Product: ${product.name}, Original Image:`, product.image, 'Proxied:', productImage);
+              console.log(`Product: ${product.name}, Image URL:`, productImage);
             }
 
             return (
