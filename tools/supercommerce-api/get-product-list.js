@@ -34,7 +34,7 @@ const executeFunction = async (params) => {
     // Build query parameters
     const queryParams = new URLSearchParams();
     queryParams.append('variant', '1'); // Always add variant=1
-    queryParams.append('page', 10);
+    queryParams.append('per_page', '10'); // Force limit page size to 10
     if (page !== undefined) queryParams.append('page', page);
     if (keyword_or_sku !== undefined) queryParams.append('q', keyword_or_sku);
     if (in_stock !== undefined) queryParams.append('in_stock', in_stock);
@@ -67,23 +67,34 @@ const executeFunction = async (params) => {
 
     // Transform response to match expected structure
     if (data && Array.isArray(data.data)) {
-      data.data = data.data.map(product => ({
-        cart_step: product.cart_step || null,
-        enable_step_package: product.enable_step_package || 0,
-        id: product.id,
-        name: product.name,
-        name_ar: product.name_ar,
-        name_en: product.name_en,
-        options: product.options || [],
-        price: product.price,
-        sku: product.sku,
-        step_package_label_ar: product.step_package_label_ar || null,
-        step_package_label_en: product.step_package_label_en || null,
-        step_unit_label_ar: product.step_unit_label_ar || null,
-        step_unit_label_en: product.step_unit_label_en || null,
-        stock: product.stock || "0",
-        image: product.image || product.thumbnail || null
-      }));
+      data.data = data.data.map(product => {
+        // Get image URL and ensure it's absolute
+        let imageUrl = product.image || product.thumbnail || null;
+        if (imageUrl && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+          // Remove leading slash if present
+          imageUrl = imageUrl.startsWith('/') ? imageUrl.substring(1) : imageUrl;
+          // Prepend base URL
+          imageUrl = `${baseURL}/${imageUrl}`;
+        }
+
+        return {
+          cart_step: product.cart_step || null,
+          enable_step_package: product.enable_step_package || 0,
+          id: product.id,
+          name: product.name,
+          name_ar: product.name_ar,
+          name_en: product.name_en,
+          options: product.options || [],
+          price: product.price,
+          sku: product.sku,
+          step_package_label_ar: product.step_package_label_ar || null,
+          step_package_label_en: product.step_package_label_en || null,
+          step_unit_label_ar: product.step_unit_label_ar || null,
+          step_unit_label_en: product.step_unit_label_en || null,
+          stock: product.stock || "0",
+          image: imageUrl
+        };
+      });
     }
 
     return data;

@@ -67,6 +67,10 @@ function ProductGrid() {
       try {
         const apiResponse = JSON.parse(toolOutput.result.content[0].text);
         console.log('Parsed API response:', apiResponse);
+        // Check if data is an array directly (dropdown endpoint)
+        if (Array.isArray(apiResponse?.data)) {
+          return apiResponse.data;
+        }
         return apiResponse?.data?.data || apiResponse?.data?.products || apiResponse?.products || [];
       } catch (e) {
         console.error('Failed to parse toolOutput.result.content[0].text:', e);
@@ -78,6 +82,10 @@ function ProductGrid() {
       try {
         const apiResponse = JSON.parse(toolOutput.content[0].text);
         console.log('Parsed API response (direct):', apiResponse);
+        // Check if data is an array directly (dropdown endpoint)
+        if (Array.isArray(apiResponse?.data)) {
+          return apiResponse.data;
+        }
         return apiResponse?.data?.data || apiResponse?.data?.products || apiResponse?.products || [];
       } catch (e) {
         console.error('Failed to parse toolOutput.content[0].text:', e);
@@ -88,6 +96,10 @@ function ProductGrid() {
     if (typeof toolOutput === 'string') {
       try {
         const apiResponse = JSON.parse(toolOutput);
+        // Check if data is an array directly (dropdown endpoint)
+        if (Array.isArray(apiResponse?.data)) {
+          return apiResponse.data;
+        }
         return apiResponse?.data?.data || apiResponse?.data?.products || apiResponse?.products || [];
       } catch (e) {
         console.error('Failed to parse toolOutput string:', e);
@@ -95,6 +107,9 @@ function ProductGrid() {
     }
 
     // Fallback: Already parsed
+    if (Array.isArray(toolOutput?.data)) {
+      return toolOutput.data;
+    }
     if (toolOutput?.data?.data) {
       return toolOutput.data.data;
     }
