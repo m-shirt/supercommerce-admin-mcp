@@ -36,12 +36,26 @@ function ProductGrid() {
     cart: { items: [], total: 0 }
   });
 
+  // Track toolOutput changes in React state to trigger re-renders
+  const [toolOutput, setToolOutput] = useState<any>((window as any).openai?.toolOutput);
+
+  // Poll for toolOutput changes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentOutput = (window as any).openai?.toolOutput;
+      if (currentOutput !== toolOutput) {
+        setToolOutput(currentOutput);
+      }
+    }, 100); // Check every 100ms
+
+    return () => clearInterval(interval);
+  }, [toolOutput]);
+
   // Display mode for responsive layout
   const displayMode = (window as any).openai?.displayMode || 'inline';
 
   // Parse products from toolOutput (memoized to prevent re-parsing)
   const products = useMemo(() => {
-    const toolOutput = (window as any).openai?.toolOutput;
 
     // ChatGPT format: toolOutput.result.content[0].text contains JSON string
     if (toolOutput?.result?.content?.[0]?.text) {
@@ -82,7 +96,7 @@ function ProductGrid() {
 
     console.log('No products found. toolOutput:', toolOutput);
     return [];
-  }, [(window as any).openai?.toolOutput]);
+  }, [toolOutput]);
 
   // Local search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -155,7 +169,7 @@ function ProductGrid() {
     console.log('result:', openai?.result);
     console.log('data:', openai?.data);
     console.log('products count:', products.length);
-  }, [(window as any).openai]);
+  }, [toolOutput, products.length]);
 
   // Show loading state only if we have no products parsed
   if (products.length === 0) {
