@@ -145,6 +145,46 @@ function ProductGrid() {
 
   const cartItemCount = widgetState.cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
+  // Show loading state if no toolOutput yet (widget rendered before tool execution)
+  const toolOutput = (window as any).openai?.toolOutput;
+  if (!toolOutput) {
+    return (
+      <div className="product-grid-container loading">
+        <style>{`
+          .product-grid-container.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          }
+          .loading-content {
+            text-align: center;
+            color: white;
+          }
+          .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+          }
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+        <div className="loading-content">
+          <div className="loading-spinner"></div>
+          <h2>Loading Products...</h2>
+          <p>Waiting for data</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`product-grid-container ${displayMode}`}>
       <style>{`
