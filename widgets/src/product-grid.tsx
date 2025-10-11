@@ -145,12 +145,17 @@ function ProductGrid() {
 
   const cartItemCount = widgetState.cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Debug: Log the entire openai object
+  // Debug: Log the entire openai object and all its properties
   useEffect(() => {
-    console.log('window.openai:', (window as any).openai);
-    console.log('toolOutput:', (window as any).openai?.toolOutput);
+    const openai = (window as any).openai;
+    console.log('window.openai:', openai);
+    console.log('All openai keys:', openai ? Object.keys(openai) : 'no openai');
+    console.log('toolOutput:', openai?.toolOutput);
+    console.log('toolInput:', openai?.toolInput);
+    console.log('result:', openai?.result);
+    console.log('data:', openai?.data);
     console.log('products count:', products.length);
-  }, [(window as any).openai?.toolOutput]);
+  }, [(window as any).openai]);
 
   // Show loading state only if we have no products parsed
   if (products.length === 0) {
