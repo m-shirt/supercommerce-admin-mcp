@@ -54,6 +54,11 @@ const apiTool = {
     function: {
       name: 'get_details_product_by_id',
       description: 'Get Details Product By id',
+      _meta: {
+        'openai/outputTemplate': 'ui://widget/product-card.html',
+        'openai/toolInvocation/invoking': '🏷️ Loading product details...',
+        'openai/toolInvocation/invoked': '✅ Product details loaded'
+      },
       parameters: {
         type: 'object',
         properties: {

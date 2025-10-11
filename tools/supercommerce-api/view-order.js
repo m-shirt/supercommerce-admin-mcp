@@ -54,6 +54,11 @@ const apiTool = {
     function: {
       name: 'view_order',
       description: 'View Order',
+      _meta: {
+        'openai/outputTemplate': 'ui://widget/order-status.html',
+        'openai/toolInvocation/invoking': '📦 Loading order details...',
+        'openai/toolInvocation/invoked': '✅ Order details loaded'
+      },
       parameters: {
         type: 'object',
         properties: {

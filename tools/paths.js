@@ -40,6 +40,8 @@ export const toolPaths = [
   'supercommerce-api/edit-brand.js',
   'supercommerce-api/get-product-list.js',
   'supercommerce-api/create-main-product.js',
+  'supercommerce-api/show-shopping-cart.js',
+  'supercommerce-api/show-checkout-form.js',
   'supercommerce-api/create-category.js',
   'supercommerce-api/update-main-product.js',
   'supercommerce-api/edit-category-add-subcategory.js',
