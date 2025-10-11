@@ -894,7 +894,7 @@ function ProductGrid() {
         }
 
         .search-input {
-          width: 100%;
+          width: 50%;
           padding: 0.75rem 1rem;
           border: none;
           border-radius: 8px;

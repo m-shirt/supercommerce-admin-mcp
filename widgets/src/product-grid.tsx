@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
-import { useOpenAiGlobal, useWidgetState } from '../hooks';
+import { useWidgetState } from '../hooks';
 
 interface Product {
   id: number;
@@ -31,70 +31,61 @@ interface WidgetStateType {
 }
 
 function ProductGrid() {
-  // Get data from tool response (toolOutput contains the API response)
-  const toolOutput = (window as any).openai?.toolOutput;
-  const toolInput = (window as any).openai?.toolInput;
-
-  // Parse toolOutput if it's a string (MCP might return JSON string)
-  let apiResponse = toolOutput;
-  if (typeof toolOutput === 'string') {
-    try {
-      apiResponse = JSON.parse(toolOutput);
-    } catch (e) {
-      console.error('Failed to parse toolOutput:', e);
-      apiResponse = {};
-    }
-  }
-
-  const products: Product[] = apiResponse?.data?.products || apiResponse?.products || [];
-
-  // Debug logging
-  console.log('ProductGrid render:', {
-    hasToolInput: !!toolInput,
-    hasToolOutput: !!toolOutput,
-    toolOutput,
-    apiResponse,
-    productsCount: products.length
-  });
-
   // Widget state for cart
   const [widgetState, updateWidgetState] = useWidgetState<WidgetStateType>({
     cart: { items: [], total: 0 }
   });
 
   // Display mode for responsive layout
-  const displayMode = useOpenAiGlobal('displayMode');
+  const displayMode = (window as any).openai?.displayMode || 'inline';
+
+  // Parse products from toolOutput (memoized to prevent re-parsing)
+  const products = useMemo(() => {
+    const toolOutput = (window as any).openai?.toolOutput;
+
+    // toolOutput.content is an array with text content
+    if (toolOutput?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.content[0].text);
+        console.log('Parsed API response:', apiResponse);
+        return apiResponse?.data?.products || apiResponse?.products || [];
+      } catch (e) {
+        console.error('Failed to parse toolOutput.content[0].text:', e);
+      }
+    }
+
+    // Fallback: try parsing toolOutput directly
+    if (typeof toolOutput === 'string') {
+      try {
+        const apiResponse = JSON.parse(toolOutput);
+        return apiResponse?.data?.products || apiResponse?.products || [];
+      } catch (e) {
+        console.error('Failed to parse toolOutput string:', e);
+      }
+    }
+
+    // Fallback: toolOutput might already be parsed
+    if (toolOutput?.data?.products) {
+      return toolOutput.data.products;
+    }
+
+    console.log('No products found. toolOutput:', toolOutput);
+    return [];
+  }, [(window as any).openai?.toolOutput]);
 
   // Local search state
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
-  // Loading state - show loading until we have toolInput
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Update loading state when toolOutput arrives
-  useEffect(() => {
-    if (toolOutput !== undefined) {
-      setIsLoading(false);
-    }
-  }, [toolOutput]);
-
-  // Update filtered products when products data changes
-  useEffect(() => {
-    setFilteredProducts(products);
-  }, [products.length]);
-
-  useEffect(() => {
+  // Filtered products based on search
+  const filteredProducts = useMemo(() => {
     if (searchQuery.trim() === '') {
-      setFilteredProducts(products);
-    } else {
-      const filtered = products.filter(p =>
-        p.product_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.sku?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredProducts(filtered);
+      return products;
     }
-  }, [searchQuery, products]);
+    return products.filter((p: Product) =>
+      p.product_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.sku?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [products, searchQuery]);
 
   const handleAddToCart = (product: Product) => {
     const existingItem = widgetState.cart.items.find(item => item.id === product.id);
@@ -142,45 +133,6 @@ function ProductGrid() {
   };
 
   const cartItemCount = widgetState.cart.items.reduce((sum, item) => sum + item.quantity, 0);
-
-  // Show loading state while waiting for permission/toolInput
-  if (isLoading) {
-    return (
-      <div className="product-grid-container loading">
-        <style>{`
-          .product-grid-container.loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 400px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          }
-          .loading-content {
-            text-align: center;
-            color: white;
-          }
-          .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-          }
-          @keyframes spin {
-            to { transform: rotate(360deg); }
-          }
-        `}</style>
-        <div className="loading-content">
-          <div className="loading-spinner"></div>
-          <h2>Loading Products...</h2>
-          <p>Waiting for data</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className={`product-grid-container ${displayMode}`}>
@@ -242,7 +194,7 @@ function ProductGrid() {
         }
 
         .search-input {
-          width: 100%;
+          width: 50%;
           padding: 0.75rem 1rem;
           border: none;
           border-radius: 8px;

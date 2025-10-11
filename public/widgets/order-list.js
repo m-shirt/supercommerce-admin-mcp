@@ -35,7 +35,7 @@ import{useState as f}from"react";import N from"react-dom/client";import{useEffec
         }
 
         .search-input {
-          width: 100%;
+          width: 50%;
           padding: 0.75rem 1rem;
           border: 2px solid #e5e7eb;
           border-radius: 8px;

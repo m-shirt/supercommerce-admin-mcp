@@ -295,7 +295,7 @@ function OrderList() {
         }
 
         .search-input {
-          width: 100%;
+          width: 50%;
           padding: 12px 16px;
           border: 2px solid #e5e7eb;
           border-radius: 8px;
