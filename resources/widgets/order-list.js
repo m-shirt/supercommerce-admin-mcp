@@ -14,15 +14,6 @@ const widgetResource = {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script type="importmap">
-    {
-      "imports": {
-        "react": "https://esm.sh/react@18.2.0",
-        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-        "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime"
-      }
-    }
-  </script>
 </head>
 <body>
   <div id="order-list-root"></div>
@@ -41,8 +32,8 @@ const widgetResource = {
     "openai/outputTemplate": "ui://widget/order-list.html",
     "openai/widgetDescription": "Interactive order list widget with status badges",
     "openai/widgetCSP": {
-      "connect_domains": ["https://esm.sh", "https://supercommerce-admin-mcp.vercel.app"],
-      "resource_domains": ["https://esm.sh", "https://supercommerce-admin-mcp.vercel.app"]
+      "connect_domains": ["https://supercommerce-admin-mcp.vercel.app"],
+      "resource_domains": ["https://supercommerce-admin-mcp.vercel.app"]
     },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Loading orders...",

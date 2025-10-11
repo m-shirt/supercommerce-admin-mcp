@@ -35,7 +35,8 @@ async function buildWidget(widget) {
       outfile: path.join(outDir, `${widgetName}.js`),
       format: 'esm',
       target: 'es2020',
-      external: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime'],
+      // Remove external - bundle React into the widget!
+      // This eliminates the need for esm.sh CDN and avoids CSP issues
       jsx: 'automatic',
       minify: !watch,
       sourcemap: false, // Disabled to avoid CSP warnings in ChatGPT
