@@ -39,7 +39,7 @@ const widgetResource = {
     "openai/widgetDescription": "Interactive product grid with search, cart management, and stock tracking",
     "openai/widgetCSP": {
       "connect_domains": [],
-      "resource_domains": ["esm.sh"]
+      "resource_domains": ["https://esm.sh"]
     },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "🔍 Loading products...",

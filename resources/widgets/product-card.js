@@ -36,7 +36,7 @@ const widgetResource = {
     "openai/widgetDescription": "Detailed product view with image gallery and add to cart",
     "openai/widgetCSP": {
       "connect_domains": [],
-      "resource_domains": ["esm.sh"]
+      "resource_domains": ["https://esm.sh"]
     },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating product card...",

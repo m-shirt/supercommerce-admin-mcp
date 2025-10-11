@@ -36,7 +36,7 @@ const widgetResource = {
     "openai/widgetDescription": "Multi-step checkout process with contact, shipping, and payment",
     "openai/widgetCSP": {
       "connect_domains": [],
-      "resource_domains": ["esm.sh"]
+      "resource_domains": ["https://esm.sh"]
     },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating checkout form...",

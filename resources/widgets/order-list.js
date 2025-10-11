@@ -42,7 +42,7 @@ const widgetResource = {
     "openai/widgetDescription": "Interactive order list widget with status badges",
     "openai/widgetCSP": {
       "connect_domains": [],
-      "resource_domains": ["esm.sh"]
+      "resource_domains": ["https://esm.sh"]
     },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Loading orders...",

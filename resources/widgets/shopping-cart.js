@@ -39,7 +39,7 @@ const widgetResource = {
     "openai/widgetDescription": "Interactive shopping cart with quantity controls, item management, and order summary",
     "openai/widgetCSP": {
       "connect_domains": [],
-      "resource_domains": ["esm.sh"]
+      "resource_domains": ["https://esm.sh"]
     },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "🛒 Loading shopping cart...",
