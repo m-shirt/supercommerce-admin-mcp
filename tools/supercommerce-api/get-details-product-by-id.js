@@ -57,7 +57,9 @@ const apiTool = {
       _meta: {
         'openai/outputTemplate': 'ui://widget/product-card.html',
         'openai/toolInvocation/invoking': '🏷️ Loading product details...',
-        'openai/toolInvocation/invoked': '✅ Product details loaded'
+        'openai/toolInvocation/invoked': '✅ Product details loaded',
+        'openai/widgetAccessible': true,
+        'openai/resultCanProduceWidget': true
       },
       parameters: {
         type: 'object',

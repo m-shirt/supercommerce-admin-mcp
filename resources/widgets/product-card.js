@@ -34,10 +34,6 @@ const widgetResource = {
   _meta: {
     "openai/outputTemplate": "ui://widget/product-card.html",
     "openai/widgetDescription": "Detailed product view with image gallery and add to cart",
-    "openai/widgetCSP": {
-      "connect_domains": [],
-      "resource_domains": ["https://esm.sh"]
-    },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Creating product card...",
     "openai/toolInvocation/invoked": "product card created successfully",

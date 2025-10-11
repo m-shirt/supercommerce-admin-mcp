@@ -57,7 +57,9 @@ const apiTool = {
       _meta: {
         'openai/outputTemplate': 'ui://widget/order-status.html',
         'openai/toolInvocation/invoking': '📦 Loading order details...',
-        'openai/toolInvocation/invoked': '✅ Order details loaded'
+        'openai/toolInvocation/invoked': '✅ Order details loaded',
+        'openai/widgetAccessible': true,
+        'openai/resultCanProduceWidget': true
       },
       parameters: {
         type: 'object',

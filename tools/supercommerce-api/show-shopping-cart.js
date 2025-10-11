@@ -30,7 +30,9 @@ const apiTool = {
       _meta: {
         'openai/outputTemplate': 'ui://widget/shopping-cart.html',
         'openai/toolInvocation/invoking': '🛒 Loading shopping cart...',
-        'openai/toolInvocation/invoked': '✅ Shopping cart loaded'
+        'openai/toolInvocation/invoked': '✅ Shopping cart loaded',
+        'openai/widgetAccessible': true,
+        'openai/resultCanProduceWidget': true
       },
       parameters: {
         type: 'object',

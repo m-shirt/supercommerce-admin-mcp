@@ -40,10 +40,6 @@ const widgetResource = {
   _meta: {
     "openai/outputTemplate": "ui://widget/order-list.html",
     "openai/widgetDescription": "Interactive order list widget with status badges",
-    "openai/widgetCSP": {
-      "connect_domains": [],
-      "resource_domains": ["https://esm.sh"]
-    },
     "openai/widgetPrefersBorder": true,
     "openai/toolInvocation/invoking": "Loading orders...",
     "openai/toolInvocation/invoked": "Orders loaded successfully",

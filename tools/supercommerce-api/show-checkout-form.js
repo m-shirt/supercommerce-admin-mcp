@@ -29,7 +29,9 @@ const apiTool = {
       _meta: {
         'openai/outputTemplate': 'ui://widget/checkout-form.html',
         'openai/toolInvocation/invoking': '💳 Loading checkout form...',
-        'openai/toolInvocation/invoked': '✅ Checkout form loaded'
+        'openai/toolInvocation/invoked': '✅ Checkout form loaded',
+        'openai/widgetAccessible': true,
+        'openai/resultCanProduceWidget': true
       },
       parameters: {
         type: 'object',
