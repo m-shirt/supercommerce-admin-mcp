@@ -172,7 +172,7 @@ function ProductGrid() {
     // Notify ChatGPT (only if function exists and is callable)
     const sendMessage = (window as any).openai?.sendFollowUpMessage;
     if (typeof sendMessage === 'function') {
-      sendMessage(`Added ${product.name} to cart`);
+      sendMessage({ prompt: `Added ${product.name} to cart` });
     }
   };
 
@@ -180,7 +180,7 @@ function ProductGrid() {
     // Notify ChatGPT (only if function exists and is callable)
     const sendMessage = (window as any).openai?.sendFollowUpMessage;
     if (typeof sendMessage === 'function') {
-      sendMessage('Show my cart');
+      sendMessage({ prompt: 'Show my cart' });
     }
   };
 
