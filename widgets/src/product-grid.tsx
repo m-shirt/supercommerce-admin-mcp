@@ -144,12 +144,12 @@ function ProductGrid() {
 
     updateWidgetState({ cart: newCart });
 
-    // Notify Claude
-    (window as any).openai?.sendMessage(`Added ${product.product_name} to cart (Price TBD)`);
+    // Notify ChatGPT
+    (window as any).openai?.sendFollowUpMessage?.(`Added ${product.product_name} to cart (Price TBD)`);
   };
 
   const handleViewCart = () => {
-    (window as any).openai?.sendMessage('Show my cart');
+    (window as any).openai?.sendFollowUpMessage?.('Show my cart');
   };
 
   const getStockBadge = (stock: number | null) => {
