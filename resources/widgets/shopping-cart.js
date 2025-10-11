@@ -21,8 +21,8 @@ const widgetResource = {
 <body>
   <div id="shopping-cart-root"></div>
   <script type="module">
-    // Dynamically detect origin (local dev or deployed)
-    const origin = window.location.ancestorOrigins?.[0] || window.location.origin;
+    // Use Vercel deployment URL for widget loading
+    const origin = 'https://supercommerce-admin-mcp.vercel.app';
 
     // Load the compiled widget module
     import(origin + '/widgets/shopping-cart.js')

@@ -21,7 +21,7 @@ const widgetResource = {
 <body>
   <div id="checkout-form-root"></div>
   <script type="module">
-    const origin = window.location.ancestorOrigins?.[0] || window.location.origin;
+    const origin = 'https://supercommerce-admin-mcp.vercel.app';
     import(origin + '/widgets/checkout-form.js')
       .catch(err => {
         console.error('Failed to load checkout-form widget:', err);

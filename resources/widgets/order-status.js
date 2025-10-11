@@ -21,7 +21,7 @@ const widgetResource = {
 <body>
   <div id="order-status-root"></div>
   <script type="module">
-    const origin = window.location.ancestorOrigins?.[0] || window.location.origin;
+    const origin = 'https://supercommerce-admin-mcp.vercel.app';
     import(origin + '/widgets/order-status.js')
       .catch(err => {
         console.error('Failed to load order-status widget:', err);
