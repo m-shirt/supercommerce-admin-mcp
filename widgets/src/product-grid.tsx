@@ -31,14 +31,28 @@ interface WidgetStateType {
 }
 
 function ProductGrid() {
-  // Get data from tool invocation
+  // Get data from tool response (toolOutput contains the API response)
+  const toolOutput = (window as any).openai?.toolOutput;
   const toolInput = (window as any).openai?.toolInput;
-  const apiResponse = toolInput || {};
+
+  // Parse toolOutput if it's a string (MCP might return JSON string)
+  let apiResponse = toolOutput;
+  if (typeof toolOutput === 'string') {
+    try {
+      apiResponse = JSON.parse(toolOutput);
+    } catch (e) {
+      console.error('Failed to parse toolOutput:', e);
+      apiResponse = {};
+    }
+  }
+
   const products: Product[] = apiResponse?.data?.products || apiResponse?.products || [];
 
   // Debug logging
   console.log('ProductGrid render:', {
     hasToolInput: !!toolInput,
+    hasToolOutput: !!toolOutput,
+    toolOutput,
     apiResponse,
     productsCount: products.length
   });
@@ -58,12 +72,12 @@ function ProductGrid() {
   // Loading state - show loading until we have toolInput
   const [isLoading, setIsLoading] = useState(true);
 
-  // Update loading state when toolInput arrives
+  // Update loading state when toolOutput arrives
   useEffect(() => {
-    if (toolInput !== undefined) {
+    if (toolOutput !== undefined) {
       setIsLoading(false);
     }
-  }, [toolInput]);
+  }, [toolOutput]);
 
   // Update filtered products when products data changes
   useEffect(() => {
