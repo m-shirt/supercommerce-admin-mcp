@@ -4,14 +4,15 @@ import { useOpenAiGlobal, useWidgetState } from '../hooks';
 
 interface Product {
   id: number;
-  name: string;
-  description?: string;
-  price: number;
-  image: string;
-  stock: number;
+  product_name: string;
+  slug?: string;
   sku: string;
+  price: number | null;
+  stock: number | null;
   category?: string;
-  active?: boolean;
+  is_active: number;
+  product_variants_count?: number;
+  parent_id?: number | null;
 }
 
 interface CartItem {
@@ -52,7 +53,7 @@ function ProductGrid() {
       setFilteredProducts(products);
     } else {
       const filtered = products.filter(p =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.product_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.sku?.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredProducts(filtered);
@@ -61,6 +62,7 @@ function ProductGrid() {
 
   const handleAddToCart = (product: Product) => {
     const existingItem = widgetState.cart.items.find(item => item.id === product.id);
+    const productPrice = product.price || 0;
 
     let newCart;
     if (existingItem) {
@@ -71,34 +73,34 @@ function ProductGrid() {
             ? { ...item, quantity: item.quantity + 1 }
             : item
         ),
-        total: widgetState.cart.total + product.price
+        total: widgetState.cart.total + productPrice
       };
     } else {
       // Add new item
       newCart = {
         items: [...widgetState.cart.items, {
           id: product.id,
-          name: product.name,
-          price: product.price,
+          name: product.product_name,
+          price: productPrice,
           quantity: 1,
-          image: product.image
+          image: 'https://via.placeholder.com/100'
         }],
-        total: widgetState.cart.total + product.price
+        total: widgetState.cart.total + productPrice
       };
     }
 
     updateWidgetState({ cart: newCart });
 
     // Notify Claude
-    (window as any).openai?.sendMessage(`Added ${product.name} to cart ($${product.price})`);
+    (window as any).openai?.sendMessage(`Added ${product.product_name} to cart (Price TBD)`);
   };
 
   const handleViewCart = () => {
     (window as any).openai?.sendMessage('Show my cart');
   };
 
-  const getStockBadge = (stock: number) => {
-    if (stock === 0) return { label: 'Out of Stock', className: 'stock-out' };
+  const getStockBadge = (stock: number | null) => {
+    if (!stock || stock === 0) return { label: 'Out of Stock', className: 'stock-out' };
     if (stock <= 5) return { label: `Low (${stock})`, className: 'stock-low' };
     return { label: `In Stock (${stock})`, className: 'stock-in' };
   };
@@ -336,25 +338,27 @@ function ProductGrid() {
             return (
               <div key={product.id} className="product-card">
                 <img
-                  src={product.image || 'https://via.placeholder.com/300x200?text=No+Image'}
-                  alt={product.name}
+                  src={'https://via.placeholder.com/300x200?text=' + encodeURIComponent(product.product_name)}
+                  alt={product.product_name}
                   className="product-image"
                 />
                 <div className="product-info">
-                  <h3 className="product-name">{product.name}</h3>
-                  {product.description && (
-                    <p className="product-description">{product.description}</p>
+                  <h3 className="product-name">{product.product_name}</h3>
+                  {product.category && (
+                    <p className="product-description">{product.category}</p>
                   )}
-                  <div className="product-price">${product.price.toFixed(2)}</div>
+                  <div className="product-price">
+                    {product.price ? `$${product.price.toFixed(2)}` : 'Price TBD'}
+                  </div>
                   <span className={`stock-badge ${stockBadge.className}`}>
                     {stockBadge.label}
                   </span>
                   <button
                     className="add-to-cart-btn"
                     onClick={() => handleAddToCart(product)}
-                    disabled={product.stock === 0}
+                    disabled={!product.stock || product.stock === 0}
                   >
-                    {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+                    {product.stock && product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
                   </button>
                 </div>
               </div>
