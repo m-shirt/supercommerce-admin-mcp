@@ -43,18 +43,29 @@ function ProductGrid() {
   const products = useMemo(() => {
     const toolOutput = (window as any).openai?.toolOutput;
 
-    // toolOutput.content is an array with text content
+    // ChatGPT format: toolOutput.result.content[0].text contains JSON string
+    if (toolOutput?.result?.content?.[0]?.text) {
+      try {
+        const apiResponse = JSON.parse(toolOutput.result.content[0].text);
+        console.log('Parsed API response:', apiResponse);
+        return apiResponse?.data?.products || apiResponse?.products || [];
+      } catch (e) {
+        console.error('Failed to parse toolOutput.result.content[0].text:', e);
+      }
+    }
+
+    // Fallback: Direct content array (non-ChatGPT)
     if (toolOutput?.content?.[0]?.text) {
       try {
         const apiResponse = JSON.parse(toolOutput.content[0].text);
-        console.log('Parsed API response:', apiResponse);
+        console.log('Parsed API response (direct):', apiResponse);
         return apiResponse?.data?.products || apiResponse?.products || [];
       } catch (e) {
         console.error('Failed to parse toolOutput.content[0].text:', e);
       }
     }
 
-    // Fallback: try parsing toolOutput directly
+    // Fallback: String
     if (typeof toolOutput === 'string') {
       try {
         const apiResponse = JSON.parse(toolOutput);
@@ -64,7 +75,7 @@ function ProductGrid() {
       }
     }
 
-    // Fallback: toolOutput might already be parsed
+    // Fallback: Already parsed
     if (toolOutput?.data?.products) {
       return toolOutput.data.products;
     }
